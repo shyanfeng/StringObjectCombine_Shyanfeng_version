@@ -46,7 +46,13 @@ extern void test_stringDel_should_delete_and_not_reduce_text_reference(void);
 extern void test_stringSkip_should_skip(void);
 extern void test_stringSkip_should_overload_and_stop_at_Null(void);
 extern void test_stringTrimLeft(void);
-extern void test_stringTrimLeftaf(void);
+extern void test_stringTrimLeft2(void);
+extern void test_stringTrimRight(void);
+extern void test_stringTrimRight2(void);
+extern void test_stringTrim_should_trim_both_sides(void);
+extern void test_stringTrim_should_trim_both_sides2(void);
+extern void test_stringTrim_should_trim_both_sides3(void);
+extern void test_all(void);
 
 
 //=======Test Reset Option=====
@@ -62,23 +68,29 @@ int main(void)
 {
   Unity.TestFile = "test_StringObject.c";
   UnityBegin();
-  RUN_TEST(test_textNew_should_create_dynamic_text_properly, 14);
-  RUN_TEST(test_textNew_should_create_static_text_properly, 23);
-  RUN_TEST(test_textAssign_should_increase_reference, 32);
-  RUN_TEST(test_textAssign_should_not_increase_reference, 42);
-  RUN_TEST(test_textDel_should_delete_dynamic_text, 52);
-  RUN_TEST(test_textDel_should_not_delete_static_text, 60);
-  RUN_TEST(test_textDel_should_not_delete_when_reference_not_0, 69);
-  RUN_TEST(test_textDel_should_not_delete_and_reduce_reference, 80);
-  RUN_TEST(test_stringNew_should_create_string_with_dynamic_text, 91);
-  RUN_TEST(test_stringNew_should_create_string_with_static_text, 104);
-  RUN_TEST(test_stringAssign_should_increase_reference, 116);
-  RUN_TEST(test_stringDel_should_delete_and_reduce_text_reference, 125);
-  RUN_TEST(test_stringDel_should_delete_and_not_reduce_text_reference, 136);
-  RUN_TEST(test_stringSkip_should_skip, 147);
-  RUN_TEST(test_stringSkip_should_overload_and_stop_at_Null, 155);
-  RUN_TEST(test_stringTrimLeft, 164);
-  RUN_TEST(test_stringTrimLeftaf, 173);
+  RUN_TEST(test_textNew_should_create_dynamic_text_properly, 85);
+  RUN_TEST(test_textNew_should_create_static_text_properly, 93);
+  RUN_TEST(test_textAssign_should_increase_reference, 101);
+  RUN_TEST(test_textAssign_should_not_increase_reference, 111);
+  RUN_TEST(test_textDel_should_delete_dynamic_text, 121);
+  RUN_TEST(test_textDel_should_not_delete_static_text, 129);
+  RUN_TEST(test_textDel_should_not_delete_when_reference_not_0, 138);
+  RUN_TEST(test_textDel_should_not_delete_and_reduce_reference, 149);
+  RUN_TEST(test_stringNew_should_create_string_with_dynamic_text, 160);
+  RUN_TEST(test_stringNew_should_create_string_with_static_text, 173);
+  RUN_TEST(test_stringAssign_should_increase_reference, 185);
+  RUN_TEST(test_stringDel_should_delete_and_reduce_text_reference, 194);
+  RUN_TEST(test_stringDel_should_delete_and_not_reduce_text_reference, 205);
+  RUN_TEST(test_stringSkip_should_skip, 216);
+  RUN_TEST(test_stringSkip_should_overload_and_stop_at_Null, 224);
+  RUN_TEST(test_stringTrimLeft, 232);
+  RUN_TEST(test_stringTrimLeft2, 240);
+  RUN_TEST(test_stringTrimRight, 249);
+  RUN_TEST(test_stringTrimRight2, 257);
+  RUN_TEST(test_stringTrim_should_trim_both_sides, 265);
+  RUN_TEST(test_stringTrim_should_trim_both_sides2, 273);
+  RUN_TEST(test_stringTrim_should_trim_both_sides3, 281);
+  RUN_TEST(test_all, 289);
 
   return (UnityEnd());
 }

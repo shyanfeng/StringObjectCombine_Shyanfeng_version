@@ -97,7 +97,6 @@ String *stringDel(String *string){
 	string->reference--;
 	if(string->reference == 0){
 		free(string);
-		printf("%d",string->text->reference);
 		textDel(string->text);
 		return NULL;
 	}
@@ -136,21 +135,25 @@ void stringTrimLeft(String *string){
 	}
 }
 
-// void stringTrimRight(String *string){
-	// int i = string->start;
-	// int l = string->length;
+void stringTrimRight(String *string){
+
+	int end = string->start+string->length-1;
 	
-	// if(string->text->string[i] != 0){
-		// for(;i<=l;i++){
-			// if(isSpace(string->text->string[i])){
-				// string->start++;
-				// string->length--;
-			// }
-			// else
-				// break;
-		// }
-	// }
-// }
+	for(;;end--){
+		if(isSpace(string->text->string[end])){
+				string->length--;
+		}
+		else
+			break;
+	}
+}
+
+void stringTrim(String *string){
+	stringTrimLeft(string);
+	stringTrimRight(string);
+}
+
+
 /*
 
 

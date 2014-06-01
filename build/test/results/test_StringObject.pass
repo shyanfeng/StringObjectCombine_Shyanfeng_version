@@ -4,61 +4,79 @@
   :file: test_StringObject.c
 :successes:
 - :test: test_textNew_should_create_dynamic_text_properly
-  :line: 14
+  :line: 85
   :message: ''
 - :test: test_textNew_should_create_static_text_properly
-  :line: 23
+  :line: 93
   :message: ''
 - :test: test_textAssign_should_increase_reference
-  :line: 32
+  :line: 101
   :message: ''
 - :test: test_textAssign_should_not_increase_reference
-  :line: 42
+  :line: 111
   :message: ''
 - :test: test_textDel_should_delete_dynamic_text
-  :line: 52
+  :line: 121
   :message: ''
 - :test: test_textDel_should_not_delete_static_text
-  :line: 60
+  :line: 129
   :message: ''
 - :test: test_textDel_should_not_delete_when_reference_not_0
-  :line: 69
+  :line: 138
   :message: ''
 - :test: test_textDel_should_not_delete_and_reduce_reference
-  :line: 80
+  :line: 149
   :message: ''
 - :test: test_stringNew_should_create_string_with_dynamic_text
-  :line: 91
+  :line: 160
   :message: ''
 - :test: test_stringNew_should_create_string_with_static_text
-  :line: 104
+  :line: 173
   :message: ''
 - :test: test_stringAssign_should_increase_reference
-  :line: 116
+  :line: 185
   :message: ''
 - :test: test_stringDel_should_delete_and_reduce_text_reference
-  :line: 125
+  :line: 194
   :message: ''
 - :test: test_stringDel_should_delete_and_not_reduce_text_reference
-  :line: 136
+  :line: 205
   :message: ''
 - :test: test_stringSkip_should_skip
-  :line: 147
+  :line: 216
   :message: ''
 - :test: test_stringSkip_should_overload_and_stop_at_Null
-  :line: 155
+  :line: 224
   :message: ''
 - :test: test_stringTrimLeft
-  :line: 164
+  :line: 232
   :message: ''
-- :test: test_stringTrimLeftaf
-  :line: 173
+- :test: test_stringTrimLeft2
+  :line: 240
+  :message: ''
+- :test: test_stringTrimRight
+  :line: 249
+  :message: ''
+- :test: test_stringTrimRight2
+  :line: 257
+  :message: ''
+- :test: test_stringTrim_should_trim_both_sides
+  :line: 265
+  :message: ''
+- :test: test_stringTrim_should_trim_both_sides2
+  :line: 273
+  :message: ''
+- :test: test_stringTrim_should_trim_both_sides3
+  :line: 281
+  :message: ''
+- :test: test_all
+  :line: 289
   :message: ''
 :failures: []
 :ignores: []
 :counts:
-  :total: 17
-  :passed: 17
+  :total: 23
+  :passed: 23
   :failed: 0
   :ignored: 0
 :stdout: []

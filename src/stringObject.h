@@ -4,7 +4,6 @@
 #include "Types.h"
 #define t (Text *)"\x00\x00\x00\x80"
 #define isSpace(ch) (ch==' ' || ch=='\t')
-//if (isSpace(ch))
 
 typedef struct Text{
 	uint32 reference;

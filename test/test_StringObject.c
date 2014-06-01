@@ -10,11 +10,81 @@ typedef struct FakeText {
 void setUp(){}
 void tearDown(){}
 
+/*
+void test_stringDump_should_print_whole_word(void){
+	FakeText fakeText = {
+		.reference = 10,
+		.string = "hello world!"
+	};
+	String str = {
+		.reference = 20,
+		.text = (Text *)&fakeText,
+		.start = 0,
+		.length = 12
+		};
+	stringDump(&str);
+}
+
+void test_stringDump_should_print_from_fifth_word(void){
+	FakeText fakeText = {
+		.reference = 10,
+		.string = "hello world!"
+	};
+	String str = {
+		.reference = 20,
+		.text = (Text *)&fakeText,
+		.start = 4,
+		.length = 12
+		};
+	stringDump(&str);
+}
+
+void test_stringDump_should_print_only_5_character(void){
+	FakeText fakeText = {
+		.reference = 10,
+		.string = "hello world!"
+	};
+	String str = {
+		.reference = 20,
+		.text = (Text *)&fakeText,
+		.start = 0,
+		.length = 6
+		};
+	stringDump(&str);
+}
+
+void test_stringDump_should_not_print_with_0_length(void){
+	FakeText fakeText = {
+		.reference = 10,
+		.string = "hello world!"
+	};
+	String str = {
+		.reference = 20,
+		.text = (Text *)&fakeText,
+		.start = 0,
+		.length = 0
+		};
+	stringDump(&str);
+}
+
+void test_stringDump_should_not_print_with_overload_start(void){
+	FakeText fakeText = {
+		.reference = 10,
+		.string = "hello world!"
+	};
+	String str = {
+		.reference = 20,
+		.text = (Text *)&fakeText,
+		.start = 12,
+		.length =12
+		};
+	stringDump(&str);
+}
+*/
 
 void test_textNew_should_create_dynamic_text_properly(void){
 	int compare;
 	Text *text = textNew("FooSatt");
-	//printf("%s\n",text->string);
 	compare = strcmp(text->string,"FooSatt");
 	TEST_ASSERT_EQUAL(0,compare);
 	TEST_ASSERT_EQUAL(1,text->reference);
@@ -23,7 +93,6 @@ void test_textNew_should_create_dynamic_text_properly(void){
 void test_textNew_should_create_static_text_properly(void){
 	int compare;
 	Text *text = t"JoonPon";
-	//printf("%s\n",text->string);
 	compare = strcmp(text->string,"JoonPon");
 	TEST_ASSERT_EQUAL(0,compare);
 	TEST_ASSERT_EQUAL_HEX32(0x80000000,text->reference);
@@ -156,105 +225,84 @@ void test_stringSkip_should_overload_and_stop_at_Null(void){
 	Text *text = textNew("SelNonDan");
 	String *str = stringNew(text);
 	str->start++; //1
-	stringSkip(str,10);
+	stringSkip(str,100);
 	TEST_ASSERT_EQUAL(9,str->start);
 	TEST_ASSERT_EQUAL(0,str->length);
 }
-
 void test_stringTrimLeft(void){
-	Text *text = textNew("    a ");
+	Text *text = textNew("SaJon ");
 	String *str = stringNew(text);
 	stringTrimLeft(str);
-	//stringDump(str);
-	TEST_ASSERT_EQUAL(4,str->start);
-	TEST_ASSERT_EQUAL(2,str->length);
+	TEST_ASSERT_EQUAL(0,str->start);
+	TEST_ASSERT_EQUAL(6,str->length);
 }
 
 void test_stringTrimLeft2(void){
-	Text *text = textNew("    a ");
+	Text *text = textNew("    HohnJon ");
 	String *str = stringNew(text);
 	str->start+=3;
 	stringTrimLeft(str);
-	//stringDump(str);
 	TEST_ASSERT_EQUAL(4,str->start);
-	TEST_ASSERT_EQUAL(2,str->length);
+	TEST_ASSERT_EQUAL(8,str->length);
 }
 
-
-
-
-
-
-
-
-/*
-void test_stringDump_should_print_whole_word(void){
-	FakeText fakeText = {
-		.reference = 10,
-		.string = "hello world!"
-	};
-	String str = {
-		.reference = 20,
-		.text = (Text *)&fakeText,
-		.start = 0,
-		.length = 12
-		};
-	stringDump(&str);
+void test_stringTrimRight(void){
+	Text *text = textNew("    LuJian  ");
+	String *str = stringNew(text);
+	stringTrimRight(str);
+	TEST_ASSERT_EQUAL(0,str->start);
+	TEST_ASSERT_EQUAL(10,str->length);
 }
 
-void test_stringDump_should_print_from_fifth_word(void){
-	FakeText fakeText = {
-		.reference = 10,
-		.string = "hello world!"
-	};
-	String str = {
-		.reference = 20,
-		.text = (Text *)&fakeText,
-		.start = 4,
-		.length = 12
-		};
-	stringDump(&str);
+void test_stringTrimRight2(void){
+	Text *text = textNew("   DeeFer\t");
+	String *str = stringNew(text);
+	stringTrimRight(str);
+	TEST_ASSERT_EQUAL(0,str->start);
+	TEST_ASSERT_EQUAL(9,str->length);
 }
 
-void test_stringDump_should_print_only_5_character(void){
-	FakeText fakeText = {
-		.reference = 10,
-		.string = "hello world!"
-	};
-	String str = {
-		.reference = 20,
-		.text = (Text *)&fakeText,
-		.start = 0,
-		.length = 6
-		};
-	stringDump(&str);
+void test_stringTrim_should_trim_both_sides(void){
+	Text *text = textNew("  \t \t \t  VeaLer     ");
+	String *str = stringNew(text);
+	stringTrim(str);
+	TEST_ASSERT_EQUAL(9,str->start);
+	TEST_ASSERT_EQUAL(6,str->length);
 }
 
-void test_stringDump_should_not_print_with_0_length(void){
-	FakeText fakeText = {
-		.reference = 10,
-		.string = "hello world!"
-	};
-	String str = {
-		.reference = 20,
-		.text = (Text *)&fakeText,
-		.start = 0,
-		.length = 0
-		};
-	stringDump(&str);
+void test_stringTrim_should_trim_both_sides2(void){
+	Text *text = textNew("  GaLger \t\t    ");
+	String *str = stringNew(text);
+	stringTrim(str);
+	TEST_ASSERT_EQUAL(2,str->start);
+	TEST_ASSERT_EQUAL(6,str->length);
 }
 
-void test_stringDump_should_not_print_with_overload_start(void){
-	FakeText fakeText = {
-		.reference = 10,
-		.string = "hello world!"
-	};
-	String str = {
-		.reference = 20,
-		.text = (Text *)&fakeText,
-		.start = 12,
-		.length =12
-		};
-	stringDump(&str);
+void test_stringTrim_should_trim_both_sides3(void){
+	Text *text = textNew(" \t\t BeedFack \t\t    ");
+	String *str = stringNew(text);
+	stringTrim(str);
+	TEST_ASSERT_EQUAL(4,str->start);
+	TEST_ASSERT_EQUAL(8,str->length);
 }
-*/
+
+void test_all(void){
+	String *toCompare;
+	Text *text = textNew(" \t\t ahaha \t\t    ");
+	
+	String *str = stringNew(text);
+	String *str2 = stringAssign(str);
+	TEST_ASSERT_EQUAL(2,text->reference);
+
+	toCompare = stringDel(str); //still got 1
+	TEST_ASSERT_EQUAL(2,text->reference);
+	TEST_ASSERT_EQUAL(1,toCompare->reference);
+	
+	toCompare = stringDel(str); //no more
+	//unable to TEST_ASSERT_EQUAL, bad memory because already removed
+	TEST_ASSERT_EQUAL(1,text->reference);
+	
+	stringTrim(str);
+	TEST_ASSERT_EQUAL(4,str->start);
+	TEST_ASSERT_EQUAL(5,str->length);
+}
