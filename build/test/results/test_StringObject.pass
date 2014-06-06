@@ -72,11 +72,62 @@
 - :test: test_all
   :line: 289
   :message: ''
+- :test: test_stringRemoveChar_should_remove_w
+  :line: 310
+  :message: ''
+- :test: test_stringRemoveChar_should_remove_spacing
+  :line: 321
+  :message: ''
+- :test: test_stringRemoveChar_should_return_negative_one_after_deletion
+  :line: 332
+  :message: ''
+- :test: test_stringRemoveChar_should_return_negative_one_with_NULL_input
+  :line: 343
+  :message: ''
+- :test: test_stringLength_should_get_6
+  :line: 354
+  :message: ''
+- :test: test_stringLength_should_get_16
+  :line: 363
+  :message: ''
+- :test: test_stringRemoveWordNotContaining_remove_abcd
+  :line: 372
+  :message: ''
+- :test: test_stringRemoveWordNotContaining_remove_ww
+  :line: 385
+  :message: ''
+- :test: test_stringRemoveWordNotContaining_remove_nothing
+  :line: 399
+  :message: ''
+- :test: test_stringRemoveWordContaining_remove_nothing
+  :line: 412
+  :message: ''
+- :test: test_stringRemoveWordContaining_remove_ab
+  :line: 425
+  :message: ''
+- :test: test_stringRemoveWordContaining_remove_abc
+  :line: 438
+  :message: ''
+- :test: test_stringIsEqual_should_return_equal
+  :line: 451
+  :message: ''
+- :test: test_stringIsEqual_should_return_not_equal
+  :line: 465
+  :message: ''
+- :test: test_stringIsEqualCaseInsensitive_should_equal
+  :line: 479
+  :message: ''
+- :test: test_stringIsEqualCaseInsensitive_should_equal_with_different_start
+  :line: 490
+  :message: ''
+- :test: test_stringIsEqualCaseInsensitive_should_not_equal
+  :line: 503
+  :message: ''
 :failures: []
 :ignores: []
 :counts:
-  :total: 23
-  :passed: 23
+  :total: 40
+  :passed: 40
   :failed: 0
   :ignored: 0
 :stdout: []

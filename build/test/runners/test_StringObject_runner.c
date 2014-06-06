@@ -53,6 +53,23 @@ extern void test_stringTrim_should_trim_both_sides(void);
 extern void test_stringTrim_should_trim_both_sides2(void);
 extern void test_stringTrim_should_trim_both_sides3(void);
 extern void test_all(void);
+extern void test_stringRemoveChar_should_remove_w(void);
+extern void test_stringRemoveChar_should_remove_spacing(void);
+extern void test_stringRemoveChar_should_return_negative_one_after_deletion(void);
+extern void test_stringRemoveChar_should_return_negative_one_with_NULL_input(void);
+extern void test_stringLength_should_get_6(void);
+extern void test_stringLength_should_get_16(void);
+extern void test_stringRemoveWordNotContaining_remove_abcd(void);
+extern void test_stringRemoveWordNotContaining_remove_ww(void);
+extern void test_stringRemoveWordNotContaining_remove_nothing(void);
+extern void test_stringRemoveWordContaining_remove_nothing(void);
+extern void test_stringRemoveWordContaining_remove_ab(void);
+extern void test_stringRemoveWordContaining_remove_abc(void);
+extern void test_stringIsEqual_should_return_equal(void);
+extern void test_stringIsEqual_should_return_not_equal(void);
+extern void test_stringIsEqualCaseInsensitive_should_equal(void);
+extern void test_stringIsEqualCaseInsensitive_should_equal_with_different_start(void);
+extern void test_stringIsEqualCaseInsensitive_should_not_equal(void);
 
 
 //=======Test Reset Option=====
@@ -91,6 +108,23 @@ int main(void)
   RUN_TEST(test_stringTrim_should_trim_both_sides2, 273);
   RUN_TEST(test_stringTrim_should_trim_both_sides3, 281);
   RUN_TEST(test_all, 289);
+  RUN_TEST(test_stringRemoveChar_should_remove_w, 310);
+  RUN_TEST(test_stringRemoveChar_should_remove_spacing, 321);
+  RUN_TEST(test_stringRemoveChar_should_return_negative_one_after_deletion, 332);
+  RUN_TEST(test_stringRemoveChar_should_return_negative_one_with_NULL_input, 343);
+  RUN_TEST(test_stringLength_should_get_6, 354);
+  RUN_TEST(test_stringLength_should_get_16, 363);
+  RUN_TEST(test_stringRemoveWordNotContaining_remove_abcd, 372);
+  RUN_TEST(test_stringRemoveWordNotContaining_remove_ww, 385);
+  RUN_TEST(test_stringRemoveWordNotContaining_remove_nothing, 399);
+  RUN_TEST(test_stringRemoveWordContaining_remove_nothing, 412);
+  RUN_TEST(test_stringRemoveWordContaining_remove_ab, 425);
+  RUN_TEST(test_stringRemoveWordContaining_remove_abc, 438);
+  RUN_TEST(test_stringIsEqual_should_return_equal, 451);
+  RUN_TEST(test_stringIsEqual_should_return_not_equal, 465);
+  RUN_TEST(test_stringIsEqualCaseInsensitive_should_equal, 479);
+  RUN_TEST(test_stringIsEqualCaseInsensitive_should_equal_with_different_start, 490);
+  RUN_TEST(test_stringIsEqualCaseInsensitive_should_not_equal, 503);
 
   return (UnityEnd());
 }

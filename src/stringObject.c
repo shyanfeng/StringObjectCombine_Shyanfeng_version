@@ -153,23 +153,156 @@ void stringTrim(String *string){
 	stringTrimRight(string);
 }
 
+// return -l if empty remove by moving index number
+int stringRemoveChar(String *str){
+	char forReturn = str->text->string[str->start];
+	
+	if(str->text->string[str->start] != 0 && \
+	   str->text->string[str->start+1] != 0){
+		str->start++;
+		str->length--;
+	}
+	else{
+		if(str->text->string[str->start] != 0)
+			str->length--;
+		return -1;
+	}
+
+	return forReturn;
+}
+
+// length of string
+int stringLength(String *str){
+	return str->length;
+}
+
+String *stringRemoveWordNotContaining(String *str,char delimites[]){
+	int i;
+	String *strReturn = stringNew(str->text); 
+	strReturn->start = str->start;
+	
+	for( i = str->start;i < str->length && delimites[0]!=0;i++){
+		if(str->text->string[i] != delimites[0]){
+			str->start++;
+		}
+		else{
+			strReturn->length = i - strReturn->start;
+			str->length -= (i);
+			break;
+		}
+	}
+	return  strReturn;
+}
+
+String *stringRemoveWordContaining(String *str, char containSet[]){
+	int i,j,count,containLength;
+	String *strReturn = stringNew(str->text);
+	containLength = strlen(containSet);
+	strReturn->start = str->start;
+	
+	for(j=str->start;j<str->length;j++){
+		for(i=0,count=0;i<containLength;i++){
+			if(str->text->string[j] == containSet[i]){
+				str->start++;
+				str->length--;
+				strReturn->length = j - strReturn->start;
+				break;
+			}
+			else{
+				strReturn->length = j - strReturn->start;
+				count++;
+			}
+		}
+		if(count>=containLength)
+			break;
+	}
+	return strReturn;
+}
+
+int stringIsEqual(String *str1, String *str2){
+	int i;
+	int actualLength;
+	int actualLength2;
+	char *actualString;
+	char *actualString2;
+	
+	actualString = &str1->text->string[str1->start];
+	actualString2 = &str2->text->string[str2->start];
+	
+	actualLength = strlen(actualString);
+	actualLength2 = strlen(actualString2);
+	
+	if(actualLength == actualLength2){
+		for(i=0;i<actualLength;i++){
+			if(actualString[i] != actualString2[i])
+				return 0;
+		}
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int stringIsEqualCaseInsensitive(String *str1, String *str2){
+	int i;
+	int actualLength;
+	int actualLength2;
+	char *actualString;
+	char *actualString2;
+	
+	actualString = &str1->text->string[str1->start];
+	actualString2 = &str2->text->string[str2->start];
+	
+	actualLength = strlen(actualString);
+	actualLength2 = strlen(actualString2);
+	
+	actualString = toLowerCase(actualString,actualLength);
+	actualString2 = toLowerCase(actualString2,actualLength2);
+	
+	if(actualLength == actualLength2){
+		for(i=0;i<actualLength;i++){
+			if(actualString[i] != actualString2[i])
+				return 0;
+		}
+		return 1;
+	}
+	else
+		return 0;
+
+}
+
+char *toLowerCase(char string[],int length){
+	int i;
+	for(i=0;i<length;i++){
+		string[i] = tolower(string[i]);
+	}
+	return string;
+}
 
 /*
-
-
-
-Text *textNew(Char *CharStr);
-Text *textAssign(Text *text);
-Text *textDel(Text *text);
-
-String *stringNew(Text *text);
-String *stringAssign(String *string);
-String *stringDel(String *string);
-
-void stringSkip(String *string, int numChar2Skip);
-void stringTrimLeft(String *string);
-void stringTrimRight(String *string);
-void stringTrim(String *string);
-
-
+String *stringRemoveWordNotContaining(String *str,char delimites[]){
+	int i,j = 0,k = 0,length;
+	Text *text;
+	String *strReturn;
+	length = strlen(delimites);
+	char forReturn[length];
+	
+	for( i = str->start; i < str->length && j < length;i++){
+		for(;j<length;i++){
+			if(str->text->string[i] != delimites[j]){
+				forReturn[k] = str->text->string[i];
+				k++;
+				str->start++;
+				str->length--;
+			}
+			else{
+				j++;
+			}
+		}
+	}
+	
+	text = textNew(forReturn);
+	strReturn = stringNew(text);
+	return  strReturn;
+}
 */

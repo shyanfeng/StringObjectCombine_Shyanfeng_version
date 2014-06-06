@@ -464,3 +464,411 @@ void test_all(void){
  UnityAssertEqualNumber((_U_SINT)((5)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)307, UNITY_DISPLAY_STYLE_INT);
 
 }
+
+
+
+void test_stringRemoveChar_should_remove_w(void){
+
+ char toCompare;
+
+ Text *text = textNew("wahaha");
+
+ String *str = stringNew(text);
+
+
+
+ toCompare = stringRemoveChar(str);
+
+ UnityAssertEqualNumber((_U_SINT)(('w')), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)316, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((5)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)317, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)318, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringRemoveChar_should_remove_spacing(void){
+
+ char toCompare;
+
+ Text *text = textNew("   iana");
+
+ String *str = stringNew(text);
+
+
+
+ toCompare = stringRemoveChar(str);
+
+ UnityAssertEqualNumber((_U_SINT)((' ')), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)327, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)328, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)329, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringRemoveChar_should_return_negative_one_after_deletion(void){
+
+ char toCompare;
+
+ Text *text = textNew("a");
+
+ String *str = stringNew(text);
+
+
+
+ toCompare = stringRemoveChar(str);
+
+ UnityAssertEqualNumber((_U_SINT)((-1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)338, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)339, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)340, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringRemoveChar_should_return_negative_one_with_NULL_input(void){
+
+ char toCompare;
+
+ Text *text = textNew("");
+
+ String *str = stringNew(text);
+
+
+
+ toCompare = stringRemoveChar(str);
+
+ UnityAssertEqualNumber((_U_SINT)((-1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)349, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)350, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)351, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringLength_should_get_6(void){
+
+ int toCompareLength;
+
+ Text *text = textNew("abcdefg");
+
+ String *str = stringNew(text);
+
+
+
+ toCompareLength = stringLength(str);
+
+ UnityAssertEqualNumber((_U_SINT)((7)), (_U_SINT)((toCompareLength)), (((void *)0)), (_U_UINT)360, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringLength_should_get_16(void){
+
+ int toCompareLength;
+
+ Text *text = textNew(" \t \t \t 16 length");
+
+ String *str = stringNew(text);
+
+
+
+ toCompareLength = stringLength(str);
+
+ UnityAssertEqualNumber((_U_SINT)((16)), (_U_SINT)((toCompareLength)), (((void *)0)), (_U_UINT)369, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringRemoveWordNotContaining_remove_abcd(void){
+
+ int toCompare;
+
+ Text *text = textNew("abcdefghi");
+
+ String *str = stringNew(text);
+
+ String *test = stringRemoveWordNotContaining(str,"ei");
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)378, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((5)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)379, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)380, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)381, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)382, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringRemoveWordNotContaining_remove_ww(void){
+
+ int toCompare;
+
+ Text *text = textNew("wwabcdefghi");
+
+ String *str = stringNew(text);
+
+ str->start++;
+
+ String *test = stringRemoveWordNotContaining(str,"ab");
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)392, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)393, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)394, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)395, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)396, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringRemoveWordNotContaining_remove_nothing(void){
+
+ int toCompare;
+
+ Text *text = textNew("abcdefghi");
+
+ String *str = stringNew(text);
+
+ String *test = stringRemoveWordNotContaining(str,"ab");
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)405, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)406, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)407, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)408, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)409, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringRemoveWordContaining_remove_nothing(void){
+
+ int toCompare;
+
+ Text *text = textNew("1234abcdefghi");
+
+ String *str = stringNew(text);
+
+ String *test = stringRemoveWordContaining(str,"ab");
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)418, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((13)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)419, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)420, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)421, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)422, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringRemoveWordContaining_remove_ab(void){
+
+ int toCompare;
+
+ Text *text = textNew("abcdefghi");
+
+ String *str = stringNew(text);
+
+ String *test = stringRemoveWordContaining(str,"ab");
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)431, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((7)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)432, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)433, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)434, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)435, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringRemoveWordContaining_remove_abc(void){
+
+ int toCompare;
+
+ Text *text = textNew("abcdefghi");
+
+ String *str = stringNew(text);
+
+ String *test = stringRemoveWordContaining(str,"aaaaaaacb");
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)444, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)445, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)446, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)447, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)448, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringIsEqual_should_return_equal(void){
+
+ int toCompare;
+
+ Text *text = textNew("abc");
+
+ String *str = stringNew(text);
+
+ Text *text1 = textNew("aabc");
+
+ String *str1 = stringNew(text1);
+
+ str1->start++;
+
+ str1->length--;
+
+
+
+ toCompare = stringIsEqual(str,str1);
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)462, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringIsEqual_should_return_not_equal(void){
+
+ int toCompare;
+
+ Text *text = textNew("aBc");
+
+ String *str = stringNew(text);
+
+ Text *text1 = textNew("aabc");
+
+ String *str1 = stringNew(text1);
+
+ str1->start++;
+
+ str1->length--;
+
+
+
+ toCompare = stringIsEqual(str,str1);
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)476, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringIsEqualCaseInsensitive_should_equal(void){
+
+ int toCompare;
+
+ Text *text = textNew("ChiCkenNuGGer");
+
+ String *str = stringNew(text);
+
+ Text *text1 = textNew("chickennugger");
+
+ String *str1 = stringNew(text1);
+
+
+
+ toCompare = stringIsEqualCaseInsensitive(str,str1);
+
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)487, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringIsEqualCaseInsensitive_should_equal_with_different_start(void){
+
+ int toCompare;
+
+ Text *text = textNew("ChiCkenNuGGer");
+
+ String *str = stringNew(text);
+
+ Text *text1 = textNew("hahachickennugger");
+
+ String *str1 = stringNew(text1);
+
+ str1->start+=4;
+
+ str1->length-=4;
+
+
+
+ toCompare = stringIsEqualCaseInsensitive(str,str1);
+
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)500, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringIsEqualCaseInsensitive_should_not_equal(void){
+
+ int toCompare;
+
+ Text *text = textNew("burger");
+
+ String *str = stringNew(text);
+
+ Text *text1 = textNew("king");
+
+ String *str1 = stringNew(text1);
+
+
+
+ toCompare = stringIsEqualCaseInsensitive(str,str1);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)511, UNITY_DISPLAY_STYLE_INT);
+
+}
