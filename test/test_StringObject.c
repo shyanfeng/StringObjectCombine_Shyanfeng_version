@@ -1,5 +1,6 @@
 #include "unity.h"
-#include "stringObject.h"
+#include "CustomTypeAssert.h"
+#include "StringObject.h"
 #include "String.h"
 
 typedef struct FakeText {
@@ -381,19 +382,47 @@ void test_stringRemoveWordNotContaining_remove_abcd(void){
 	TEST_ASSERT_EQUAL(4,test->length);
 	TEST_ASSERT_EQUAL(3,text->reference);
 }
+void test_stringRemoveWordNotContaining_remove_abcd_static(void){
+	int toCompare;
+	Text *text = t"abcdefghi";
+	String *str = stringNew(text);
+	String *test = stringRemoveWordNotContaining(str,"ei");
+	
+	TEST_ASSERT_EQUAL(4,str->start);
+	TEST_ASSERT_EQUAL(5,str->length);
+	TEST_ASSERT_EQUAL(0,test->start);
+	TEST_ASSERT_EQUAL(4,test->length);
+	TEST_ASSERT_EQUAL(0x80000000,text->reference);
+}
 
 void test_stringRemoveWordNotContaining_remove_ww(void){
 	int toCompare;
 	Text *text = textNew("wwabcdefghi");
 	String *str = stringNew(text);
 	str->start++;
+	str->length--;
 	String *test = stringRemoveWordNotContaining(str,"ab");
-	
+
 	TEST_ASSERT_EQUAL(2,str->start);
 	TEST_ASSERT_EQUAL(9,str->length);
 	TEST_ASSERT_EQUAL(1,test->start);
 	TEST_ASSERT_EQUAL(1,test->length);
 	TEST_ASSERT_EQUAL(3,text->reference);
+}
+
+void test_stringRemoveWordNotContaining_remove_ww_static(void){
+	int toCompare;
+	Text *text = t"wwabcdefghi";
+	String *str = stringNew(text);
+	str->start++;
+	str->length--;
+	String *test = stringRemoveWordNotContaining(str,"ab");
+
+	TEST_ASSERT_EQUAL(2,str->start);
+	TEST_ASSERT_EQUAL(9,str->length);
+	TEST_ASSERT_EQUAL(1,test->start);
+	TEST_ASSERT_EQUAL(1,test->length);
+	TEST_ASSERT_EQUAL(0x80000000,text->reference);
 }
 
 void test_stringRemoveWordNotContaining_remove_nothing(void){
@@ -404,19 +433,6 @@ void test_stringRemoveWordNotContaining_remove_nothing(void){
 	
 	TEST_ASSERT_EQUAL(0,str->start);
 	TEST_ASSERT_EQUAL(9,str->length);
-	TEST_ASSERT_EQUAL(0,test->start);
-	TEST_ASSERT_EQUAL(0,test->length);
-	TEST_ASSERT_EQUAL(3,text->reference);
-}
-
-void test_stringRemoveWordContaining_remove_nothing(void){
-	int toCompare;
-	Text *text = textNew("1234abcdefghi");
-	String *str = stringNew(text);
-	String *test = stringRemoveWordContaining(str,"ab");
-	
-	TEST_ASSERT_EQUAL(0,str->start);
-	TEST_ASSERT_EQUAL(13,str->length);
 	TEST_ASSERT_EQUAL(0,test->start);
 	TEST_ASSERT_EQUAL(0,test->length);
 	TEST_ASSERT_EQUAL(3,text->reference);
@@ -435,6 +451,19 @@ void test_stringRemoveWordContaining_remove_ab(void){
 	TEST_ASSERT_EQUAL(3,text->reference);
 }
 
+void test_stringRemoveWordContaining_remove_ab_static(void){
+	int toCompare;
+	Text *text = t"abcdefghi";
+	String *str = stringNew(text);
+	String *test = stringRemoveWordContaining(str,"ab");
+	
+	TEST_ASSERT_EQUAL(2,str->start);
+	TEST_ASSERT_EQUAL(7,str->length);
+	TEST_ASSERT_EQUAL(0,test->start);
+	TEST_ASSERT_EQUAL(2,test->length);
+	TEST_ASSERT_EQUAL(0x80000000,text->reference);
+}
+
 void test_stringRemoveWordContaining_remove_abc(void){
 	int toCompare;
 	Text *text = textNew("abcdefghi");
@@ -445,6 +474,32 @@ void test_stringRemoveWordContaining_remove_abc(void){
 	TEST_ASSERT_EQUAL(6,str->length);
 	TEST_ASSERT_EQUAL(0,test->start);
 	TEST_ASSERT_EQUAL(3,test->length);
+	TEST_ASSERT_EQUAL(3,text->reference);
+}
+
+void test_stringRemoveWordContaining_remove_abc_static(void){
+	int toCompare;
+	Text *text = t"abcdefghi";
+	String *str = stringNew(text);
+	String *test = stringRemoveWordContaining(str,"aaaaaaacb");
+	
+	TEST_ASSERT_EQUAL(3,str->start);
+	TEST_ASSERT_EQUAL(6,str->length);
+	TEST_ASSERT_EQUAL(0,test->start);
+	TEST_ASSERT_EQUAL(3,test->length);
+	TEST_ASSERT_EQUAL(0x80000000,text->reference);
+}
+
+void test_stringRemoveWordContaining_remove_nothing(void){
+	int toCompare;
+	Text *text = textNew("1234abcdefghi");
+	String *str = stringNew(text);
+	String *test = stringRemoveWordContaining(str,"ab");
+	
+	TEST_ASSERT_EQUAL(0,str->start);
+	TEST_ASSERT_EQUAL(13,str->length);
+	TEST_ASSERT_EQUAL(0,test->start);
+	TEST_ASSERT_EQUAL(0,test->length);
 	TEST_ASSERT_EQUAL(3,text->reference);
 }
 
@@ -462,11 +517,39 @@ void test_stringIsEqual_should_return_equal(void){
 	TEST_ASSERT_EQUAL(1,toCompare);
 }
 
+void test_stringIsEqual_should_return_equal_static(void){
+	int toCompare;
+	Text *text = t"abc";
+	String *str = stringNew(text);
+	Text *text1 = t"aabc";
+	String *str1 = stringNew(text1);
+	str1->start++;
+	str1->length--;
+	
+	toCompare = stringIsEqual(str,str1);
+	
+	TEST_ASSERT_EQUAL(1,toCompare);
+}
+
 void test_stringIsEqual_should_return_not_equal(void){
 	int toCompare;
 	Text *text = textNew("aBc");
 	String *str = stringNew(text);
 	Text *text1 = textNew("aabc");
+	String *str1 = stringNew(text1);
+	str1->start++;
+	str1->length--;
+	
+	toCompare = stringIsEqual(str,str1);
+	
+	TEST_ASSERT_EQUAL(0,toCompare);
+}
+
+void test_stringIsEqual_should_return_not_equal_static(void){
+	int toCompare;
+	Text *text = t"aBc";
+	String *str = stringNew(text);
+	Text *text1 = t"aabc";
 	String *str1 = stringNew(text1);
 	str1->start++;
 	str1->length--;
@@ -510,4 +593,57 @@ void test_stringIsEqualCaseInsensitive_should_not_equal(void){
 	toCompare = stringIsEqualCaseInsensitive(str,str1);
 	TEST_ASSERT_EQUAL(0,toCompare);
 }
+
+void test_stringIsEqualCaseInsensitive_should_equal_static(){
+
+	Text *name1 = t"pineApPle";
+	Text *name2 = t"aPPlE";
+	String *string1 = stringNew(name1);
+	string1->start = 4;
+	string1->length = 5;
+	String *string2 = stringNew(name2); 
+	
+	stringIsEqualCaseInsensitive(string1,string2);
+	TEST_ASSERT_EQUAL(1,stringIsEqualCaseInsensitive(string1,string2));
+}
+
+void test_extra_to_solve_problem_1(void){
+	
+	Text *name = t"Bulldog";
+	String *string1 = stringNew(name);
+	String *string2 = stringRemoveWordNotContaining(string1, "gd");
+	
+	TEST_ASSERT_EQUAL_String("dog",string1);
+	TEST_ASSERT_EQUAL_String("Bull",string2);
+}
+
+void test_extra_to_solve_problem_2(){
+
+	Text *name = t"BaskinRobbin";
+	String *string1 = stringNew(name);
+	string1->start++;
+	string1->length--;
+	String *string2 = stringRemoveWordNotContaining(string1, "onb");
+	
+	TEST_ASSERT_EQUAL_String("nRobbin",string1);
+	TEST_ASSERT_EQUAL_String("aski",string2);
+}
+
+void test_extra_to_solve_problem_3(){
+
+	Text *name1 = textNew("pineApPle");
+	Text *name2 = textNew("aPPlE");
+	String *string1 = stringNew(name1);
+	string1->start = 4;
+	string1->length = 5;
+	String *string2 = stringNew(name2); 
+	
+	TEST_ASSERT_EQUAL(1,stringIsEqualCaseInsensitive(string1,string2));
+	TEST_ASSERT_EQUAL(1,stringIsEqualCaseInsensitive(string2,string1));
+	stringDel(string1);
+	stringDel(string2); //unable to test assert, will cause bad memory access
+}
+
+
+
 

@@ -1,4 +1,5 @@
 ---
+- CustomTypeAssert.h
 - String.h
-- stringObject.h
+- StringObject.h
 - unity.h

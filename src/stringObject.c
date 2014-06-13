@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include "CustomTypeAssert.h"
 #include "String.h"
-#include "stringObject.h"
+#include "StringObject.h"
 #include "malloc.h"
 
 
@@ -177,21 +178,31 @@ int stringLength(String *str){
 }
 
 String *stringRemoveWordNotContaining(String *str,char delimites[]){
-	int i;
-	String *strReturn = stringNew(str->text); 
-	strReturn->start = str->start;
+	int i,j,count,delimitesLength;
+	String *strReturn = stringNew(str->text);
 	
-	for( i = str->start;i < str->length && delimites[0]!=0;i++){
-		if(str->text->string[i] != delimites[0]){
+	delimitesLength = strlen(delimites);
+	strReturn->start = str->start;
+	strReturn->length = 0;
+	
+	for(j=str->start;j<str->length;j++){
+		for(i=0,count=0;i<delimitesLength;i++){
+			if(str->text->string[j] == delimites[i]){
+				break;
+			}
+			else{
+				count++;
+			}
+		}
+		if(count>=delimitesLength){
 			str->start++;
+			str->length--;
+			strReturn->length++;
 		}
-		else{
-			strReturn->length = i - strReturn->start;
-			str->length -= (i);
+		else
 			break;
-		}
 	}
-	return  strReturn;
+	return strReturn;
 }
 
 String *stringRemoveWordContaining(String *str, char containSet[]){
@@ -199,17 +210,17 @@ String *stringRemoveWordContaining(String *str, char containSet[]){
 	String *strReturn = stringNew(str->text);
 	containLength = strlen(containSet);
 	strReturn->start = str->start;
+	strReturn->length = 0;
 	
 	for(j=str->start;j<str->length;j++){
 		for(i=0,count=0;i<containLength;i++){
 			if(str->text->string[j] == containSet[i]){
 				str->start++;
 				str->length--;
-				strReturn->length = j - strReturn->start;
+				strReturn->length++;
 				break;
 			}
 			else{
-				strReturn->length = j - strReturn->start;
 				count++;
 			}
 		}
@@ -256,12 +267,9 @@ int stringIsEqualCaseInsensitive(String *str1, String *str2){
 	actualLength = strlen(actualString);
 	actualLength2 = strlen(actualString2);
 	
-	actualString = toLowerCase(actualString,actualLength);
-	actualString2 = toLowerCase(actualString2,actualLength2);
-	
 	if(actualLength == actualLength2){
 		for(i=0;i<actualLength;i++){
-			if(actualString[i] != actualString2[i])
+			if(tolower(actualString[i]) != tolower(actualString2[i]))
 				return 0;
 		}
 		return 1;
@@ -269,14 +277,6 @@ int stringIsEqualCaseInsensitive(String *str1, String *str2){
 	else
 		return 0;
 
-}
-
-char *toLowerCase(char string[],int length){
-	int i;
-	for(i=0;i<length;i++){
-		string[i] = tolower(string[i]);
-	}
-	return string;
 }
 
 /*
