@@ -3,161 +3,164 @@
   :path: test
   :file: test_StringObject.c
 :successes:
-- :test: test_textNew_should_create_dynamic_text_properly
-  :line: 86
-  :message: ''
-- :test: test_textNew_should_create_static_text_properly
-  :line: 94
-  :message: ''
-- :test: test_textAssign_should_increase_reference
-  :line: 102
-  :message: ''
-- :test: test_textAssign_should_not_increase_reference
-  :line: 112
-  :message: ''
-- :test: test_textDel_should_delete_dynamic_text
-  :line: 122
-  :message: ''
-- :test: test_textDel_should_not_delete_static_text
-  :line: 130
-  :message: ''
-- :test: test_textDel_should_not_delete_when_reference_not_0
-  :line: 139
-  :message: ''
-- :test: test_textDel_should_not_delete_and_reduce_reference
-  :line: 150
-  :message: ''
 - :test: test_stringNew_should_create_string_with_dynamic_text
-  :line: 161
+  :line: 88
   :message: ''
 - :test: test_stringNew_should_create_string_with_static_text
-  :line: 174
+  :line: 101
   :message: ''
 - :test: test_stringAssign_should_increase_reference
-  :line: 186
+  :line: 113
   :message: ''
 - :test: test_stringDel_should_delete_and_reduce_text_reference
-  :line: 195
+  :line: 122
   :message: ''
 - :test: test_stringDel_should_delete_and_not_reduce_text_reference
-  :line: 206
+  :line: 133
   :message: ''
 - :test: test_stringSkip_should_skip
-  :line: 217
+  :line: 144
   :message: ''
 - :test: test_stringSkip_should_overload_and_stop_at_Null
-  :line: 225
+  :line: 152
   :message: ''
 - :test: test_stringTrimLeft
-  :line: 233
+  :line: 160
   :message: ''
 - :test: test_stringTrimLeft2
-  :line: 241
+  :line: 168
   :message: ''
 - :test: test_stringTrimRight
-  :line: 250
+  :line: 177
   :message: ''
 - :test: test_stringTrimRight2
-  :line: 258
+  :line: 185
   :message: ''
 - :test: test_stringTrim_should_trim_both_sides
-  :line: 266
+  :line: 193
   :message: ''
 - :test: test_stringTrim_should_trim_both_sides2
-  :line: 274
+  :line: 201
   :message: ''
 - :test: test_stringTrim_should_trim_both_sides3
-  :line: 282
+  :line: 209
   :message: ''
 - :test: test_all
-  :line: 290
+  :line: 217
   :message: ''
 - :test: test_stringRemoveChar_should_remove_w
-  :line: 311
+  :line: 238
   :message: ''
 - :test: test_stringRemoveChar_should_remove_spacing
-  :line: 322
+  :line: 249
   :message: ''
 - :test: test_stringRemoveChar_should_return_negative_one_after_deletion
-  :line: 333
+  :line: 260
   :message: ''
 - :test: test_stringRemoveChar_should_return_negative_one_with_NULL_input
-  :line: 344
+  :line: 271
   :message: ''
 - :test: test_stringLength_should_get_6
-  :line: 355
+  :line: 282
   :message: ''
 - :test: test_stringLength_should_get_16
-  :line: 364
+  :line: 291
   :message: ''
 - :test: test_stringRemoveWordNotContaining_remove_abcd
-  :line: 373
+  :line: 300
   :message: ''
 - :test: test_stringRemoveWordNotContaining_remove_abcd_static
-  :line: 385
+  :line: 312
   :message: ''
 - :test: test_stringRemoveWordNotContaining_remove_ww
-  :line: 398
+  :line: 325
   :message: ''
 - :test: test_stringRemoveWordNotContaining_remove_ww_static
-  :line: 413
+  :line: 340
   :message: ''
 - :test: test_stringRemoveWordNotContaining_remove_nothing
-  :line: 428
+  :line: 355
   :message: ''
 - :test: test_stringRemoveWordContaining_remove_ab
-  :line: 441
+  :line: 368
   :message: ''
 - :test: test_stringRemoveWordContaining_remove_ab_static
-  :line: 454
+  :line: 381
   :message: ''
 - :test: test_stringRemoveWordContaining_remove_abc
-  :line: 467
+  :line: 394
   :message: ''
 - :test: test_stringRemoveWordContaining_remove_abc_static
-  :line: 480
+  :line: 407
   :message: ''
 - :test: test_stringRemoveWordContaining_remove_nothing
-  :line: 493
+  :line: 420
   :message: ''
 - :test: test_stringIsEqual_should_return_equal
-  :line: 506
+  :line: 433
   :message: ''
 - :test: test_stringIsEqual_should_return_equal_static
-  :line: 520
+  :line: 447
   :message: ''
 - :test: test_stringIsEqual_should_return_not_equal
-  :line: 534
+  :line: 461
   :message: ''
 - :test: test_stringIsEqual_should_return_not_equal_static
-  :line: 548
+  :line: 475
   :message: ''
 - :test: test_stringIsEqualCaseInsensitive_should_equal
-  :line: 562
+  :line: 489
   :message: ''
 - :test: test_stringIsEqualCaseInsensitive_should_equal_with_different_start
-  :line: 573
+  :line: 500
   :message: ''
 - :test: test_stringIsEqualCaseInsensitive_should_not_equal
-  :line: 586
+  :line: 513
   :message: ''
 - :test: test_stringIsEqualCaseInsensitive_should_equal_static
-  :line: 597
+  :line: 524
   :message: ''
 - :test: test_extra_to_solve_problem_1
-  :line: 610
+  :line: 537
   :message: ''
 - :test: test_extra_to_solve_problem_2
-  :line: 620
+  :line: 547
   :message: ''
 - :test: test_extra_to_solve_problem_3
-  :line: 632
+  :line: 559
+  :message: ''
+- :test: test_stringCharAt_should_return_index
+  :line: 574
+  :message: ''
+- :test: test_stringCharAt_should_return_index_static
+  :line: 582
+  :message: ''
+- :test: test_stringCharAt_should_return_negative_1_over_string_length
+  :line: 590
+  :message: ''
+- :test: test_stringCharAt_should_return_negative_1_over_string_length_static
+  :line: 598
+  :message: ''
+- :test: test_stringCharAt_should_return_negative_1_negative_input
+  :line: 606
+  :message: ''
+- :test: test_stringCharAt_should_return_negative_1_negative_input_static
+  :line: 614
+  :message: ''
+- :test: test_stringIsCharAtInSet_should_return_1_contain_in_set
+  :line: 622
+  :message: ''
+- :test: test_stringIsCharAtInSet_should_return_0_error_input
+  :line: 630
+  :message: ''
+- :test: test_stringIsCharAtInSet_should_return_0_not_found_in_set
+  :line: 640
   :message: ''
 :failures: []
 :ignores: []
 :counts:
-  :total: 50
-  :passed: 50
+  :total: 51
+  :passed: 51
   :failed: 0
   :ignored: 0
 :stdout: []

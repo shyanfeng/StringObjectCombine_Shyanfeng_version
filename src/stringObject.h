@@ -2,13 +2,9 @@
 #define __STRING_OBJECT_H__
 
 #include "Types.h"
-#define t (Text *)"\x00\x00\x00\x80"
-#define isSpace(ch) (ch==' ' || ch=='\t')
+#include "Text.h"
 
-typedef struct Text{
-	uint32 reference;
-	char string[0];
-}Text;
+#define isSpace(ch) (ch==' ' || ch=='\t')
 
 typedef struct String{
 	uint32 reference;
@@ -18,10 +14,6 @@ typedef struct String{
 }String;
 
 //test prototype
-Text *textNew(char *CharStr);
-Text *textAssign(Text *text);
-Text *textDel(Text *text);
-
 String *stringNew(Text *text);
 String *stringAssign(String *string);
 String *stringDel(String *string);
@@ -38,6 +30,32 @@ String *stringRemoveWordContaining(String *str, char containSet[]);
 int stringIsEqual(String *str1, String *str2); //1 if same, 0 otherwise do no use string compare
 int stringIsEqualCaseInsensitive(String *str1, String *str2); //uses char tolower();
 
-char *toLowerCase(char string[],int length);
+/**
+* Return the character at the specified relative index of the String
+*
+* Input:
+* 	str				is the String object
+*	relativeIndex	is the relative index into the String.
+*					This value must be positive.
+*
+* Return the character at the relative index if exists.
+* Otherwise return -1. If relativeIndex < 0, -1 is returned as well.
+*/
+int stringCharAt(String *str, int relativeIndex);
+
+/**
+* Determine if the character specified by the relative index in the
+* String is in the given set of characters.
+*
+* Input:
+*	str				is the String object
+*	relativeIndex	is the relative index into the String
+*					This value must be positive
+*	set				is the set of characters delimited by NULL
+* 
+* Return 1 if the character that chosen is in the set list.
+* Return 0 otherwise
+*/
+int stringIsCharAtInSet(String *str, int relativeIndex, char set[]); //1 is true, 0 false
 	
 #endif // __STRING_OBJECT_H__

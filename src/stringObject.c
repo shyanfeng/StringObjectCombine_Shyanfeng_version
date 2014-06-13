@@ -4,15 +4,6 @@
 #include "StringObject.h"
 #include "malloc.h"
 
-
-void textDump(Text *text){
-	if(text==NULL){
-		printf("(NULL)");
-		return;
-	}
-	printf("text[0x%x];%s\n", text->reference, text->string);
-}
-
 void stringDump(String *string){
 	uint32 index = 0, len = 0;
 	char *fullString = "(NULL)";
@@ -44,35 +35,6 @@ void stringDump(String *string){
 			string->length, len, actualString);
 	return;
 
-}
-
-Text *textNew(char *charStr){
-	// Character string copy from charStr to text->string
-	Text *text = (Text *)malloc(strlen(charStr) + 4 + 1);
-	strcpy(text->string,charStr);
-	text->reference = 1;
-	return text;
-}
-
-Text *textAssign(Text *text){
-	if(text->reference < 0x80000000)
-		text->reference++;
-	return text;
-}
-
-Text *textDel(Text *text){
-	//check if text reference not equals to 0x80000000
-	//reduce text reference by one
-	//do normal delete
-	//else do nth
-	if(text->reference < 0x80000000 && text->reference > 0){
-		text->reference--;
-		if(text->reference == 0){
-			free(text);
-			return NULL;
-		}		
-	}
-	return text;
 }
 
 String *stringNew(Text *text){
@@ -277,6 +239,27 @@ int stringIsEqualCaseInsensitive(String *str1, String *str2){
 	else
 		return 0;
 
+}
+
+int stringCharAt(String *str, int relativeIndex){
+	if(relativeIndex >= 0 && relativeIndex < str->length)
+		return str->text->string[str->start+relativeIndex];
+	else
+		return -1;
+
+}
+
+int stringIsCharAtInSet(String *str, int relativeIndex, char set[]){
+	
+	int i, setLength = strlen(set);
+
+	if(relativeIndex >= 0 && relativeIndex < str->length){
+		for(i=0;i < setLength; i++){
+			if(str->text->string[str->start+relativeIndex] == set[i])
+				return 1;
+		}
+	}
+	return 0;
 }
 
 /*

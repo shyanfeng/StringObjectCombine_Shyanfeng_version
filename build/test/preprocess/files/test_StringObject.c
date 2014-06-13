@@ -1,4 +1,5 @@
 #include "unity.h"
+#include "Text.h"
 #include "StringObject.h"
 #include "String.h"
 #include "CustomTypeAssert.h"
@@ -18,156 +19,6 @@ void setUp(){}
 
 void tearDown(){}
 
-void test_textNew_should_create_dynamic_text_properly(void){
-
- int compare;
-
- Text *text = textNew("FooSatt");
-
- compare = strcmp(text->string,"FooSatt");
-
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((compare)), (((void *)0)), (_U_UINT)90, UNITY_DISPLAY_STYLE_INT);
-
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)91, UNITY_DISPLAY_STYLE_INT);
-
-}
-
-
-
-void test_textNew_should_create_static_text_properly(void){
-
- int compare;
-
- Text *text = (Text *)"\x00\x00\x00\x80""JoonPon";
-
- compare = strcmp(text->string,"JoonPon");
-
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((compare)), (((void *)0)), (_U_UINT)98, UNITY_DISPLAY_STYLE_INT);
-
- UnityAssertEqualNumber((_U_SINT)(_US32)((0x80000000)), (_U_SINT)(_US32)((text->reference)), (((void *)0)), (_U_UINT)99, UNITY_DISPLAY_STYLE_HEX32);
-
-}
-
-
-
-void test_textAssign_should_increase_reference(void){
-
- int compare;
-
- Text *text = textNew("LheeCiang");
-
- Text *text2 = textAssign(text);
-
-
-
- compare = strcmp(text->string,text2->string);
-
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)108, UNITY_DISPLAY_STYLE_INT);
-
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((compare)), (((void *)0)), (_U_UINT)109, UNITY_DISPLAY_STYLE_INT);
-
-}
-
-
-
-void test_textAssign_should_not_increase_reference(void){
-
- int compare;
-
- Text *text = (Text *)"\x00\x00\x00\x80""XingBuan";
-
- Text *text2 = textAssign(text);
-
-
-
- compare = strcmp(text->string,text2->string);
-
- UnityAssertEqualNumber((_U_SINT)(_US32)((0x80000000)), (_U_SINT)(_US32)((text->reference)), (((void *)0)), (_U_UINT)118, UNITY_DISPLAY_STYLE_HEX32);
-
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((compare)), (((void *)0)), (_U_UINT)119, UNITY_DISPLAY_STYLE_INT);
-
-}
-
-
-
-void test_textDel_should_delete_dynamic_text(void){
-
- Text *toCompare;
-
- Text *text = textNew("YhoonCung");
-
- toCompare = textDel(text);
-
-
-
- UnityAssertEqualNumber((_U_SINT)((((void *)0))), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)127, UNITY_DISPLAY_STYLE_INT);
-
-}
-
-
-
-void test_textDel_should_not_delete_static_text(void){
-
- Text *toCompare;
-
- Text *text = (Text *)"\x00\x00\x00\x80""WingJen";
-
- toCompare = textDel(text);
-
-
-
- UnityAssertEqualNumber((_U_SINT)((text)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)135, UNITY_DISPLAY_STYLE_INT);
-
- UnityAssertEqualNumber((_U_SINT)(_US32)((0x80000000)), (_U_SINT)(_US32)((toCompare->reference)), (((void *)0)), (_U_UINT)136, UNITY_DISPLAY_STYLE_HEX32);
-
-}
-
-
-
-void test_textDel_should_not_delete_when_reference_not_0(void){
-
- Text *toCompare;
-
- Text *text = textNew("FhyanSeng");
-
- Text *text1 = textAssign(text);
-
- toCompare = textDel(text);
-
-
-
- UnityAssertEqualNumber((_U_SINT)((text)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)145, UNITY_DISPLAY_STYLE_INT);
-
- UnityAssertEqualNumber((_U_SINT)((text1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)146, UNITY_DISPLAY_STYLE_INT);
-
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((toCompare->reference)), (((void *)0)), (_U_UINT)147, UNITY_DISPLAY_STYLE_INT);
-
-}
-
-
-
-void test_textDel_should_not_delete_and_reduce_reference(void){
-
- Text *toCompare;
-
- Text *text = (Text *)"\x00\x00\x00\x80""FhyanSeng";
-
- Text *text1 = textAssign(text);
-
- toCompare = textDel(text);
-
-
-
- UnityAssertEqualNumber((_U_SINT)((text)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)156, UNITY_DISPLAY_STYLE_INT);
-
- UnityAssertEqualNumber((_U_SINT)((text1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)157, UNITY_DISPLAY_STYLE_INT);
-
- UnityAssertEqualNumber((_U_SINT)((0x80000000)), (_U_SINT)((toCompare->reference)), (((void *)0)), (_U_UINT)158, UNITY_DISPLAY_STYLE_INT);
-
-}
-
-
-
 void test_stringNew_should_create_string_with_dynamic_text(void){
 
  int toCompare;
@@ -180,15 +31,15 @@ void test_stringNew_should_create_string_with_dynamic_text(void){
 
  toCompare = strcmp(str->text->string,text->string);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)167, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)94, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((str->reference)), (((void *)0)), (_U_UINT)168, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((str->reference)), (((void *)0)), (_U_UINT)95, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)169, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)96, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)170, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)97, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->text->reference)), (((void *)0)), (_U_UINT)171, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->text->reference)), (((void *)0)), (_U_UINT)98, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -204,15 +55,15 @@ void test_stringNew_should_create_string_with_static_text(void){
 
  toCompare = strcmp(str->text->string,text->string);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)179, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)106, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((str->reference)), (((void *)0)), (_U_UINT)180, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((str->reference)), (((void *)0)), (_U_UINT)107, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)181, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)108, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((7)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)182, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((7)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)109, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)(_US32)((0x80000000)), (_U_SINT)(_US32)((str->text->reference)), (((void *)0)), (_U_UINT)183, UNITY_DISPLAY_STYLE_HEX32);
+ UnityAssertEqualNumber((_U_SINT)(_US32)((0x80000000)), (_U_SINT)(_US32)((str->text->reference)), (((void *)0)), (_U_UINT)110, UNITY_DISPLAY_STYLE_HEX32);
 
 }
 
@@ -228,9 +79,9 @@ void test_stringAssign_should_increase_reference(void){
 
  String *str2 = stringAssign(str);
 
- UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((str->reference)), (((void *)0)), (_U_UINT)191, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((str->reference)), (((void *)0)), (_U_UINT)118, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->text->reference)), (((void *)0)), (_U_UINT)192, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->text->reference)), (((void *)0)), (_U_UINT)119, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -250,9 +101,9 @@ void test_stringDel_should_delete_and_reduce_text_reference(void){
 
  toCompare = stringDel(str);
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((toCompare->reference)), (((void *)0)), (_U_UINT)202, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((toCompare->reference)), (((void *)0)), (_U_UINT)129, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->text->reference)), (((void *)0)), (_U_UINT)203, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->text->reference)), (((void *)0)), (_U_UINT)130, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -272,9 +123,9 @@ void test_stringDel_should_delete_and_not_reduce_text_reference(void){
 
  toCompare = stringDel(str);
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((toCompare->reference)), (((void *)0)), (_U_UINT)213, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((toCompare->reference)), (((void *)0)), (_U_UINT)140, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)(_US32)((0x80000000)), (_U_SINT)(_US32)((str->text->reference)), (((void *)0)), (_U_UINT)214, UNITY_DISPLAY_STYLE_HEX32);
+ UnityAssertEqualNumber((_U_SINT)(_US32)((0x80000000)), (_U_SINT)(_US32)((str->text->reference)), (((void *)0)), (_U_UINT)141, UNITY_DISPLAY_STYLE_HEX32);
 
 }
 
@@ -288,9 +139,9 @@ void test_stringSkip_should_skip(void){
 
  stringSkip(str,2);
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)221, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)148, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)222, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)149, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -306,9 +157,9 @@ void test_stringSkip_should_overload_and_stop_at_Null(void){
 
  stringSkip(str,100);
 
- UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)230, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)157, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)231, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)158, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -320,9 +171,9 @@ void test_stringTrimLeft(void){
 
  stringTrimLeft(str);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)237, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)164, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)238, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)165, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -338,9 +189,9 @@ void test_stringTrimLeft2(void){
 
  stringTrimLeft(str);
 
- UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)246, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)173, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((8)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)247, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((8)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)174, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -354,9 +205,9 @@ void test_stringTrimRight(void){
 
  stringTrimRight(str);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)254, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)181, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((10)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)255, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((10)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)182, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -370,9 +221,9 @@ void test_stringTrimRight2(void){
 
  stringTrimRight(str);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)262, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)189, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)263, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)190, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -386,9 +237,9 @@ void test_stringTrim_should_trim_both_sides(void){
 
  stringTrim(str);
 
- UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)270, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)197, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)271, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)198, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -402,9 +253,9 @@ void test_stringTrim_should_trim_both_sides2(void){
 
  stringTrim(str);
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)278, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)205, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)279, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)206, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -418,9 +269,9 @@ void test_stringTrim_should_trim_both_sides3(void){
 
  stringTrim(str);
 
- UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)286, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)213, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((8)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)287, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((8)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)214, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -438,15 +289,15 @@ void test_all(void){
 
  String *str2 = stringAssign(str);
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)296, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)223, UNITY_DISPLAY_STYLE_INT);
 
 
 
  toCompare = stringDel(str);
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)299, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)226, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((toCompare->reference)), (((void *)0)), (_U_UINT)300, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((toCompare->reference)), (((void *)0)), (_U_UINT)227, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -454,15 +305,15 @@ void test_all(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)304, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)231, UNITY_DISPLAY_STYLE_INT);
 
 
 
  stringTrim(str);
 
- UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)307, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)234, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((5)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)308, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((5)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)235, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -480,11 +331,11 @@ void test_stringRemoveChar_should_remove_w(void){
 
  toCompare = stringRemoveChar(str);
 
- UnityAssertEqualNumber((_U_SINT)(('w')), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)317, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)(('w')), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)244, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((5)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)318, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((5)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)245, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)319, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)246, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -502,11 +353,11 @@ void test_stringRemoveChar_should_remove_spacing(void){
 
  toCompare = stringRemoveChar(str);
 
- UnityAssertEqualNumber((_U_SINT)((' ')), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)328, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((' ')), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)255, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)329, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)256, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)330, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)257, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -524,11 +375,11 @@ void test_stringRemoveChar_should_return_negative_one_after_deletion(void){
 
  toCompare = stringRemoveChar(str);
 
- UnityAssertEqualNumber((_U_SINT)((-1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)339, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((-1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)266, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)340, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)267, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)341, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)268, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -546,11 +397,11 @@ void test_stringRemoveChar_should_return_negative_one_with_NULL_input(void){
 
  toCompare = stringRemoveChar(str);
 
- UnityAssertEqualNumber((_U_SINT)((-1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)350, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((-1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)277, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)351, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)278, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)352, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)279, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -568,7 +419,7 @@ void test_stringLength_should_get_6(void){
 
  toCompareLength = stringLength(str);
 
- UnityAssertEqualNumber((_U_SINT)((7)), (_U_SINT)((toCompareLength)), (((void *)0)), (_U_UINT)361, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((7)), (_U_SINT)((toCompareLength)), (((void *)0)), (_U_UINT)288, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -586,7 +437,7 @@ void test_stringLength_should_get_16(void){
 
  toCompareLength = stringLength(str);
 
- UnityAssertEqualNumber((_U_SINT)((16)), (_U_SINT)((toCompareLength)), (((void *)0)), (_U_UINT)370, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((16)), (_U_SINT)((toCompareLength)), (((void *)0)), (_U_UINT)297, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -604,15 +455,15 @@ void test_stringRemoveWordNotContaining_remove_abcd(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)379, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)306, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((5)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)380, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((5)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)307, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)381, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)308, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)382, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)309, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)383, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)310, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -628,15 +479,15 @@ void test_stringRemoveWordNotContaining_remove_abcd_static(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)391, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)318, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((5)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)392, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((5)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)319, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)393, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)320, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)394, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((4)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)321, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0x80000000)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)395, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0x80000000)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)322, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -658,15 +509,15 @@ void test_stringRemoveWordNotContaining_remove_ww(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)406, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)333, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)407, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)334, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)408, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)335, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)409, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)336, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)410, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)337, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -688,15 +539,15 @@ void test_stringRemoveWordNotContaining_remove_ww_static(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)421, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)348, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)422, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)349, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)423, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)350, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)424, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)351, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0x80000000)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)425, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0x80000000)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)352, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -714,15 +565,15 @@ void test_stringRemoveWordNotContaining_remove_nothing(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)434, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)361, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)435, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((9)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)362, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)436, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)363, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)437, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)364, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)438, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)365, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -740,15 +591,15 @@ void test_stringRemoveWordContaining_remove_ab(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)447, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)374, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((7)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)448, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((7)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)375, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)449, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)376, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)450, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)377, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)451, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)378, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -766,15 +617,15 @@ void test_stringRemoveWordContaining_remove_ab_static(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)460, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)387, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((7)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)461, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((7)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)388, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)462, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)389, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)463, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((2)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)390, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0x80000000)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)464, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0x80000000)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)391, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -792,15 +643,15 @@ void test_stringRemoveWordContaining_remove_abc(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)473, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)400, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)474, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)401, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)475, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)402, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)476, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)403, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)477, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)404, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -818,15 +669,15 @@ void test_stringRemoveWordContaining_remove_abc_static(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)486, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)413, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)487, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((6)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)414, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)488, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)415, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)489, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)416, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0x80000000)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)490, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0x80000000)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)417, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -844,15 +695,15 @@ void test_stringRemoveWordContaining_remove_nothing(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)499, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((str->start)), (((void *)0)), (_U_UINT)426, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((13)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)500, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((13)), (_U_SINT)((str->length)), (((void *)0)), (_U_UINT)427, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)501, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->start)), (((void *)0)), (_U_UINT)428, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)502, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test->length)), (((void *)0)), (_U_UINT)429, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)503, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((text->reference)), (((void *)0)), (_U_UINT)430, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -880,7 +731,7 @@ void test_stringIsEqual_should_return_equal(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)517, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)444, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -908,7 +759,7 @@ void test_stringIsEqual_should_return_equal_static(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)531, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)458, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -936,7 +787,7 @@ void test_stringIsEqual_should_return_not_equal(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)545, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)472, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -964,7 +815,7 @@ void test_stringIsEqual_should_return_not_equal_static(void){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)559, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)486, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -986,7 +837,7 @@ void test_stringIsEqualCaseInsensitive_should_equal(void){
 
  toCompare = stringIsEqualCaseInsensitive(str,str1);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)570, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)497, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -1012,7 +863,7 @@ void test_stringIsEqualCaseInsensitive_should_equal_with_different_start(void){
 
  toCompare = stringIsEqualCaseInsensitive(str,str1);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)583, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)510, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -1034,7 +885,7 @@ void test_stringIsEqualCaseInsensitive_should_not_equal(void){
 
  toCompare = stringIsEqualCaseInsensitive(str,str1);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)594, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)521, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -1060,7 +911,7 @@ void test_stringIsEqualCaseInsensitive_should_equal_static(){
 
  stringIsEqualCaseInsensitive(string1,string2);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((stringIsEqualCaseInsensitive(string1,string2))), (((void *)0)), (_U_UINT)607, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((stringIsEqualCaseInsensitive(string1,string2))), (((void *)0)), (_U_UINT)534, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -1078,9 +929,9 @@ void test_extra_to_solve_problem_1(void){
 
 
 
- assertStringEqual(("dog"), (string1), 616, ((void *)0));
+ assertStringEqual(("dog"), (string1), 543, ((void *)0));
 
- assertStringEqual(("Bull"), (string2), 617, ((void *)0));
+ assertStringEqual(("Bull"), (string2), 544, ((void *)0));
 
 }
 
@@ -1102,9 +953,9 @@ void test_extra_to_solve_problem_2(){
 
 
 
- assertStringEqual(("nRobbin"), (string1), 628, ((void *)0));
+ assertStringEqual(("nRobbin"), (string1), 555, ((void *)0));
 
- assertStringEqual(("aski"), (string2), 629, ((void *)0));
+ assertStringEqual(("aski"), (string2), 556, ((void *)0));
 
 }
 
@@ -1128,12 +979,164 @@ void test_extra_to_solve_problem_3(){
 
 
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((stringIsEqualCaseInsensitive(string1,string2))), (((void *)0)), (_U_UINT)641, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((stringIsEqualCaseInsensitive(string1,string2))), (((void *)0)), (_U_UINT)568, UNITY_DISPLAY_STYLE_INT);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((stringIsEqualCaseInsensitive(string2,string1))), (((void *)0)), (_U_UINT)642, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((stringIsEqualCaseInsensitive(string2,string1))), (((void *)0)), (_U_UINT)569, UNITY_DISPLAY_STYLE_INT);
 
  stringDel(string1);
 
  stringDel(string2);
+
+}
+
+
+
+void test_stringCharAt_should_return_index(void){
+
+
+
+ Text *text = textNew("PoonJiyeon");
+
+ String *string = stringNew(text);
+
+
+
+ UnityAssertEqualNumber((_U_SINT)(('J')), (_U_SINT)((stringCharAt(string,4))), (((void *)0)), (_U_UINT)579, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringCharAt_should_return_index_static(void){
+
+
+
+ Text *text = (Text *)"\x00\x00\x00\x80""PoonJiyeon";
+
+ String *string = stringNew(text);
+
+
+
+ UnityAssertEqualNumber((_U_SINT)(('J')), (_U_SINT)((stringCharAt(string,4))), (((void *)0)), (_U_UINT)587, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringCharAt_should_return_negative_1_over_string_length(void){
+
+
+
+ Text *text = textNew("TanSooFatt");
+
+ String *string = stringNew(text);
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((-1)), (_U_SINT)((stringCharAt(string,15))), (((void *)0)), (_U_UINT)595, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringCharAt_should_return_negative_1_over_string_length_static(void){
+
+
+
+ Text *text = (Text *)"\x00\x00\x00\x80""TanSooFatt";
+
+ String *string = stringNew(text);
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((-1)), (_U_SINT)((stringCharAt(string,15))), (((void *)0)), (_U_UINT)603, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringCharAt_should_return_negative_1_negative_input(void){
+
+
+
+ Text *text = textNew("ChiewWingGum");
+
+ String *string = stringNew(text);
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((-1)), (_U_SINT)((stringCharAt(string,-1))), (((void *)0)), (_U_UINT)611, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringCharAt_should_return_negative_1_negative_input_static(void){
+
+
+
+ Text *text = (Text *)"\x00\x00\x00\x80""ChiewWingGum";
+
+ String *string = stringNew(text);
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((-1)), (_U_SINT)((stringCharAt(string,-1))), (((void *)0)), (_U_UINT)619, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringIsCharAtInSet_should_return_1_contain_in_set(void){
+
+
+
+ Text *text = textNew("StoneSir");
+
+ String *string = stringNew(text);
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((stringIsCharAtInSet(string,2,"abcdefghijklmno"))), (((void *)0)), (_U_UINT)627, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringIsCharAtInSet_should_return_0_error_input(void){
+
+
+
+ Text *text = textNew("StoneSir");
+
+ String *string = stringNew(text);
+
+ string->start++;
+
+ string->length--;
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((stringIsCharAtInSet(string,-1,"abcdefghijklmno"))), (((void *)0)), (_U_UINT)637, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringIsCharAtInSet_should_return_0_not_found_in_set(void){
+
+
+
+ Text *text = textNew("StoneSir");
+
+ String *string = stringNew(text);
+
+ string->start++;
+
+ string->length--;
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((stringIsCharAtInSet(string,0,"abcdefghijklmno"))), (((void *)0)), (_U_UINT)647, UNITY_DISPLAY_STYLE_INT);
 
 }
