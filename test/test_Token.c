@@ -63,3 +63,48 @@ void test_operatorNewBySymbol_should_create2(){
 	TEST_ASSERT_EQUAL(BITWISE_NOT_OP,operator->info->id);
 	TEST_ASSERT_EQUAL(0,toCompare);
 }
+
+void test_operatorNewBySymbol_should_retun_NULL(){
+	int toCompare;
+	Operator *operator = operatorNewBySymbol("?");
+	
+	TEST_ASSERT_EQUAL(NULL,operator);
+}
+
+void test_operatorNewByID_should_create(){
+	int toCompare;
+	Operator *operator = operatorNewByID(BITWISE_NOT_OP);
+	
+	toCompare = strcmp(operator->info->symbol,"~");
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN,operator->type);
+	TEST_ASSERT_EQUAL(150,operator->info->precedence);
+	TEST_ASSERT_EQUAL(BITWISE_NOT_OP,operator->info->id);
+	TEST_ASSERT_EQUAL(0,toCompare);
+}
+
+void test_operatorNewByID_should_create2(){
+	int toCompare;
+	Operator *operator = operatorNewByID(LOGICAL_AND_OP);
+	
+	toCompare = strcmp(operator->info->symbol,"&&");
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN,operator->type);
+	TEST_ASSERT_EQUAL(30,operator->info->precedence);
+	TEST_ASSERT_EQUAL(LOGICAL_AND_OP,operator->info->id);
+	TEST_ASSERT_EQUAL(0,toCompare);
+}
+
+void test_operatorNewByID_should_retun_NULL(){
+	int toCompare;
+	Operator *operator = operatorNewByID(123);
+	
+	TEST_ASSERT_EQUAL(NULL,operator);
+}
+
+void test_getToken(void){
+	int test;
+	Text *text = textNew("323243451 ert");
+	String *string = stringNew(text);
+	
+	getToken(string);
+
+}

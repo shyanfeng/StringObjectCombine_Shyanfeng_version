@@ -121,3 +121,93 @@ void test_operatorNewBySymbol_should_create2(){
  UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)64, UNITY_DISPLAY_STYLE_INT);
 
 }
+
+
+
+void test_operatorNewBySymbol_should_retun_NULL(){
+
+ int toCompare;
+
+ Operator *operator = operatorNewBySymbol("?");
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((((void *)0))), (_U_SINT)((operator)), (((void *)0)), (_U_UINT)71, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_operatorNewByID_should_create(){
+
+ int toCompare;
+
+ Operator *operator = operatorNewByID(BITWISE_NOT_OP);
+
+
+
+ toCompare = strcmp(operator->info->symbol,"~");
+
+ UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((operator->type)), (((void *)0)), (_U_UINT)79, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((150)), (_U_SINT)((operator->info->precedence)), (((void *)0)), (_U_UINT)80, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((BITWISE_NOT_OP)), (_U_SINT)((operator->info->id)), (((void *)0)), (_U_UINT)81, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)82, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_operatorNewByID_should_create2(){
+
+ int toCompare;
+
+ Operator *operator = operatorNewByID(LOGICAL_AND_OP);
+
+
+
+ toCompare = strcmp(operator->info->symbol,"&&");
+
+ UnityAssertEqualNumber((_U_SINT)((OPERATOR_TOKEN)), (_U_SINT)((operator->type)), (((void *)0)), (_U_UINT)90, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((30)), (_U_SINT)((operator->info->precedence)), (((void *)0)), (_U_UINT)91, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((LOGICAL_AND_OP)), (_U_SINT)((operator->info->id)), (((void *)0)), (_U_UINT)92, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)93, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_operatorNewByID_should_retun_NULL(){
+
+ int toCompare;
+
+ Operator *operator = operatorNewByID(123);
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((((void *)0))), (_U_SINT)((operator)), (((void *)0)), (_U_UINT)100, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_getToken(void){
+
+ int test;
+
+ Text *text = textNew("323243451 ert");
+
+ String *string = stringNew(text);
+
+
+
+ getToken(string);
+
+
+
+}

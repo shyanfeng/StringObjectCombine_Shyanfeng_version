@@ -35,7 +35,7 @@ OperatorInfo alternativeOperatorTable[] = {
  *   value  is the value to initialized with
  */
 Number *numberNew(int value) {
-	Number *number = malloc(sizeof(value));
+	Number *number = malloc(sizeof(Number));
 	number->value = value;
 	number->type = NUMBER_TOKEN;
 	return number;
@@ -50,7 +50,7 @@ Number *numberNew(int value) {
  */
 Operator *operatorNewBySymbol(char *symbol) {
 	int i;
-	Operator *operator = malloc(sizeof(symbol));
+	Operator *operator = malloc(sizeof(Operator));
 	operator->type = OPERATOR_TOKEN;
 	
 	for(i=0;i < MAIN_OPERATOR_TABLE_SIZE; i++){
@@ -70,7 +70,17 @@ Operator *operatorNewBySymbol(char *symbol) {
  *          and CLOSING_BRACKET_OP.
  */
 Operator *operatorNewByID(OperatorID id) {
-  return NULL;
+	int i;
+	Operator *operator = malloc(sizeof(Operator));
+	operator->type = OPERATOR_TOKEN;
+	
+	for(i=0;i < MAIN_OPERATOR_TABLE_SIZE; i++){
+		if(mainOperatorTable[i].id == id){
+			operator->info = &mainOperatorTable[i];
+			return operator;
+		}
+	}
+	return NULL;
 }
 
 /**
@@ -81,7 +91,7 @@ Operator *operatorNewByID(OperatorID id) {
  *   name is the name of the identifier.
  */
 Identifier *identifierNew(Text *name) {
-  Identifier *identifier = malloc(sizeof(name));
+  Identifier *identifier = malloc(sizeof(Identifier));
   identifier->name = name;
   identifier->type = IDENTIFIER_TOKEN;
   return identifier;
@@ -98,5 +108,23 @@ Identifier *identifierNew(Text *name) {
  *    Number, Operator, and Identifier tokens
  */
 Token *getToken(String *str) {
+	//1 trim left
+	//2 check first character
+	//	a	-if a number then extract the number string
+	//		-convert into integer
+	//		-create number token
+	//	b	-if alphabetSet then extract the identifier
+	//		-create identifier token
+	//	c	-if operator set then extract operator symbol
+	//		-create operator token
+	
+	String *strReturn = stringNew(str->text);
+	stringTrimLeft(str);
+	stringDump(str);
+	
+	if(stringIsCharAtInSet(str,str->start,numberSet))
+		strReturn = stringRemoveWordContaining(str,numberSet);
+		stringDump(strReturn);
+		stringDump(str);
   return NULL;
 }

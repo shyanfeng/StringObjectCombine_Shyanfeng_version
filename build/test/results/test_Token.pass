@@ -21,11 +21,29 @@
 - :test: test_operatorNewBySymbol_should_create2
   :line: 56
   :message: ''
+- :test: test_operatorNewBySymbol_should_retun_NULL
+  :line: 67
+  :message: ''
+- :test: test_operatorNewByID_should_create
+  :line: 74
+  :message: ''
+- :test: test_operatorNewByID_should_create2
+  :line: 85
+  :message: ''
+- :test: test_operatorNewByID_should_retun_NULL
+  :line: 96
+  :message: ''
+- :test: test_getToken
+  :line: 103
+  :message: ''
 :failures: []
 :ignores: []
 :counts:
-  :total: 6
-  :passed: 6
+  :total: 11
+  :passed: 11
   :failed: 0
   :ignored: 0
-:stdout: []
+:stdout:
+- '[1] f_str[:3]:323243451 ert, start:0, len:13, str:323243451 ert'
+- '[1] f_str[:4]:323243451 ert, start:0, len:9, str:323243451'
+- '[1] f_str[:4]:323243451 ert, start:9, len:4, str: ert'

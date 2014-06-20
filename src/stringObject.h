@@ -14,6 +14,10 @@ typedef struct String{
 }String;
 
 //test prototype
+int stringToInteger(String *str);
+char *stringSubstringInChar(String *str, int relativePosition, int length);
+Text *stringSubstringInText(String *str, int relativePosition, int length);
+
 String *stringNew(Text *text);
 String *stringAssign(String *string);
 String *stringDel(String *string);

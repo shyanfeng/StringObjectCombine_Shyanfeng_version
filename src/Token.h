@@ -4,6 +4,7 @@
 #include "Text.h"
 #include "StringObject.h"
 
+//Throw(ERR_NUMBER_NOT_WELL_FORMED);
 typedef enum {
   NULL_TOKEN,
   NUMBER_TOKEN,
@@ -78,5 +79,7 @@ Operator *operatorNewBySymbol(char *symbol);//3rd
 Operator *operatorNewByID(OperatorID id);
 Identifier *identifierNew(Text *name);//2nd
 Token *getToken(String *str);
+
+
 
 #endif // Token_H

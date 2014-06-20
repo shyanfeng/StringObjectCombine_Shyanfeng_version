@@ -1,8 +1,10 @@
 #include <stdio.h>
-#include "CustomTypeAssert.h"
+#include <stdlib.h>
 #include "String.h"
+#include "CustomTypeAssert.h"
 #include "StringObject.h"
 #include "malloc.h"
+#include "CharSet.h"
 
 void stringDump(String *string){
 	uint32 index = 0, len = 0;
@@ -140,14 +142,15 @@ int stringLength(String *str){
 }
 
 String *stringRemoveWordNotContaining(String *str,char delimites[]){
-	int i,j,count,delimitesLength;
+	int i,j,count,delimitesLength,strLength;
 	String *strReturn = stringNew(str->text);
 	
 	delimitesLength = strlen(delimites);
+	strLength = str->length;
 	strReturn->start = str->start;
 	strReturn->length = 0;
 	
-	for(j=str->start;j<str->length;j++){
+	for(j=str->start;j<strLength;j++){
 		for(i=0,count=0;i<delimitesLength;i++){
 			if(str->text->string[j] == delimites[i]){
 				break;
@@ -168,13 +171,14 @@ String *stringRemoveWordNotContaining(String *str,char delimites[]){
 }
 
 String *stringRemoveWordContaining(String *str, char containSet[]){
-	int i,j,count,containLength;
+	int i,j,count,containLength,strLength;
 	String *strReturn = stringNew(str->text);
 	containLength = strlen(containSet);
+	strLength = str->length;
 	strReturn->start = str->start;
 	strReturn->length = 0;
 	
-	for(j=str->start;j<str->length;j++){
+	for(j=str->start;j<strLength;j++){
 		for(i=0,count=0;i<containLength;i++){
 			if(str->text->string[j] == containSet[i]){
 				str->start++;
@@ -260,6 +264,44 @@ int stringIsCharAtInSet(String *str, int relativeIndex, char set[]){
 		}
 	}
 	return 0;
+}
+
+int stringToInteger(String *str){
+
+	char *string = stringSubstringInChar(str,str->start,str->length);
+	int forReturn = atoi(string);
+
+	free(string);
+	
+	return forReturn;
+}
+
+char *stringSubstringInChar(String *str, int relativePosition, int length){
+	
+	int size;
+	if(relativePosition+length > str->length)
+		size = str->length - relativePosition+1;
+	else
+		size = length+1;
+		
+	char *character = malloc(sizeof(char)*size);
+		
+	int i,j,h;
+	
+	for(j=0,i=relativePosition; i < relativePosition+length ; j++,i++){
+		character[j] = str->text->string[i];
+		h = j;
+	}
+	character[h+1] = 0;
+	return character;
+}
+
+Text *stringSubstringInText(String *str, int relativePosition, int length){
+	
+	char *charStr = stringSubstringInChar(str,relativePosition,length);
+	Text *text = textNew(charStr);
+	free(charStr);
+	return text;
 }
 
 /*

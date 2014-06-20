@@ -1140,3 +1140,159 @@ void test_stringIsCharAtInSet_should_return_0_not_found_in_set(void){
  UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((stringIsCharAtInSet(string,0,"abcdefghijklmno"))), (((void *)0)), (_U_UINT)647, UNITY_DISPLAY_STYLE_INT);
 
 }
+
+
+
+void test_stringSubstringInChar_should_crop_out_123(void){
+
+ int toCompare;
+
+ Text *text = textNew("StoneSir123");
+
+ String *string = stringNew(text);
+
+ char *testing = stringSubstringInChar(string,8,3);
+
+
+
+ toCompare = strcmp(testing,"123");
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)657, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringSubstringInChar_should_crop_out_Stone(void){
+
+ int toCompare;
+
+ Text *text = textNew("StoneSir123");
+
+ String *string = stringNew(text);
+
+ char *testing = stringSubstringInChar(string,0,5);
+
+
+
+ toCompare = strcmp(testing,"Stone");
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)667, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringSubstringInChar_should_crop_out_1(void){
+
+ int toCompare;
+
+ Text *text = textNew("abc123");
+
+ String *string = stringNew(text);
+
+ char *testing = stringSubstringInChar(string,3,1);
+
+
+
+ toCompare = strcmp(testing,"1");
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((toCompare)), (((void *)0)), (_U_UINT)677, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringSubstringInText_return_Text_1(void){
+
+
+
+ Text *text = textNew("abc123");
+
+ String *string = stringNew(text);
+
+ Text *testing = stringSubstringInText(string,3,1);
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((testing->reference)), (((void *)0)), (_U_UINT)686, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((strcmp(testing->string,"1"))), (((void *)0)), (_U_UINT)687, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringSubstringInText_return_Text_abcd(void){
+
+
+
+ Text *text = textNew("123abcd123");
+
+ String *string = stringNew(text);
+
+ Text *testing = stringSubstringInText(string,3,4);
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((testing->reference)), (((void *)0)), (_U_UINT)696, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((strcmp(testing->string,"abcd"))), (((void *)0)), (_U_UINT)697, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringToInteger_should_get_1234(void){
+
+
+
+ Text *text = textNew("1234");
+
+ String *string = stringNew(text);
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((1234)), (_U_SINT)((stringToInteger(string))), (((void *)0)), (_U_UINT)705, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringToInteger_should_get_23(void){
+
+
+
+ Text *text = textNew("1234");
+
+ String *string = stringNew(text);
+
+ string->start++;
+
+ string->length-=2;
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((23)), (_U_SINT)((stringToInteger(string))), (((void *)0)), (_U_UINT)715, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
+void test_stringToInteger_should_get_5555(void){
+
+
+
+ Text *text = textNew("dsfv5555FDG");
+
+ String *string = stringNew(text);
+
+ string->start = 4;
+
+ string->length = 4;
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((5555)), (_U_SINT)((stringToInteger(string))), (((void *)0)), (_U_UINT)725, UNITY_DISPLAY_STYLE_INT);
+
+}

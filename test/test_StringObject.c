@@ -647,3 +647,80 @@ void test_stringIsCharAtInSet_should_return_0_not_found_in_set(void){
 	TEST_ASSERT_EQUAL(0,stringIsCharAtInSet(string,0,"abcdefghijklmno"));
 }
 
+void test_stringSubstringInChar_should_crop_out_123(void){
+	int toCompare;
+	Text *text = textNew("StoneSir123");
+	String *string  = stringNew(text);
+	char *testing = stringSubstringInChar(string,8,3);
+	
+	toCompare = strcmp(testing,"123");
+	TEST_ASSERT_EQUAL(0,toCompare);
+}
+
+void test_stringSubstringInChar_should_crop_out_Stone(void){
+	int toCompare;
+	Text *text = textNew("StoneSir123");
+	String *string  = stringNew(text);
+	char *testing = stringSubstringInChar(string,0,5);
+	
+	toCompare = strcmp(testing,"Stone");
+	TEST_ASSERT_EQUAL(0,toCompare);
+}
+
+void test_stringSubstringInChar_should_crop_out_1(void){
+	int toCompare;
+	Text *text = textNew("abc123");
+	String *string  = stringNew(text);
+	char *testing = stringSubstringInChar(string,3,1);
+	
+	toCompare = strcmp(testing,"1");
+	TEST_ASSERT_EQUAL(0,toCompare);
+}
+
+void test_stringSubstringInText_return_Text_1(void){
+
+	Text *text = textNew("abc123");
+	String *string  = stringNew(text);
+	Text *testing = stringSubstringInText(string,3,1);
+	
+	TEST_ASSERT_EQUAL(1,testing->reference);
+	TEST_ASSERT_EQUAL(0,strcmp(testing->string,"1"));
+}
+
+void test_stringSubstringInText_return_Text_abcd(void){
+
+	Text *text = textNew("123abcd123");
+	String *string  = stringNew(text);
+	Text *testing = stringSubstringInText(string,3,4);
+	
+	TEST_ASSERT_EQUAL(1,testing->reference);
+	TEST_ASSERT_EQUAL(0,strcmp(testing->string,"abcd"));
+}
+
+void test_stringToInteger_should_get_1234(void){
+
+	Text *text = textNew("1234");
+	String *string = stringNew(text);
+
+	TEST_ASSERT_EQUAL(1234,stringToInteger(string));
+}
+
+void test_stringToInteger_should_get_23(void){
+
+	Text *text = textNew("1234");
+	String *string = stringNew(text);
+	string->start++;
+	string->length-=2;
+
+	TEST_ASSERT_EQUAL(23,stringToInteger(string));
+}
+
+void test_stringToInteger_should_get_5555(void){
+
+	Text *text = textNew("dsfv5555FDG");
+	String *string = stringNew(text);
+	string->start = 4;
+	string->length = 4;
+
+	TEST_ASSERT_EQUAL(5555,stringToInteger(string));
+}

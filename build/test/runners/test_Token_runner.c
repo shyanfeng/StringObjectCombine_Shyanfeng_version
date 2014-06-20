@@ -36,6 +36,11 @@ extern void test_identifierNew_should_get_return_details(void);
 extern void test_identifierNew_should_get_return_details_2(void);
 extern void test_operatorNewBySymbol_should_create(void);
 extern void test_operatorNewBySymbol_should_create2(void);
+extern void test_operatorNewBySymbol_should_retun_NULL(void);
+extern void test_operatorNewByID_should_create(void);
+extern void test_operatorNewByID_should_create2(void);
+extern void test_operatorNewByID_should_retun_NULL(void);
+extern void test_getToken(void);
 
 
 //=======Test Reset Option=====
@@ -57,6 +62,11 @@ int main(void)
   RUN_TEST(test_identifierNew_should_get_return_details_2, 35);
   RUN_TEST(test_operatorNewBySymbol_should_create, 45);
   RUN_TEST(test_operatorNewBySymbol_should_create2, 56);
+  RUN_TEST(test_operatorNewBySymbol_should_retun_NULL, 67);
+  RUN_TEST(test_operatorNewByID_should_create, 74);
+  RUN_TEST(test_operatorNewByID_should_create2, 85);
+  RUN_TEST(test_operatorNewByID_should_retun_NULL, 96);
+  RUN_TEST(test_getToken, 103);
 
   return (UnityEnd());
 }

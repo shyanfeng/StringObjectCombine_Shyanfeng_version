@@ -81,6 +81,14 @@ extern void test_stringCharAt_should_return_negative_1_negative_input_static(voi
 extern void test_stringIsCharAtInSet_should_return_1_contain_in_set(void);
 extern void test_stringIsCharAtInSet_should_return_0_error_input(void);
 extern void test_stringIsCharAtInSet_should_return_0_not_found_in_set(void);
+extern void test_stringSubstringInChar_should_crop_out_123(void);
+extern void test_stringSubstringInChar_should_crop_out_Stone(void);
+extern void test_stringSubstringInChar_should_crop_out_1(void);
+extern void test_stringSubstringInText_return_Text_1(void);
+extern void test_stringSubstringInText_return_Text_abcd(void);
+extern void test_stringToInteger_should_get_1234(void);
+extern void test_stringToInteger_should_get_23(void);
+extern void test_stringToInteger_should_get_5555(void);
 
 
 //=======Test Reset Option=====
@@ -147,6 +155,14 @@ int main(void)
   RUN_TEST(test_stringIsCharAtInSet_should_return_1_contain_in_set, 622);
   RUN_TEST(test_stringIsCharAtInSet_should_return_0_error_input, 630);
   RUN_TEST(test_stringIsCharAtInSet_should_return_0_not_found_in_set, 640);
+  RUN_TEST(test_stringSubstringInChar_should_crop_out_123, 650);
+  RUN_TEST(test_stringSubstringInChar_should_crop_out_Stone, 660);
+  RUN_TEST(test_stringSubstringInChar_should_crop_out_1, 670);
+  RUN_TEST(test_stringSubstringInText_return_Text_1, 680);
+  RUN_TEST(test_stringSubstringInText_return_Text_abcd, 690);
+  RUN_TEST(test_stringToInteger_should_get_1234, 700);
+  RUN_TEST(test_stringToInteger_should_get_23, 708);
+  RUN_TEST(test_stringToInteger_should_get_5555, 718);
 
   return (UnityEnd());
 }

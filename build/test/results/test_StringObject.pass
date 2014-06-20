@@ -156,11 +156,35 @@
 - :test: test_stringIsCharAtInSet_should_return_0_not_found_in_set
   :line: 640
   :message: ''
+- :test: test_stringSubstringInChar_should_crop_out_123
+  :line: 650
+  :message: ''
+- :test: test_stringSubstringInChar_should_crop_out_Stone
+  :line: 660
+  :message: ''
+- :test: test_stringSubstringInChar_should_crop_out_1
+  :line: 670
+  :message: ''
+- :test: test_stringSubstringInText_return_Text_1
+  :line: 680
+  :message: ''
+- :test: test_stringSubstringInText_return_Text_abcd
+  :line: 690
+  :message: ''
+- :test: test_stringToInteger_should_get_1234
+  :line: 700
+  :message: ''
+- :test: test_stringToInteger_should_get_23
+  :line: 708
+  :message: ''
+- :test: test_stringToInteger_should_get_5555
+  :line: 718
+  :message: ''
 :failures: []
 :ignores: []
 :counts:
-  :total: 51
-  :passed: 51
+  :total: 59
+  :passed: 59
   :failed: 0
   :ignored: 0
 :stdout: []
