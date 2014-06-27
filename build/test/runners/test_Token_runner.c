@@ -8,8 +8,11 @@
   Unity.NumberOfTests++; \
   if (TEST_PROTECT()) \
   { \
+    CEXCEPTION_T e; \
+    Try { \
       setUp(); \
       TestFunc(); \
+    } Catch(e) { TEST_ASSERT_EQUAL_HEX32_MESSAGE(CEXCEPTION_NONE, e, "Unhandled Exception!"); } \
   } \
   if (TEST_PROTECT() && !TEST_IS_IGNORED) \
   { \
@@ -22,6 +25,7 @@
 #include "unity.h"
 #include <setjmp.h>
 #include <stdio.h>
+#include "CException.h"
 
 int GlobalExpectCount;
 int GlobalVerifyOrder;
@@ -40,7 +44,22 @@ extern void test_operatorNewBySymbol_should_retun_NULL(void);
 extern void test_operatorNewByID_should_create(void);
 extern void test_operatorNewByID_should_create2(void);
 extern void test_operatorNewByID_should_retun_NULL(void);
-extern void test_getToken(void);
+extern void test_getToken_sould_return_NumberToken_324(void);
+extern void test_getToken_sould_return_NumberToken_123(void);
+extern void test_getToken_sould_return_NumberToken_123_without_ending_with_space(void);
+extern void test_getToken_sould_return_IdentifierToken_AuCheeLiang(void);
+extern void test_getToken_should_return_IdentifierToken_ChiewBingXuan(void);
+extern void test_getToken_sould_return_IdentifierToken_AuCheeLiang_without_ending_with_space(void);
+extern void test_getToken_should_return_OperatorToken_BITWISE_NOT_OP(void);
+extern void test_getToken_should_return_OperatorToken_BITWISE_AND_OP(void);
+extern void test_getToken_should_return_OperatorToken_LOGICAL_AND_OP(void);
+extern void test_getToken_should_return_OperatorToken_LOGICAL_OR_OP(void);
+extern void test_getToken_sould_Throw_an_error_with_mixed_up_number_and_alphabet(void);
+extern void test_getToken_sould_Throw_an_error_with_mixed_up_number_and_operator(void);
+extern void test_getToken_sould_Throw_an_error_with_mixed_up_all_together(void);
+extern void test_getToken_multiple_times_abc_BITWISE_NOT_OP_123(void);
+extern void test_getToken_multiple_times_abc_LOGICAL_AND_OP_123(void);
+extern void test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error(void);
 
 
 //=======Test Reset Option=====
@@ -56,17 +75,32 @@ int main(void)
 {
   Unity.TestFile = "test_Token.c";
   UnityBegin();
-  RUN_TEST(test_getToken_should_get_5, 11);
-  RUN_TEST(test_getToken_should_get_100, 18);
-  RUN_TEST(test_identifierNew_should_get_return_details, 25);
-  RUN_TEST(test_identifierNew_should_get_return_details_2, 35);
-  RUN_TEST(test_operatorNewBySymbol_should_create, 45);
-  RUN_TEST(test_operatorNewBySymbol_should_create2, 56);
-  RUN_TEST(test_operatorNewBySymbol_should_retun_NULL, 67);
-  RUN_TEST(test_operatorNewByID_should_create, 74);
-  RUN_TEST(test_operatorNewByID_should_create2, 85);
-  RUN_TEST(test_operatorNewByID_should_retun_NULL, 96);
-  RUN_TEST(test_getToken, 103);
+  RUN_TEST(test_getToken_should_get_5, 13);
+  RUN_TEST(test_getToken_should_get_100, 20);
+  RUN_TEST(test_identifierNew_should_get_return_details, 27);
+  RUN_TEST(test_identifierNew_should_get_return_details_2, 37);
+  RUN_TEST(test_operatorNewBySymbol_should_create, 47);
+  RUN_TEST(test_operatorNewBySymbol_should_create2, 58);
+  RUN_TEST(test_operatorNewBySymbol_should_retun_NULL, 69);
+  RUN_TEST(test_operatorNewByID_should_create, 76);
+  RUN_TEST(test_operatorNewByID_should_create2, 87);
+  RUN_TEST(test_operatorNewByID_should_retun_NULL, 98);
+  RUN_TEST(test_getToken_sould_return_NumberToken_324, 105);
+  RUN_TEST(test_getToken_sould_return_NumberToken_123, 118);
+  RUN_TEST(test_getToken_sould_return_NumberToken_123_without_ending_with_space, 131);
+  RUN_TEST(test_getToken_sould_return_IdentifierToken_AuCheeLiang, 143);
+  RUN_TEST(test_getToken_should_return_IdentifierToken_ChiewBingXuan, 156);
+  RUN_TEST(test_getToken_sould_return_IdentifierToken_AuCheeLiang_without_ending_with_space, 169);
+  RUN_TEST(test_getToken_should_return_OperatorToken_BITWISE_NOT_OP, 182);
+  RUN_TEST(test_getToken_should_return_OperatorToken_BITWISE_AND_OP, 197);
+  RUN_TEST(test_getToken_should_return_OperatorToken_LOGICAL_AND_OP, 212);
+  RUN_TEST(test_getToken_should_return_OperatorToken_LOGICAL_OR_OP, 227);
+  RUN_TEST(test_getToken_sould_Throw_an_error_with_mixed_up_number_and_alphabet, 242);
+  RUN_TEST(test_getToken_sould_Throw_an_error_with_mixed_up_number_and_operator, 255);
+  RUN_TEST(test_getToken_sould_Throw_an_error_with_mixed_up_all_together, 268);
+  RUN_TEST(test_getToken_multiple_times_abc_BITWISE_NOT_OP_123, 281);
+  RUN_TEST(test_getToken_multiple_times_abc_LOGICAL_AND_OP_123, 307);
+  RUN_TEST(test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error, 333);
 
   return (UnityEnd());
 }

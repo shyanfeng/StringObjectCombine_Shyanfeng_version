@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <malloc.h>
+#include "CException.h"
 #include "Token.h"
 #include "CharSet.h"
+#include "ErrorCode.h"
+#include "CustomTypeAssert.h"
 
 #define MAIN_OPERATOR_TABLE_SIZE	(sizeof(mainOperatorTable)/sizeof(OperatorInfo))
 #define	ALTERNATIVE_OPERATOR_TABLE_SIZE	(sizeof(alternativeOperatorTable)/sizeof(OperatorInfo))
@@ -94,6 +97,7 @@ Identifier *identifierNew(Text *name) {
   Identifier *identifier = malloc(sizeof(Identifier));
   identifier->name = name;
   identifier->type = IDENTIFIER_TOKEN;
+  identifier->number = NULL;
   return identifier;
 }
 
@@ -120,38 +124,43 @@ Token *getToken(String *str) {
 	//		-create operator token
 	char charReturn[3];
 	Token *tokenReturn;
-	String *strReturn = stringNew(str->text);
+	String *strReturn;
+	
 	stringTrimLeft(str);
+
+	//Number
+	if(stringIsCharAtInSet(str,0,numberSet)){
+		strReturn = stringRemoveWordContaining(str,numberSet);
+		if(isSpace(stringCharAt(str,0)) || str->length==0){
+			Number *number = numberNew(stringToInteger(strReturn));
+			tokenReturn = (Token *)number;
+		}
+		else{
+			free(strReturn);
+			Throw(ERR_NUMBER_NOT_WELL_FORMED);
+		}
+	}
 	
+	//Identifier
+	else if(stringIsCharAtInSet(str,0,alphabetSet)){
+		strReturn = stringRemoveWordContaining(str,alphabetSet);
+		if(isSpace(stringCharAt(str,0)) || str->length==0){
+			Identifier *identifier = identifierNew(stringSubstringInText(strReturn,strReturn->start,strReturn->length));
+			tokenReturn = (Token *)identifier;
+			free(strReturn);
+		}
+		else{
+			free(strReturn);
+			Throw(ERR_NUMBER_NOT_WELL_FORMED);
+		}
+	}
 	
-	
-	// if(stringIsCharAtInSet(str,str->start,numberSet)){
-		// strReturn = stringRemoveWordContaining(str,numberSet);
-		// if(isSpace(stringCharAt(str,0))){
-			// Number *number = numberNew(stringToInteger(strReturn));
-			// tokenReturn = (Token *)number;
-			// return tokenReturn;
-		// }
-		// else
-			// return NULL;
-	// }
-	
-	// else if(stringIsCharAtInSet(str,str->start,alphabetSet)){
-		// strReturn = stringRemoveWordContaining(str,alphabetSet);
-		// if(isSpace(stringCharAt(str,0))){
-			// Identifier *identifier = identifierNew(stringSubstringInText(strReturn,strReturn->start,strReturn->length));
-			// stringDump(strReturn);
-		// }
-		// else
-			// return NULL;
-	// }
-	
-	if(stringIsCharAtInSet(str,str->start,operatorSet)){
+	//Operator
+	else if(stringIsCharAtInSet(str,0,operatorSet)){
 		charReturn[0] = (char )stringRemoveChar(str);
 		charReturn[1] = 0;
 
 		if(stringCharAt(str,0) == charReturn[0]){
-			printf("%d\n",str->start);	
 			if(charReturn[0] == '&'){
 				charReturn[0] = '&';
 				charReturn[1] = '&';
@@ -161,19 +170,27 @@ Token *getToken(String *str) {
 				charReturn[0] = '|';
 				charReturn[1] = '|';
 				charReturn[2] = 0;
-			}	
+			}
+			else
+				Throw(ERR_NUMBER_NOT_WELL_FORMED);
+				
 			str->start++;
 			str->length--;
 		}
 			
-		if(isSpace(stringCharAt(str,0))){
-			printf("%d\n",str->start);
+		if(isSpace(stringCharAt(str,0)) || str->length==0){
 			Operator *operator = operatorNewBySymbol(charReturn);
-			printf("%s\n",operator->info->symbol);
-			printf("%d\n",operator->info->precedence);
-			
+			tokenReturn = (Token *)operator;
+		}
+		else{
+			free(strReturn);
+			Throw(ERR_NUMBER_NOT_WELL_FORMED);
 		}
 	}
-	
+	else
+		Throw(ERR_NUMBER_NOT_WELL_FORMED);
+		
+	free(strReturn);
+	return tokenReturn;
 		
 }

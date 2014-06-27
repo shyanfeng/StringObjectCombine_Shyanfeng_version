@@ -84,9 +84,9 @@ void stringSkip(String *string, int numChar2Skip){
 }
 
 void stringTrimLeft(String *string){
-	string->length -= string->start;
+	
 	int i = string->start;
-	int l = string->length;
+	int l = strlen(string->text->string);
 	
 	if(string->text->string[i] != 0){
 		for(;i<=l;i++){
@@ -146,7 +146,7 @@ String *stringRemoveWordNotContaining(String *str,char delimites[]){
 	String *strReturn = stringNew(str->text);
 	
 	delimitesLength = strlen(delimites);
-	strLength = str->length;
+	strLength = strlen(str->text->string);
 	strReturn->start = str->start;
 	strReturn->length = 0;
 	
@@ -174,7 +174,7 @@ String *stringRemoveWordContaining(String *str, char containSet[]){
 	int i,j,count,containLength,strLength;
 	String *strReturn = stringNew(str->text);
 	containLength = strlen(containSet);
-	strLength = str->length;
+	strLength = strlen(str->text->string);
 	strReturn->start = str->start;
 	strReturn->length = 0;
 	
@@ -279,7 +279,7 @@ int stringToInteger(String *str){
 char *stringSubstringInChar(String *str, int relativePosition, int length){
 	
 	int size;
-	if(relativePosition+length > str->length)
+	if(relativePosition+length > strlen(str->text->string))
 		size = str->length - relativePosition+1;
 	else
 		size = length+1;

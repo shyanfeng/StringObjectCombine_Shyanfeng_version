@@ -8,8 +8,11 @@
   Unity.NumberOfTests++; \
   if (TEST_PROTECT()) \
   { \
+    CEXCEPTION_T e; \
+    Try { \
       setUp(); \
       TestFunc(); \
+    } Catch(e) { TEST_ASSERT_EQUAL_HEX32_MESSAGE(CEXCEPTION_NONE, e, "Unhandled Exception!"); } \
   } \
   if (TEST_PROTECT() && !TEST_IS_IGNORED) \
   { \
@@ -22,6 +25,7 @@
 #include "unity.h"
 #include <setjmp.h>
 #include <stdio.h>
+#include "CException.h"
 
 int GlobalExpectCount;
 int GlobalVerifyOrder;
@@ -113,56 +117,56 @@ int main(void)
   RUN_TEST(test_stringSkip_should_overload_and_stop_at_Null, 152);
   RUN_TEST(test_stringTrimLeft, 160);
   RUN_TEST(test_stringTrimLeft2, 168);
-  RUN_TEST(test_stringTrimRight, 177);
-  RUN_TEST(test_stringTrimRight2, 185);
-  RUN_TEST(test_stringTrim_should_trim_both_sides, 193);
-  RUN_TEST(test_stringTrim_should_trim_both_sides2, 201);
-  RUN_TEST(test_stringTrim_should_trim_both_sides3, 209);
-  RUN_TEST(test_all, 217);
-  RUN_TEST(test_stringRemoveChar_should_remove_w, 238);
-  RUN_TEST(test_stringRemoveChar_should_remove_spacing, 249);
-  RUN_TEST(test_stringRemoveChar_should_return_negative_one_after_deletion, 260);
-  RUN_TEST(test_stringRemoveChar_should_return_negative_one_with_NULL_input, 271);
-  RUN_TEST(test_stringLength_should_get_6, 282);
-  RUN_TEST(test_stringLength_should_get_16, 291);
-  RUN_TEST(test_stringRemoveWordNotContaining_remove_abcd, 300);
-  RUN_TEST(test_stringRemoveWordNotContaining_remove_abcd_static, 312);
-  RUN_TEST(test_stringRemoveWordNotContaining_remove_ww, 325);
-  RUN_TEST(test_stringRemoveWordNotContaining_remove_ww_static, 340);
-  RUN_TEST(test_stringRemoveWordNotContaining_remove_nothing, 355);
-  RUN_TEST(test_stringRemoveWordContaining_remove_ab, 368);
-  RUN_TEST(test_stringRemoveWordContaining_remove_ab_static, 381);
-  RUN_TEST(test_stringRemoveWordContaining_remove_abc, 394);
-  RUN_TEST(test_stringRemoveWordContaining_remove_abc_static, 407);
-  RUN_TEST(test_stringRemoveWordContaining_remove_nothing, 420);
-  RUN_TEST(test_stringIsEqual_should_return_equal, 433);
-  RUN_TEST(test_stringIsEqual_should_return_equal_static, 447);
-  RUN_TEST(test_stringIsEqual_should_return_not_equal, 461);
-  RUN_TEST(test_stringIsEqual_should_return_not_equal_static, 475);
-  RUN_TEST(test_stringIsEqualCaseInsensitive_should_equal, 489);
-  RUN_TEST(test_stringIsEqualCaseInsensitive_should_equal_with_different_start, 500);
-  RUN_TEST(test_stringIsEqualCaseInsensitive_should_not_equal, 513);
-  RUN_TEST(test_stringIsEqualCaseInsensitive_should_equal_static, 524);
-  RUN_TEST(test_extra_to_solve_problem_1, 537);
-  RUN_TEST(test_extra_to_solve_problem_2, 547);
-  RUN_TEST(test_extra_to_solve_problem_3, 559);
-  RUN_TEST(test_stringCharAt_should_return_index, 574);
-  RUN_TEST(test_stringCharAt_should_return_index_static, 582);
-  RUN_TEST(test_stringCharAt_should_return_negative_1_over_string_length, 590);
-  RUN_TEST(test_stringCharAt_should_return_negative_1_over_string_length_static, 598);
-  RUN_TEST(test_stringCharAt_should_return_negative_1_negative_input, 606);
-  RUN_TEST(test_stringCharAt_should_return_negative_1_negative_input_static, 614);
-  RUN_TEST(test_stringIsCharAtInSet_should_return_1_contain_in_set, 622);
-  RUN_TEST(test_stringIsCharAtInSet_should_return_0_error_input, 630);
-  RUN_TEST(test_stringIsCharAtInSet_should_return_0_not_found_in_set, 640);
-  RUN_TEST(test_stringSubstringInChar_should_crop_out_123, 650);
-  RUN_TEST(test_stringSubstringInChar_should_crop_out_Stone, 660);
-  RUN_TEST(test_stringSubstringInChar_should_crop_out_1, 670);
-  RUN_TEST(test_stringSubstringInText_return_Text_1, 680);
-  RUN_TEST(test_stringSubstringInText_return_Text_abcd, 690);
-  RUN_TEST(test_stringToInteger_should_get_1234, 700);
-  RUN_TEST(test_stringToInteger_should_get_23, 708);
-  RUN_TEST(test_stringToInteger_should_get_5555, 718);
+  RUN_TEST(test_stringTrimRight, 178);
+  RUN_TEST(test_stringTrimRight2, 186);
+  RUN_TEST(test_stringTrim_should_trim_both_sides, 194);
+  RUN_TEST(test_stringTrim_should_trim_both_sides2, 202);
+  RUN_TEST(test_stringTrim_should_trim_both_sides3, 210);
+  RUN_TEST(test_all, 218);
+  RUN_TEST(test_stringRemoveChar_should_remove_w, 239);
+  RUN_TEST(test_stringRemoveChar_should_remove_spacing, 250);
+  RUN_TEST(test_stringRemoveChar_should_return_negative_one_after_deletion, 261);
+  RUN_TEST(test_stringRemoveChar_should_return_negative_one_with_NULL_input, 272);
+  RUN_TEST(test_stringLength_should_get_6, 283);
+  RUN_TEST(test_stringLength_should_get_16, 292);
+  RUN_TEST(test_stringRemoveWordNotContaining_remove_abcd, 301);
+  RUN_TEST(test_stringRemoveWordNotContaining_remove_abcd_static, 313);
+  RUN_TEST(test_stringRemoveWordNotContaining_remove_ww, 326);
+  RUN_TEST(test_stringRemoveWordNotContaining_remove_ww_static, 341);
+  RUN_TEST(test_stringRemoveWordNotContaining_remove_nothing, 356);
+  RUN_TEST(test_stringRemoveWordContaining_remove_ab, 369);
+  RUN_TEST(test_stringRemoveWordContaining_remove_ab_static, 382);
+  RUN_TEST(test_stringRemoveWordContaining_remove_abc, 395);
+  RUN_TEST(test_stringRemoveWordContaining_remove_abc_static, 408);
+  RUN_TEST(test_stringRemoveWordContaining_remove_nothing, 421);
+  RUN_TEST(test_stringIsEqual_should_return_equal, 434);
+  RUN_TEST(test_stringIsEqual_should_return_equal_static, 448);
+  RUN_TEST(test_stringIsEqual_should_return_not_equal, 462);
+  RUN_TEST(test_stringIsEqual_should_return_not_equal_static, 476);
+  RUN_TEST(test_stringIsEqualCaseInsensitive_should_equal, 490);
+  RUN_TEST(test_stringIsEqualCaseInsensitive_should_equal_with_different_start, 501);
+  RUN_TEST(test_stringIsEqualCaseInsensitive_should_not_equal, 514);
+  RUN_TEST(test_stringIsEqualCaseInsensitive_should_equal_static, 525);
+  RUN_TEST(test_extra_to_solve_problem_1, 538);
+  RUN_TEST(test_extra_to_solve_problem_2, 548);
+  RUN_TEST(test_extra_to_solve_problem_3, 560);
+  RUN_TEST(test_stringCharAt_should_return_index, 575);
+  RUN_TEST(test_stringCharAt_should_return_index_static, 583);
+  RUN_TEST(test_stringCharAt_should_return_negative_1_over_string_length, 591);
+  RUN_TEST(test_stringCharAt_should_return_negative_1_over_string_length_static, 599);
+  RUN_TEST(test_stringCharAt_should_return_negative_1_negative_input, 607);
+  RUN_TEST(test_stringCharAt_should_return_negative_1_negative_input_static, 615);
+  RUN_TEST(test_stringIsCharAtInSet_should_return_1_contain_in_set, 623);
+  RUN_TEST(test_stringIsCharAtInSet_should_return_0_error_input, 631);
+  RUN_TEST(test_stringIsCharAtInSet_should_return_0_not_found_in_set, 641);
+  RUN_TEST(test_stringSubstringInChar_should_crop_out_123, 651);
+  RUN_TEST(test_stringSubstringInChar_should_crop_out_Stone, 661);
+  RUN_TEST(test_stringSubstringInChar_should_crop_out_1, 671);
+  RUN_TEST(test_stringSubstringInText_return_Text_1, 681);
+  RUN_TEST(test_stringSubstringInText_return_Text_abcd, 691);
+  RUN_TEST(test_stringToInteger_should_get_1234, 701);
+  RUN_TEST(test_stringToInteger_should_get_23, 709);
+  RUN_TEST(test_stringToInteger_should_get_5555, 719);
 
   return (UnityEnd());
 }

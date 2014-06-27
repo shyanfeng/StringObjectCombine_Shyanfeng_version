@@ -169,6 +169,7 @@ void test_stringTrimLeft2(void){
 	Text *text = textNew("    HohnJon ");
 	String *str = stringNew(text);
 	str->start+=3;
+	str->length-=3;
 	stringTrimLeft(str);
 	TEST_ASSERT_EQUAL(4,str->start);
 	TEST_ASSERT_EQUAL(8,str->length);
@@ -573,10 +574,10 @@ void test_extra_to_solve_problem_3(){
 
 void test_stringCharAt_should_return_index(void){
 
-	Text *text = textNew("PoonJiyeon");
+	Text *text = textNew("Poon Jiyeon");
 	String *string = stringNew(text);
 	
-	TEST_ASSERT_EQUAL('J',stringCharAt(string,4));
+	TEST_ASSERT_EQUAL(' ',stringCharAt(string,4));
 }
 
 void test_stringCharAt_should_return_index_static(void){
@@ -717,10 +718,10 @@ void test_stringToInteger_should_get_23(void){
 
 void test_stringToInteger_should_get_5555(void){
 
-	Text *text = textNew("dsfv5555FDG");
+	Text *text = textNew("dsfggggv5555FDG");
 	String *string = stringNew(text);
-	string->start = 4;
-	string->length = 4;
+	string->start = 8;
+	string->length = 8;
 
 	TEST_ASSERT_EQUAL(5555,stringToInteger(string));
 }

@@ -3,6 +3,8 @@
 #include "Text.h"
 #include "StringObject.h"
 #include "CharSet.h"
+#include "CException.h"
+#include "ErrorCode.h"
 #include "CustomTypeAssert.h"
 
 void setUp(void) {}
@@ -100,16 +102,261 @@ void test_operatorNewByID_should_retun_NULL(){
 	TEST_ASSERT_EQUAL(NULL,operator);
 }
 
-void test_getToken(void){
+void test_getToken_sould_return_NumberToken_324(void){
 	int test;
-	Text *text = textNew("&& ert 01010");
+	Text *text = textNew("324 123 435 01010");
 	String *string = stringNew(text);
-	Token *token = getToken(string);
+	Token *token;
 	
-	// TEST_ASSERT_EQUAL(IDENTIFIER_TOKEN,token->type);
-	// printf("%d\n",token->value);
-	// TEST_ASSERT_EQUAL(323243451,token->value);
-
+	token = getToken(string);
+	
+	TEST_ASSERT_EQUAL(NUMBER_TOKEN,token->type);
+	TEST_ASSERT_EQUAL(324,((Number *)token)->value);
+	TEST_ASSERT_EQUAL_String(" 123 435 01010",string);
 }
 
+void test_getToken_sould_return_NumberToken_123(void){
+	int test;
+	Text *text = textNew("123 me nem is cheeliang");
+	String *string = stringNew(text);
+	Token *token;
+	
+	token = getToken(string);
+	
+	TEST_ASSERT_EQUAL(NUMBER_TOKEN,token->type);
+	TEST_ASSERT_EQUAL(123,((Number *)token)->value);
+	TEST_ASSERT_EQUAL_String(" me nem is cheeliang",string);
+}
 
+void test_getToken_sould_return_NumberToken_123_without_ending_with_space(void){
+	int test;
+	Text *text = textNew("123");
+	String *string = stringNew(text);
+	Token *token;
+	
+	token = getToken(string);
+	TEST_ASSERT_EQUAL(NUMBER_TOKEN,token->type);
+	TEST_ASSERT_EQUAL(123,((Number *)token)->value);
+	TEST_ASSERT_EQUAL_String("",string);
+}
+
+void test_getToken_sould_return_IdentifierToken_AuCheeLiang(void){
+	int test;
+	Text *text = textNew("AuCheeLiang + ChiewBingXuan = bff");
+	String *string = stringNew(text);
+	Token *token;
+	
+	token = getToken(string);
+	
+	TEST_ASSERT_EQUAL(IDENTIFIER_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("AuCheeLiang",((Identifier *)token)->name->string);
+	TEST_ASSERT_EQUAL_String(" + ChiewBingXuan = bff",string);
+}
+
+void test_getToken_should_return_IdentifierToken_ChiewBingXuan(void){
+	int test;
+	Text *text = textNew("ChiewBingXuan 23+ ChiewB32ringXuan = bff");
+	String *string = stringNew(text);
+	Token *token;
+	
+	token = getToken(string);
+	
+	TEST_ASSERT_EQUAL(IDENTIFIER_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("ChiewBingXuan",((Identifier *)token)->name->string);
+	TEST_ASSERT_EQUAL_String(" 23+ ChiewB32ringXuan = bff",string);
+}
+
+void test_getToken_sould_return_IdentifierToken_AuCheeLiang_without_ending_with_space(void){
+	int test;
+	Text *text = textNew("AuCheeLiang");
+	String *string = stringNew(text);
+	Token *token;
+	
+	token = getToken(string);
+	
+	TEST_ASSERT_EQUAL(IDENTIFIER_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("AuCheeLiang",((Identifier *)token)->name->string);
+	TEST_ASSERT_EQUAL_String("",string);
+}
+
+void test_getToken_should_return_OperatorToken_BITWISE_NOT_OP(void){
+	int test;
+	Text *text = textNew("~ ahahaha hehehe hoho");
+	String *string = stringNew(text);
+	Token *token;
+	
+	token = getToken(string);
+	
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("~",((Operator *)token)->info->symbol);
+	TEST_ASSERT_EQUAL(BITWISE_NOT_OP,((Operator *)token)->info->id);
+	TEST_ASSERT_EQUAL(150,((Operator *)token)->info->precedence);
+	TEST_ASSERT_EQUAL_String(" ahahaha hehehe hoho",string);
+}
+
+void test_getToken_should_return_OperatorToken_BITWISE_AND_OP(void){
+	int test;
+	Text *text = textNew("   & ahahaha");
+	String *string = stringNew(text);
+	Token *token;
+	
+	token = getToken(string);
+	
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("&",((Operator *)token)->info->symbol);
+	TEST_ASSERT_EQUAL(BITWISE_AND_OP,((Operator *)token)->info->id);
+	TEST_ASSERT_EQUAL(60,((Operator *)token)->info->precedence);
+	TEST_ASSERT_EQUAL_String(" ahahaha",string);
+}
+
+void test_getToken_should_return_OperatorToken_LOGICAL_AND_OP(void){
+	int test;
+	Text *text = textNew("   && 123sdv  we");
+	String *string = stringNew(text);
+	Token *token;
+	
+	token = getToken(string);
+	
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("&&",((Operator *)token)->info->symbol);
+	TEST_ASSERT_EQUAL(LOGICAL_AND_OP,((Operator *)token)->info->id);
+	TEST_ASSERT_EQUAL(30,((Operator *)token)->info->precedence);
+	TEST_ASSERT_EQUAL_String(" 123sdv  we",string);
+}
+
+void test_getToken_should_return_OperatorToken_LOGICAL_OR_OP(void){
+	int test;
+	Text *text = textNew("   || 123sdv  we");
+	String *string = stringNew(text);
+	Token *token;
+	
+	token = getToken(string);
+	
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("||",((Operator *)token)->info->symbol);
+	TEST_ASSERT_EQUAL(LOGICAL_OR_OP,((Operator *)token)->info->id);
+	TEST_ASSERT_EQUAL(20,((Operator *)token)->info->precedence);
+	TEST_ASSERT_EQUAL_String(" 123sdv  we",string);
+}
+
+void test_getToken_sould_Throw_an_error_with_mixed_up_number_and_alphabet(void){
+	int test,e;
+	Text *text = textNew(" 1me nem is cheeliang");
+	String *string = stringNew(text);
+	Token *token;
+	
+	Try{
+	token = getToken(string);}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_NUMBER_NOT_WELL_FORMED,e);
+	}
+}
+
+void test_getToken_sould_Throw_an_error_with_mixed_up_number_and_operator(void){
+	int test,e;
+	Text *text = textNew(" 1+1 me nem is cheeliang");
+	String *string = stringNew(text);
+	Token *token;
+	
+	Try{
+	token = getToken(string);}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_NUMBER_NOT_WELL_FORMED,e);
+	}
+}
+
+void test_getToken_sould_Throw_an_error_with_mixed_up_all_together(void){
+	int test,e;
+	Text *text = textNew("1T@#%@#%@#232fef me nem is cheeliang");
+	String *string = stringNew(text);
+	Token *token;
+	
+	Try{
+	token = getToken(string);}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_NUMBER_NOT_WELL_FORMED,e);
+	}
+}
+
+void test_getToken_multiple_times_abc_BITWISE_NOT_OP_123(void){
+	Text *text = textNew("  abc ~ 123");
+	String *string = stringNew(text);
+	Token *token;
+	
+	//Test for abc
+	token = getToken(string);
+	TEST_ASSERT_EQUAL(IDENTIFIER_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("abc",((Identifier *)token)->name->string);
+	TEST_ASSERT_EQUAL_String(" ~ 123",string);
+	
+	//Test for +
+	token = getToken(string);
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("~",((Operator *)token)->info->symbol);
+	TEST_ASSERT_EQUAL(BITWISE_NOT_OP,((Operator *)token)->info->id);
+	TEST_ASSERT_EQUAL(150,((Operator *)token)->info->precedence);
+	TEST_ASSERT_EQUAL_String(" 123",string);
+	
+	//Test for 123
+	token = getToken(string);
+	TEST_ASSERT_EQUAL(NUMBER_TOKEN,token->type);
+	TEST_ASSERT_EQUAL(123,((Number *)token)->value);
+	TEST_ASSERT_EQUAL_String("",string);
+}
+
+void test_getToken_multiple_times_abc_LOGICAL_AND_OP_123(void){
+	Text *text = textNew("  abc && 123");
+	String *string = stringNew(text);
+	Token *token;
+	
+	//Test for abc
+	token = getToken(string);
+	TEST_ASSERT_EQUAL(IDENTIFIER_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("abc",((Identifier *)token)->name->string);
+	TEST_ASSERT_EQUAL_String(" && 123",string);
+	
+	//Test for +
+	token = getToken(string);
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("&&",((Operator *)token)->info->symbol);
+	TEST_ASSERT_EQUAL(LOGICAL_AND_OP,((Operator *)token)->info->id);
+	TEST_ASSERT_EQUAL(30,((Operator *)token)->info->precedence);
+	TEST_ASSERT_EQUAL_String(" 123",string);
+	
+	//Test for 123
+	token = getToken(string);
+	TEST_ASSERT_EQUAL(NUMBER_TOKEN,token->type);
+	TEST_ASSERT_EQUAL(123,((Number *)token)->value);
+	TEST_ASSERT_EQUAL_String("",string);
+}
+
+void test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error(void){
+	int e;
+	Text *text = textNew("  abc && 12a3");
+	String *string = stringNew(text);
+	Token *token;
+	
+	//Test for abc
+	token = getToken(string);
+	TEST_ASSERT_EQUAL(IDENTIFIER_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("abc",((Identifier *)token)->name->string);
+	TEST_ASSERT_EQUAL_String(" && 12a3",string);
+	
+	//Test for +
+	token = getToken(string);
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("&&",((Operator *)token)->info->symbol);
+	TEST_ASSERT_EQUAL(LOGICAL_AND_OP,((Operator *)token)->info->id);
+	TEST_ASSERT_EQUAL(30,((Operator *)token)->info->precedence);
+	TEST_ASSERT_EQUAL_String(" 12a3",string);
+	
+	//Test for 123
+	Try{
+	token = getToken(string);}
+	Catch(e){
+	TEST_ASSERT_EQUAL(ERR_NUMBER_NOT_WELL_FORMED,e);
+	// TEST_ASSERT_EQUAL(NUMBER_TOKEN,token->type);
+	// TEST_ASSERT_EQUAL(123,((Number *)token)->value);
+	// TEST_ASSERT_EQUAL_String("",string);
+	}
+}
