@@ -200,13 +200,19 @@ void test_getToken(void){
 
  int test;
 
- Text *text = textNew("323243451 ert");
+ Text *text = textNew("&& ert 01010");
 
  String *string = stringNew(text);
 
+ Token *token = getToken(string);
 
 
- getToken(string);
+
+
+
+
+
+
 
 
 

@@ -107,6 +107,7 @@ Identifier *identifierNew(Text *name) {
  * Possible returned token:
  *    Number, Operator, and Identifier tokens
  */
+
 Token *getToken(String *str) {
 	//1 trim left
 	//2 check first character
@@ -117,14 +118,62 @@ Token *getToken(String *str) {
 	//		-create identifier token
 	//	c	-if operator set then extract operator symbol
 	//		-create operator token
-	
+	char charReturn[3];
+	Token *tokenReturn;
 	String *strReturn = stringNew(str->text);
 	stringTrimLeft(str);
-	stringDump(str);
 	
-	if(stringIsCharAtInSet(str,str->start,numberSet))
-		strReturn = stringRemoveWordContaining(str,numberSet);
-		stringDump(strReturn);
-		stringDump(str);
-  return NULL;
+	
+	
+	// if(stringIsCharAtInSet(str,str->start,numberSet)){
+		// strReturn = stringRemoveWordContaining(str,numberSet);
+		// if(isSpace(stringCharAt(str,0))){
+			// Number *number = numberNew(stringToInteger(strReturn));
+			// tokenReturn = (Token *)number;
+			// return tokenReturn;
+		// }
+		// else
+			// return NULL;
+	// }
+	
+	// else if(stringIsCharAtInSet(str,str->start,alphabetSet)){
+		// strReturn = stringRemoveWordContaining(str,alphabetSet);
+		// if(isSpace(stringCharAt(str,0))){
+			// Identifier *identifier = identifierNew(stringSubstringInText(strReturn,strReturn->start,strReturn->length));
+			// stringDump(strReturn);
+		// }
+		// else
+			// return NULL;
+	// }
+	
+	if(stringIsCharAtInSet(str,str->start,operatorSet)){
+		charReturn[0] = (char )stringRemoveChar(str);
+		charReturn[1] = 0;
+
+		if(stringCharAt(str,0) == charReturn[0]){
+			printf("%d\n",str->start);	
+			if(charReturn[0] == '&'){
+				charReturn[0] = '&';
+				charReturn[1] = '&';
+				charReturn[2] = 0;
+			}
+			else if(charReturn[0] == '|'){
+				charReturn[0] = '|';
+				charReturn[1] = '|';
+				charReturn[2] = 0;
+			}	
+			str->start++;
+			str->length--;
+		}
+			
+		if(isSpace(stringCharAt(str,0))){
+			printf("%d\n",str->start);
+			Operator *operator = operatorNewBySymbol(charReturn);
+			printf("%s\n",operator->info->symbol);
+			printf("%d\n",operator->info->precedence);
+			
+		}
+	}
+	
+		
 }

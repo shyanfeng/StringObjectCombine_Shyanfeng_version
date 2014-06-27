@@ -102,9 +102,14 @@ void test_operatorNewByID_should_retun_NULL(){
 
 void test_getToken(void){
 	int test;
-	Text *text = textNew("323243451 ert");
+	Text *text = textNew("&& ert 01010");
 	String *string = stringNew(text);
+	Token *token = getToken(string);
 	
-	getToken(string);
+	// TEST_ASSERT_EQUAL(IDENTIFIER_TOKEN,token->type);
+	// printf("%d\n",token->value);
+	// TEST_ASSERT_EQUAL(323243451,token->value);
 
 }
+
+

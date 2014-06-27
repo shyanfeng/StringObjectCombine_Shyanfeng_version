@@ -61,5 +61,5 @@ int stringCharAt(String *str, int relativeIndex);
 * Return 0 otherwise
 */
 int stringIsCharAtInSet(String *str, int relativeIndex, char set[]); //1 is true, 0 false
-	
+
 #endif // __STRING_OBJECT_H__
