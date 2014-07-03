@@ -33,9 +33,12 @@ OperatorInfo alternativeOperatorTable[] = {
 };
 
 /**
+ * Create an Number token by the value input
  *
  * Input:
  *   value  is the value to initialized with
+ *
+ * Return the Number object
  */
 Number *numberNew(int value) {
 	Number *number = malloc(sizeof(Number));
@@ -50,6 +53,8 @@ Number *numberNew(int value) {
  * Input:
  *   symbol is symbol in string of characters, i.e., "*"
  *          and "&&".
+ *
+ * Return the Operator object
  */
 Operator *operatorNewBySymbol(char *symbol) {
 	int i;
@@ -71,6 +76,8 @@ Operator *operatorNewBySymbol(char *symbol) {
  * Input:
  *   symbol is symbol in string of characters, i.e., MUL_OP
  *          and CLOSING_BRACKET_OP.
+ *
+ * Return the Operator object
  */
 Operator *operatorNewByID(OperatorID id) {
 	int i;
@@ -92,6 +99,8 @@ Operator *operatorNewByID(OperatorID id) {
  *
  * Input:
  *   name is the name of the identifier.
+ *
+ * Return the Identifier object
  */
 Identifier *identifierNew(Text *name) {
   Identifier *identifier = malloc(sizeof(Identifier));
@@ -111,7 +120,6 @@ Identifier *identifierNew(Text *name) {
  * Possible returned token:
  *    Number, Operator, and Identifier tokens
  */
-
 Token *getToken(String *str) {
 	//1 trim left
 	//2 check first character
@@ -122,6 +130,7 @@ Token *getToken(String *str) {
 	//		-create identifier token
 	//	c	-if operator set then extract operator symbol
 	//		-create operator token
+	
 	char charReturn[3];
 	Token *tokenReturn;
 	String *strReturn;
@@ -193,4 +202,40 @@ Token *getToken(String *str) {
 	free(strReturn);
 	return tokenReturn;
 		
+}
+
+/**
+ * Remove a token
+ *
+ * Input:
+ *   token	the token to delete
+ *
+ */
+void tokenDel(Token *token){
+	
+	if(token->type == NUMBER_TOKEN){
+		// free(((Number *)token)->value);
+		// free(((Number *)token)->type);
+		// ((Number *)token)->value = 0;
+		// ((Number *)token)->type = 0;
+		free(token);
+	}
+		
+	else if(token->type == OPERATOR_TOKEN){
+		// free(((Operator *)token)->info);
+		// free(((Operator *)token)->type);
+		// ((Operator *)token)->type = 0;
+		if(((Operator *)token)->info != NULL)
+		free(token);
+	}
+		
+	else if(token->type == IDENTIFIER_TOKEN){
+		// free(((Identifier *)token)->number);
+		// free(((Identifier *)token)->name);
+		// free(((Identifier *)token)->type);
+		// ((Identifier *)token)->number = 0;
+		// ((Identifier *)token)->type = 0;
+		if(((Identifier *)token)->name != NULL)
+		free(token);
+	}
 }

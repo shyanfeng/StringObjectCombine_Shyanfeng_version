@@ -6,6 +6,13 @@
 #include "malloc.h"
 #include "CharSet.h"
 
+/**
+* This function takes in String and display information about the String.
+*
+* Input:
+*	str				is the String object
+* 
+*/
 void stringDump(String *string){
 	uint32 index = 0, len = 0;
 	char *fullString = "(NULL)";
@@ -39,6 +46,14 @@ void stringDump(String *string){
 
 }
 
+/**
+* Create a new String object by using a Text sturcture
+*
+* Input:
+*	text	the text object
+* 
+* Return the new String object
+*/
 String *stringNew(Text *text){
 
 	String *newString = malloc(sizeof(String));
@@ -51,12 +66,28 @@ String *stringNew(Text *text){
 	return newString;
 }
 
+/**
+* Assign another string into a existing string.
+*
+* Input:
+*	string	the string to assign.
+* 
+* Return the input string
+*/
 String *stringAssign(String *string){
 
 	string->reference++;
 	return string;
 }
 
+/**
+* Remove the reference(unassign) a string to from another
+*
+* Input:
+*	string	the string to delete
+* 
+* Return the input string
+*/
 String *stringDel(String *string){
 
 	string->reference--;
@@ -69,20 +100,35 @@ String *stringDel(String *string){
 
 }
 
+/**
+* Skip certain amount of value of the string's character
+*
+* Input:
+*	string			the string for skip purpose
+*	numChar2Skip	the amount of character wanted to skip
+* 
+*/
 void stringSkip(String *string, int numChar2Skip){
 
 	int startPoint = string->start + numChar2Skip;
 	
-	if(startPoint < string->length){
+	if(startPoint < strlen(string->text->string)){
 		string->start = startPoint;
-		string->length = string->length - string->start;
+		string->length = strlen(string->text->string) - string->start;
 	}
 	else{
-		string->start = string->length;
-		string->length = string->length - string->start;
+		string->start = strlen(string->text->string);
+		string->length = strlen(string->text->string) - string->start;
 	}
 }
 
+/**
+* Trim/remove empty spacing or tab on the left of the string
+*
+* Input:
+*	string	the string that wanted to trim
+* 
+*/
 void stringTrimLeft(String *string){
 	
 	int i = string->start;
@@ -100,6 +146,13 @@ void stringTrimLeft(String *string){
 	}
 }
 
+/**
+* Trim/remove empty spacing or tab on the right of the string
+*
+* Input:
+*	string	the string that wanted to trim
+* 
+*/
 void stringTrimRight(String *string){
 
 	int end = string->start+string->length-1;
@@ -113,11 +166,27 @@ void stringTrimRight(String *string){
 	}
 }
 
+/**
+* Trim/remove empty spacing or tab on both left and right of the string
+*
+* Input:
+*	string	the string that wanted to trim
+* 
+*/
 void stringTrim(String *string){
 	stringTrimLeft(string);
 	stringTrimRight(string);
 }
 
+/**
+* Remove the initial character where start pointer pointing at
+*
+* Input:
+*	string	the string to removeChar
+* 
+* Return the character if successfully deleted
+* Return -1 otherwise
+*/
 // return -l if empty remove by moving index number
 int stringRemoveChar(String *str){
 	char forReturn = str->text->string[str->start];
@@ -136,11 +205,29 @@ int stringRemoveChar(String *str){
 	return forReturn;
 }
 
+/**
+* Get the string length
+*
+* Input:
+*	string	the string length that wanted
+* 
+* Return the length of the string
+*/
 // length of string
 int stringLength(String *str){
 	return str->length;
 }
 
+/**
+* Remove the word from the string which not contain in the delimites(s) from the left
+* Once detected character contain in delimites, stop
+*
+* Input:
+*	string		the string to remove the word
+*	delimites	the set that character that should not remove
+* 
+* Return the string that have removed from the original string
+*/
 String *stringRemoveWordNotContaining(String *str,char delimites[]){
 	int i,j,count,delimitesLength,strLength;
 	String *strReturn = stringNew(str->text);
@@ -170,6 +257,16 @@ String *stringRemoveWordNotContaining(String *str,char delimites[]){
 	return strReturn;
 }
 
+/**
+* Remove the word from the string which contain in the containSet from the left
+* Once detected character not contain in containSet, stop 
+*
+* Input:
+*	string		the string to remove the word
+*	containSet	the set that character that should remove
+* 
+* Return the string that have removed from the original string
+*/
 String *stringRemoveWordContaining(String *str, char containSet[]){
 	int i,j,count,containLength,strLength;
 	String *strReturn = stringNew(str->text);
@@ -196,6 +293,16 @@ String *stringRemoveWordContaining(String *str, char containSet[]){
 	return strReturn;
 }
 
+/**
+* Compare two string whether are equals, with case sensitive
+*
+* Input:
+*	str1	the first string to compare with second
+*	str2	the second string to compare with first
+* 
+* Return 1 if it is the same
+* Return 0 otherwise
+*/
 int stringIsEqual(String *str1, String *str2){
 	int i;
 	int actualLength;
@@ -220,6 +327,16 @@ int stringIsEqual(String *str1, String *str2){
 		return 0;
 }
 
+/**
+* Compare two string whether are equals, without case sensitive
+*
+* Input:
+*	str1	the first string to compare with second
+*	str2	the second string to compare with first
+* 
+* Return 1 if it is the same
+* Return 0 otherwise
+*/
 int stringIsEqualCaseInsensitive(String *str1, String *str2){
 	int i;
 	int actualLength;
@@ -245,6 +362,17 @@ int stringIsEqualCaseInsensitive(String *str1, String *str2){
 
 }
 
+/**
+* Return the character at the specified relative index of the String
+*
+* Input:
+* 	str				is the String object
+*	relativeIndex	is the relative index into the String.
+*					This value must be positive.
+*
+* Return the character at the relative index if exists.
+* Otherwise return -1. If relativeIndex < 0, -1 is returned as well.
+*/
 int stringCharAt(String *str, int relativeIndex){
 	if(relativeIndex >= 0 && relativeIndex < str->length)
 		return str->text->string[str->start+relativeIndex];
@@ -253,6 +381,19 @@ int stringCharAt(String *str, int relativeIndex){
 
 }
 
+/**
+* Determine if the character specified by the relative index in the
+* String is in the given set of characters.
+*
+* Input:
+*	str				is the String object
+*	relativeIndex	is the relative index into the String
+*					This value must be positive
+*	set				is the set of characters delimited by NULL
+* 
+* Return 1 if the character that chosen is in the set list.
+* Return 0 otherwise
+*/
 int stringIsCharAtInSet(String *str, int relativeIndex, char set[]){
 	
 	int i, setLength = strlen(set);
@@ -266,6 +407,14 @@ int stringIsCharAtInSet(String *str, int relativeIndex, char set[]){
 	return 0;
 }
 
+/**
+* Convert the string into integer
+*
+* Input:
+*	str		is the string that use as reference for converting
+* 
+* Return the value in integer
+*/
 int stringToInteger(String *str){
 
 	char *string = stringSubstringInChar(str,str->start,str->length);
@@ -276,6 +425,18 @@ int stringToInteger(String *str){
 	return forReturn;
 }
 
+/**
+* To take out a portion of character(s) in the string
+*
+* Input:
+*	str				is the String object
+*	relativePosition	is the relative index to start the cropping
+*					This value must be positive
+*
+*	length			the amount of character will be cropped out
+* 
+* Return the array of character that selected
+*/
 char *stringSubstringInChar(String *str, int relativePosition, int length){
 	
 	int size;
@@ -296,6 +457,18 @@ char *stringSubstringInChar(String *str, int relativePosition, int length){
 	return character;
 }
 
+/**
+* To take out a portion of character(s) in the string into a Text
+*
+* Input:
+*	str					is the String object
+*	relativePosition	is the relative index to start the cropping
+*						This value must be positive
+*
+*	length				the amount of character will be cropped out
+* 
+* Return the Text that selected
+*/
 Text *stringSubstringInText(String *str, int relativePosition, int length){
 	
 	char *charStr = stringSubstringInChar(str,relativePosition,length);

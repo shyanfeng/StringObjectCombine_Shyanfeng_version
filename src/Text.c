@@ -3,7 +3,13 @@
 #include "String.h"
 #include "Text.h"
 
-
+/**
+* The show the details of the text
+*
+* Input:
+*	text	is the text that will be dump
+* 
+*/
 void textDump(Text *text){
 	if(text==NULL){
 		printf("(NULL)");
@@ -12,6 +18,14 @@ void textDump(Text *text){
 	printf("text[0x%x];%s\n", text->reference, text->string);
 }
 
+/**
+* To create a new text object
+*
+* Input:
+*	charStr	the string of character that will be created in the text object
+*
+* Return the text that have created 
+*/
 Text *textNew(char *charStr){
 	// Character string copy from charStr to text->string
 	Text *text = (Text *)malloc(strlen(charStr) + 4 + 1);
@@ -20,12 +34,28 @@ Text *textNew(char *charStr){
 	return text;
 }
 
+/**
+* Assign the text to from another text
+*
+* Input:
+*	text	the text that will be assign to
+*
+* Return the assigned text
+*/
 Text *textAssign(Text *text){
 	if(text->reference < 0x80000000)
 		text->reference++;
 	return text;
 }
 
+/**
+* To deleted the text reference
+*
+* Input:
+*	text	the text that will be removed
+*
+* Return the text that left 
+*/
 Text *textDel(Text *text){
 	//check if text reference not equals to 0x80000000
 	//reduce text reference by one

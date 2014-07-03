@@ -81,11 +81,14 @@
 - :test: test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error
   :line: 333
   :message: ''
+- :test: test_tokenDel_should_not_cause_error
+  :line: 364
+  :message: ''
 :failures: []
 :ignores: []
 :counts:
-  :total: 26
-  :passed: 26
+  :total: 27
+  :passed: 27
   :failed: 0
   :ignored: 0
 :stdout: []

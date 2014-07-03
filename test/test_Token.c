@@ -315,7 +315,7 @@ void test_getToken_multiple_times_abc_LOGICAL_AND_OP_123(void){
 	TEST_ASSERT_EQUAL_STRING("abc",((Identifier *)token)->name->string);
 	TEST_ASSERT_EQUAL_String(" && 123",string);
 	
-	//Test for +
+	//Test for &&
 	token = getToken(string);
 	TEST_ASSERT_EQUAL(OPERATOR_TOKEN,token->type);
 	TEST_ASSERT_EQUAL_STRING("&&",((Operator *)token)->info->symbol);
@@ -342,7 +342,7 @@ void test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error(voi
 	TEST_ASSERT_EQUAL_STRING("abc",((Identifier *)token)->name->string);
 	TEST_ASSERT_EQUAL_String(" && 12a3",string);
 	
-	//Test for +
+	//Test for &&
 	token = getToken(string);
 	TEST_ASSERT_EQUAL(OPERATOR_TOKEN,token->type);
 	TEST_ASSERT_EQUAL_STRING("&&",((Operator *)token)->info->symbol);
@@ -359,4 +359,34 @@ void test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error(voi
 	// TEST_ASSERT_EQUAL(123,((Number *)token)->value);
 	// TEST_ASSERT_EQUAL_String("",string);
 	}
+}
+
+void test_tokenDel_should_not_cause_error(){
+	Text *text = textNew("  abc && 123");
+	String *string = stringNew(text);
+	Token *token;
+	
+	//Test for abc
+	token = getToken(string);
+	TEST_ASSERT_EQUAL(IDENTIFIER_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("abc",((Identifier *)token)->name->string);
+	TEST_ASSERT_EQUAL_String(" && 123",string);
+	tokenDel(token);
+	
+	//Test for &&
+	token = getToken(string);
+	TEST_ASSERT_EQUAL(OPERATOR_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("&&",((Operator *)token)->info->symbol);
+	TEST_ASSERT_EQUAL(LOGICAL_AND_OP,((Operator *)token)->info->id);
+	TEST_ASSERT_EQUAL(30,((Operator *)token)->info->precedence);
+	TEST_ASSERT_EQUAL_String(" 123",string);
+	tokenDel(token);
+	
+	//Test for 123
+	token = getToken(string);
+	TEST_ASSERT_EQUAL(NUMBER_TOKEN,token->type);
+	TEST_ASSERT_EQUAL(123,((Number *)token)->value);
+	TEST_ASSERT_EQUAL_String("",string);
+	tokenDel(token);
+
 }
