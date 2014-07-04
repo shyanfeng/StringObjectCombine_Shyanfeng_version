@@ -16,12 +16,15 @@
 unsigned int interpret(String *instruction);
 
 int extractValue(String *arguments){
+
+	char *returnChar;
+	int returnInt;
+	String *string;
+	
 	if(stringCharAt(arguments,0) == ';')
 		Throw(EMPTY_ARGUMENT);
 		
-	char *returnChar;
-	int returnInt;
-	String *string = stringRemoveWordNotContaining(arguments,",;");
+	string = stringRemoveWordNotContaining(arguments,",;");
 	stringTrim(string);
 	
 	if(stringLength(string) == 0)
@@ -38,6 +41,45 @@ int extractValue(String *arguments){
 	return returnInt;
 } //pass to jason
 
-int extractDestination(String *arguments); //if f, return 1, w is 0
+int extractDestination(String *arguments){
+	
+	char location;
+	char *returnChar;
+	int returnInt;
+	String *string;
+	
+	if(stringCharAt(arguments,0) == ';')
+		Throw(EMPTY_ARGUMENT);
+		
+	string = stringRemoveWordNotContaining(arguments,",;");
+	stringTrim(string);
+	
+	if(stringLength(string) == 0)
+		Throw(EMPTY_ARGUMENT);
+	
+	else if(stringLength(string) == 1){
+		location = stringCharAt(string,0);
+		if(location == 'F')
+			return 1;
+		else if(location == 'W')
+			return 0;
+		else{
+			returnChar = stringSubstringInChar(string,0,string->length);
+			returnInt =  evaluate(returnChar);
+		}
+	}
+	else{
+		returnChar = stringSubstringInChar(string,0,string->length);
+		returnInt = evaluate(returnChar);
+	}
+	
+	if(stringCharAt(arguments,0) == ',')
+		stringRemoveChar(arguments);
+	
+	free(string);
+	return returnInt;
+	
+
+}//if f, return 1, w is 0
 
 int extractAccessBanked(String *arguments); //folo mplab

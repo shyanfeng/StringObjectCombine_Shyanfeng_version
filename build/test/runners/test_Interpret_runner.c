@@ -43,6 +43,12 @@ extern void test_extractValue_should_return_correct_value_in_integer(void);
 extern void test_extractValue_should_throw_error_with_empty_argument(void);
 extern void test_extractValue_should_throw_error_with_empty_argument_semicolon(void);
 extern void test_extractValue_should_get_thrown_in_evaluate(void);
+extern void test_extractDestination_should_return_correct_value_in_integer(void);
+extern void test_extractDestination_should_throw_error_with_empty_argument(void);
+extern void test_extractDestination_should_throw_error_with_empty_argument_semicolon(void);
+extern void test_extractValue_should_get_value_from_evaluate(void);
+extern void test_extractValue_should_get_value_from_F(void);
+extern void test_extractValue_should_throw_with_invalid_argument(void);
 
 
 //=======Mock Management=====
@@ -82,6 +88,12 @@ int main(void)
   RUN_TEST(test_extractValue_should_throw_error_with_empty_argument, 29);
   RUN_TEST(test_extractValue_should_throw_error_with_empty_argument_semicolon, 42);
   RUN_TEST(test_extractValue_should_get_thrown_in_evaluate, 55);
+  RUN_TEST(test_extractDestination_should_return_correct_value_in_integer, 71);
+  RUN_TEST(test_extractDestination_should_throw_error_with_empty_argument, 86);
+  RUN_TEST(test_extractDestination_should_throw_error_with_empty_argument_semicolon, 99);
+  RUN_TEST(test_extractValue_should_get_value_from_evaluate, 112);
+  RUN_TEST(test_extractValue_should_get_value_from_F, 130);
+  RUN_TEST(test_extractValue_should_throw_with_invalid_argument, 146);
 
   return (UnityEnd());
 }
