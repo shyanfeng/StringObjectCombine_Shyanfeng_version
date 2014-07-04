@@ -361,6 +361,7 @@ void test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error(voi
 	}
 }
 
+
 void test_tokenDel_should_not_cause_error(){
 	Text *text = textNew("  abc && 123");
 	String *string = stringNew(text);

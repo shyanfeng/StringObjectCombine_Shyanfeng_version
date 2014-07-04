@@ -2,6 +2,7 @@
 #include <malloc.h>
 #include "CException.h"
 #include "Token.h"
+#include "Text.h"
 #include "CharSet.h"
 #include "ErrorCode.h"
 #include "CustomTypeAssert.h"
@@ -214,28 +215,19 @@ Token *getToken(String *str) {
 void tokenDel(Token *token){
 	
 	if(token->type == NUMBER_TOKEN){
-		// free(((Number *)token)->value);
-		// free(((Number *)token)->type);
-		// ((Number *)token)->value = 0;
-		// ((Number *)token)->type = 0;
 		free(token);
 	}
 		
 	else if(token->type == OPERATOR_TOKEN){
-		// free(((Operator *)token)->info);
-		// free(((Operator *)token)->type);
-		// ((Operator *)token)->type = 0;
 		if(((Operator *)token)->info != NULL)
 		free(token);
 	}
 		
 	else if(token->type == IDENTIFIER_TOKEN){
-		// free(((Identifier *)token)->number);
-		// free(((Identifier *)token)->name);
-		// free(((Identifier *)token)->type);
-		// ((Identifier *)token)->number = 0;
-		// ((Identifier *)token)->type = 0;
 		if(((Identifier *)token)->name != NULL)
+			textDel(((Identifier *)token)->name);
+		if(((Identifier *)token)->number != NULL)
+			tokenDel((Token *)(((Identifier *)token)->number));
 		free(token);
 	}
 }
