@@ -155,7 +155,7 @@ Token *getToken(String *str) {
 	else if(stringIsCharAtInSet(str,0,alphabetSet)){
 		strReturn = stringRemoveWordContaining(str,alphabetSet);
 		if(isSpace(stringCharAt(str,0)) || str->length==0){
-			Identifier *identifier = identifierNew(stringSubstringInText(strReturn,strReturn->start,strReturn->length));
+			Identifier *identifier = identifierNew(stringSubstringInText(strReturn,0,strReturn->length));
 			tokenReturn = (Token *)identifier;
 			free(strReturn);
 		}

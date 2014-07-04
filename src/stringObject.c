@@ -155,12 +155,15 @@ void stringTrimLeft(String *string){
 */
 void stringTrimRight(String *string){
 
-	int end = string->start+string->length-1;
+	int end = string->start + string->length - 1;
 	
 	for(;;end--){
-		if(isSpace(string->text->string[end])){
+		if(string->length == 0)
+			break;
+			
+		else if(isSpace(string->text->string[end]))
 				string->length--;
-		}
+		
 		else
 			break;
 	}
@@ -417,7 +420,7 @@ int stringIsCharAtInSet(String *str, int relativeIndex, char set[]){
 */
 int stringToInteger(String *str){
 
-	char *string = stringSubstringInChar(str,str->start,str->length);
+	char *string = stringSubstringInChar(str,0,str->length);
 	int forReturn = atoi(string);
 
 	free(string);
@@ -440,8 +443,8 @@ int stringToInteger(String *str){
 char *stringSubstringInChar(String *str, int relativePosition, int length){
 	
 	int size;
-	if(relativePosition+length > strlen(str->text->string))
-		size = str->length - relativePosition+1;
+	if(str->start+relativePosition+length > strlen(str->text->string))
+		size = str->length - str->start + relativePosition+1;
 	else
 		size = length+1;
 		
@@ -449,7 +452,7 @@ char *stringSubstringInChar(String *str, int relativePosition, int length){
 		
 	int i,j,h;
 	
-	for(j=0,i=relativePosition; i < relativePosition+length ; j++,i++){
+	for(j=0,i=str->start+relativePosition; i < str->start+relativePosition+length ; j++,i++){
 		character[j] = str->text->string[i];
 		h = j;
 	}

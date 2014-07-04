@@ -6,4 +6,10 @@ typedef enum{
 	ERR_NUMBER_NOT_WELL_FORMED
 } ErrorCode;
 
+typedef enum{
+	NO_ERROR,
+	ILLEGAL_DESTINATION,
+	EMPTY_ARGUMENT
+} ErrorInterpret;
+
 #endif //ErrorCode_H
