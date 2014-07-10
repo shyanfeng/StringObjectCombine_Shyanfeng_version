@@ -109,7 +109,7 @@ void test_extractDestination_should_throw_error_with_empty_argument_semicolon(vo
 	}
 }
 
-void test_extractValue_should_get_value_from_evaluate(void){
+void test_extractDestination_should_get_value_from_evaluate(void){
 	Text *text = textNew("123,  1    ,BANKED");
 	String *string = stringNew(text);
 	
@@ -127,7 +127,7 @@ void test_extractValue_should_get_value_from_evaluate(void){
 	
 }
 
-void test_extractValue_should_get_value_from_F(void){
+void test_extractDestination_should_get_value_from_F(void){
 	Text *text = textNew("123,  F   ,BANKED");
 	String *string = stringNew(text);
 	
@@ -143,7 +143,7 @@ void test_extractValue_should_get_value_from_F(void){
 	
 }
 
-void test_extractValue_should_throw_with_invalid_argument(void){
+void test_extractDestination_should_throw_with_invalid_argument(void){
 	Text *text = textNew("123,  FA   ,BANKED");
 	String *string = stringNew(text);
 	
@@ -162,5 +162,115 @@ void test_extractValue_should_throw_with_invalid_argument(void){
 	Catch(e){
 		TEST_ASSERT_EQUAL(ILLEGAL_DESTINATION,e);
 	}
+	
+}
+
+void test_extractAccessBanked_should_return_correct_value_in_integer(void){
+	Text *text = textNew("12+34,F,3");
+	String *string = stringNew(text);
+	
+	char *stringMock = "12+34";
+	int test;
+	
+	evaluate_ExpectAndReturn(stringMock,46);
+	test = extractValue(string);
+	TEST_ASSERT_EQUAL(46,test);
+	
+	test = extractDestination(string);
+	TEST_ASSERT_EQUAL(1,test);
+	
+	stringMock = "3";
+	evaluate_ExpectAndReturn(stringMock,3);
+	test = extractAccessBanked(string);
+	TEST_ASSERT_EQUAL(3,test);
+}
+
+void test_extractAccessBanked_should_throw_error_with_empty_argument(void){
+	Text *text = textNew(" 123, F,     ; ");
+	String *string = stringNew(text);
+	
+	char *stringMock = "123";
+	int test,e;
+	
+	evaluate_ExpectAndReturn(stringMock,123);
+	test = extractValue(string);
+	TEST_ASSERT_EQUAL(123,test);
+	
+	stringMock = "F";
+	test = extractDestination(string);
+	TEST_ASSERT_EQUAL(1,test);
+	
+	Try{
+		test = extractAccessBanked(string);
+	}
+	Catch(e){
+		TEST_ASSERT_EQUAL(EMPTY_ARGUMENT,e);
+	}
+}
+
+void test_extractAccessBanked_should_throw_error_with_empty_argument_semicolon(void){
+	Text *text = textNew("123,  F   ;");
+	String *string = stringNew(text);
+	
+	char *stringMock = "123";
+	int test,e;
+	
+	evaluate_ExpectAndReturn(stringMock,123);
+	test = extractValue(string);
+	TEST_ASSERT_EQUAL(123,test);
+	
+	stringMock = "F";
+	test = extractDestination(string);
+	TEST_ASSERT_EQUAL(1,test);
+	
+	Try{
+		test = extractAccessBanked(string);
+	}
+	Catch(e){
+		TEST_ASSERT_EQUAL(EMPTY_ARGUMENT,e);
+	}
+}
+
+void test_extractAccessBaked_should_get_value_from_ACCESS(void){
+	Text *text = textNew("1+2,  F   ,ACCESS");
+	String *string = stringNew(text);
+	
+	char *stringMock = "1+2";
+	int test,e;
+	
+	evaluate_ExpectAndReturn(stringMock,3);
+	test = extractValue(string);
+	TEST_ASSERT_EQUAL(3,test);
+	
+	stringMock = "F";
+	test = extractDestination(string);
+	TEST_ASSERT_EQUAL(1,test);
+	
+	stringMock = "ACCESS";
+	test = extractAccessBanked(string);
+	TEST_ASSERT_EQUAL(0,test);
+	
+}
+
+void test_extractAccessBanked_should_get_value_from_evaluate(void){
+	Text *text = textNew("   123   , 1    ,1+2");
+	String *string = stringNew(text);
+	
+	char *stringMock = "123";
+	int test,e;
+	
+	evaluate_ExpectAndReturn(stringMock,123);
+	test = extractValue(string);
+	TEST_ASSERT_EQUAL(123,test);
+	
+	stringMock = "1";
+	evaluate_ExpectAndReturn(stringMock,1);
+	test = extractDestination(string);
+	TEST_ASSERT_EQUAL(1,test);
+	
+	stringMock = "1+2";
+	evaluate_ExpectAndReturn(stringMock,3);
+	test = extractAccessBanked(string);
+	TEST_ASSERT_EQUAL(3,test);
 	
 }

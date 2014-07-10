@@ -46,9 +46,14 @@ extern void test_extractValue_should_get_thrown_in_evaluate(void);
 extern void test_extractDestination_should_return_correct_value_in_integer(void);
 extern void test_extractDestination_should_throw_error_with_empty_argument(void);
 extern void test_extractDestination_should_throw_error_with_empty_argument_semicolon(void);
-extern void test_extractValue_should_get_value_from_evaluate(void);
-extern void test_extractValue_should_get_value_from_F(void);
-extern void test_extractValue_should_throw_with_invalid_argument(void);
+extern void test_extractDestination_should_get_value_from_evaluate(void);
+extern void test_extractDestination_should_get_value_from_F(void);
+extern void test_extractDestination_should_throw_with_invalid_argument(void);
+extern void test_extractAccessBanked_should_return_correct_value_in_integer(void);
+extern void test_extractAccessBanked_should_throw_error_with_empty_argument(void);
+extern void test_extractAccessBanked_should_throw_error_with_empty_argument_semicolon(void);
+extern void test_extractAccessBaked_should_get_value_from_ACCESS(void);
+extern void test_extractAccessBanked_should_get_value_from_evaluate(void);
 
 
 //=======Mock Management=====
@@ -91,9 +96,14 @@ int main(void)
   RUN_TEST(test_extractDestination_should_return_correct_value_in_integer, 71);
   RUN_TEST(test_extractDestination_should_throw_error_with_empty_argument, 86);
   RUN_TEST(test_extractDestination_should_throw_error_with_empty_argument_semicolon, 99);
-  RUN_TEST(test_extractValue_should_get_value_from_evaluate, 112);
-  RUN_TEST(test_extractValue_should_get_value_from_F, 130);
-  RUN_TEST(test_extractValue_should_throw_with_invalid_argument, 146);
+  RUN_TEST(test_extractDestination_should_get_value_from_evaluate, 112);
+  RUN_TEST(test_extractDestination_should_get_value_from_F, 130);
+  RUN_TEST(test_extractDestination_should_throw_with_invalid_argument, 146);
+  RUN_TEST(test_extractAccessBanked_should_return_correct_value_in_integer, 168);
+  RUN_TEST(test_extractAccessBanked_should_throw_error_with_empty_argument, 188);
+  RUN_TEST(test_extractAccessBanked_should_throw_error_with_empty_argument_semicolon, 211);
+  RUN_TEST(test_extractAccessBaked_should_get_value_from_ACCESS, 234);
+  RUN_TEST(test_extractAccessBanked_should_get_value_from_evaluate, 255);
 
   return (UnityEnd());
 }

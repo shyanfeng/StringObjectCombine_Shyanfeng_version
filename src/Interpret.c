@@ -60,9 +60,9 @@ int extractDestination(String *arguments){
 	else if(stringLength(string) == 1){
 		location = stringCharAt(string,0);
 		if(location == 'F')
-			return 1;
+			returnInt = 1;
 		else if(location == 'W')
-			return 0;
+			returnInt = 0;
 		else{
 			returnChar = stringSubstringInChar(string,0,string->length);
 			returnInt =  evaluate(returnChar);
@@ -82,4 +82,44 @@ int extractDestination(String *arguments){
 
 }//if f, return 1, w is 0
 
-int extractAccessBanked(String *arguments); //folo mplab
+int extractAccessBanked(String *arguments){
+	char location;
+	char *returnChar;
+	int returnInt;
+	String *string;
+	String *banked = stringNew(textNew("BANKED")); //1
+	String *access = stringNew(textNew("ACCESS")); //0
+	
+	if(stringCharAt(arguments,0) == ';')
+		Throw(EMPTY_ARGUMENT);
+		
+	string = stringRemoveWordNotContaining(arguments,",;");
+	
+	stringTrim(string);
+	
+	if(stringLength(string) == 0)
+		Throw(EMPTY_ARGUMENT);
+	
+	else if(stringLength(string) == 6){
+		
+		if(stringIsEqual(string,banked))
+			returnInt = 1;
+		else if(stringIsEqual(string,access))
+			returnInt = 0;
+		else{
+			returnChar = stringSubstringInChar(string,0,string->length);
+			returnInt =  evaluate(returnChar);
+		}
+	}
+	else{
+		returnChar = stringSubstringInChar(string,0,string->length);
+		returnInt = evaluate(returnChar);
+	}
+	
+	if(stringCharAt(arguments,0) == ',')
+		stringRemoveChar(arguments);
+	
+	free(string);
+	return returnInt;
+
+}

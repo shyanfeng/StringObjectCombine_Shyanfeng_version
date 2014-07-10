@@ -24,20 +24,35 @@
 - :test: test_extractDestination_should_throw_error_with_empty_argument_semicolon
   :line: 99
   :message: ''
-- :test: test_extractValue_should_get_value_from_evaluate
+- :test: test_extractDestination_should_get_value_from_evaluate
   :line: 112
   :message: ''
-- :test: test_extractValue_should_get_value_from_F
+- :test: test_extractDestination_should_get_value_from_F
   :line: 130
   :message: ''
-- :test: test_extractValue_should_throw_with_invalid_argument
+- :test: test_extractDestination_should_throw_with_invalid_argument
   :line: 146
+  :message: ''
+- :test: test_extractAccessBanked_should_return_correct_value_in_integer
+  :line: 168
+  :message: ''
+- :test: test_extractAccessBanked_should_throw_error_with_empty_argument
+  :line: 188
+  :message: ''
+- :test: test_extractAccessBanked_should_throw_error_with_empty_argument_semicolon
+  :line: 211
+  :message: ''
+- :test: test_extractAccessBaked_should_get_value_from_ACCESS
+  :line: 234
+  :message: ''
+- :test: test_extractAccessBanked_should_get_value_from_evaluate
+  :line: 255
   :message: ''
 :failures: []
 :ignores: []
 :counts:
-  :total: 10
-  :passed: 10
+  :total: 15
+  :passed: 15
   :failed: 0
   :ignored: 0
 :stdout: []
