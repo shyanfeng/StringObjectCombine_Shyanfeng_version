@@ -18,6 +18,7 @@ int stringToInteger(String *str);
 char *stringSubstringInChar(String *str, int relativePosition, int length);
 Text *stringSubstringInText(String *str, int relativePosition, int length);
 
+//add stringClone, textClone
 String *stringNew(Text *text);
 String *stringAssign(String *string);
 String *stringDel(String *string);

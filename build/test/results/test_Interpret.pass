@@ -4,55 +4,79 @@
   :file: test_Interpret.c
 :successes:
 - :test: test_extractValue_should_return_correct_value_in_integer
-  :line: 16
+  :line: 18
   :message: ''
 - :test: test_extractValue_should_throw_error_with_empty_argument
-  :line: 29
+  :line: 31
   :message: ''
 - :test: test_extractValue_should_throw_error_with_empty_argument_semicolon
-  :line: 42
+  :line: 44
   :message: ''
 - :test: test_extractValue_should_get_thrown_in_evaluate
-  :line: 55
+  :line: 57
   :message: ''
 - :test: test_extractDestination_should_return_correct_value_in_integer
-  :line: 71
+  :line: 73
   :message: ''
 - :test: test_extractDestination_should_throw_error_with_empty_argument
-  :line: 86
+  :line: 88
   :message: ''
 - :test: test_extractDestination_should_throw_error_with_empty_argument_semicolon
-  :line: 99
+  :line: 101
   :message: ''
 - :test: test_extractDestination_should_get_value_from_evaluate
-  :line: 112
+  :line: 114
   :message: ''
 - :test: test_extractDestination_should_get_value_from_F
-  :line: 130
+  :line: 132
   :message: ''
 - :test: test_extractDestination_should_throw_with_invalid_argument
-  :line: 146
+  :line: 148
   :message: ''
 - :test: test_extractAccessBanked_should_return_correct_value_in_integer
-  :line: 168
+  :line: 170
   :message: ''
 - :test: test_extractAccessBanked_should_throw_error_with_empty_argument
-  :line: 188
+  :line: 190
   :message: ''
 - :test: test_extractAccessBanked_should_throw_error_with_empty_argument_semicolon
-  :line: 211
+  :line: 213
   :message: ''
 - :test: test_extractAccessBaked_should_get_value_from_ACCESS
-  :line: 234
+  :line: 236
   :message: ''
 - :test: test_extractAccessBanked_should_get_value_from_evaluate
-  :line: 255
+  :line: 257
+  :message: ''
+- :test: test_extractValue_should_able_to_throw_NO_ARGUMENT_for_both
+  :line: 280
+  :message: ''
+- :test: test_extractValue_should_able_to_throw_EMPTY_ARGUMENT
+  :line: 304
+  :message: ''
+- :test: test_extractValue_should_able_to_throw_NO_ARGUMENT
+  :line: 328
+  :message: ''
+- :test: test_getInstruction_should_get_opCode_RLNCF
+  :line: 352
+  :message: ''
+- :test: test_getInstruction_should_get_opCode_RETLW
+  :line: 361
+  :message: ''
+- :test: test_interpret_should_able_to_get_correct_value
+  :line: 370
+  :message: ''
+- :test: test_interpret_should_throw_an_error_for_unexist_instruction
+  :line: 381
+  :message: ''
+- :test: test_interpret_should_throw_an_error_for_invalid_input_instruction
+  :line: 393
   :message: ''
 :failures: []
 :ignores: []
 :counts:
-  :total: 15
-  :passed: 15
+  :total: 23
+  :passed: 23
   :failed: 0
   :ignored: 0
 :stdout: []

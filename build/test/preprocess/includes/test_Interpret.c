@@ -9,4 +9,5 @@
 - Text.h
 - Token.h
 - mock_evaluate.h
+- mock_operator.h
 - unity.h

@@ -9,9 +9,11 @@
 #include "ErrorCode.h"
 #include "CustomTypeAssert.h"
 #include "mock_evaluate.h"
+#include "mock_operator.h"
 
 void setUp(void){}
 void tearDown(void){}
+
 
 void test_extractValue_should_return_correct_value_in_integer(void){
 	Text *text = textNew("12+34,f,BANKED");
@@ -35,7 +37,7 @@ void test_extractValue_should_throw_error_with_empty_argument(void){
 	Try{
 		test = extractValue(string);}
 	Catch(e){
-		TEST_ASSERT_EQUAL(EMPTY_ARGUMENT,e);
+		TEST_ASSERT_EQUAL(ERR_EMPTY_ARGUMENT,e);
 	}
 }
 
@@ -48,7 +50,7 @@ void test_extractValue_should_throw_error_with_empty_argument_semicolon(void){
 	Try{
 		test = extractValue(string);}
 	Catch(e){
-		TEST_ASSERT_EQUAL(EMPTY_ARGUMENT,e);
+		TEST_ASSERT_EQUAL(ERR_EMPTY_ARGUMENT,e);
 	}
 }
 
@@ -59,12 +61,12 @@ void test_extractValue_should_get_thrown_in_evaluate(void){
 	char *stringMock = "12+34abc";
 	int test,e;
 	
-	evaluate_ExpectAndThrow(stringMock,ILLEGAL_DESTINATION);
+	evaluate_ExpectAndThrow(stringMock,ERR_ILLEGAL_ARGUMENT);
 	
 	Try{
 		test = extractValue(string);}
 	Catch(e){
-		TEST_ASSERT_EQUAL(ILLEGAL_DESTINATION,e);
+		TEST_ASSERT_EQUAL(ERR_ILLEGAL_ARGUMENT,e);
 	}
 }
 
@@ -92,7 +94,7 @@ void test_extractDestination_should_throw_error_with_empty_argument(void){
 	Try{
 		test = extractDestination(string);}
 	Catch(e){
-		TEST_ASSERT_EQUAL(EMPTY_ARGUMENT,e);
+		TEST_ASSERT_EQUAL(ERR_EMPTY_ARGUMENT,e);
 	}
 }
 
@@ -105,7 +107,7 @@ void test_extractDestination_should_throw_error_with_empty_argument_semicolon(vo
 	Try{
 		test = extractDestination(string);}
 	Catch(e){
-		TEST_ASSERT_EQUAL(EMPTY_ARGUMENT,e);
+		TEST_ASSERT_EQUAL(ERR_NO_ARGUMENT,e);
 	}
 }
 
@@ -155,12 +157,12 @@ void test_extractDestination_should_throw_with_invalid_argument(void){
 	TEST_ASSERT_EQUAL(123,test);
 	
 	stringMock = "FA";
-	evaluate_ExpectAndThrow(stringMock,ILLEGAL_DESTINATION);
+	evaluate_ExpectAndThrow(stringMock,ERR_ILLEGAL_ARGUMENT);
 	
 	Try{
 		test = extractDestination(string);}
 	Catch(e){
-		TEST_ASSERT_EQUAL(ILLEGAL_DESTINATION,e);
+		TEST_ASSERT_EQUAL(ERR_ILLEGAL_ARGUMENT,e);
 	}
 	
 }
@@ -204,7 +206,7 @@ void test_extractAccessBanked_should_throw_error_with_empty_argument(void){
 		test = extractAccessBanked(string);
 	}
 	Catch(e){
-		TEST_ASSERT_EQUAL(EMPTY_ARGUMENT,e);
+		TEST_ASSERT_EQUAL(ERR_EMPTY_ARGUMENT,e);
 	}
 }
 
@@ -227,7 +229,7 @@ void test_extractAccessBanked_should_throw_error_with_empty_argument_semicolon(v
 		test = extractAccessBanked(string);
 	}
 	Catch(e){
-		TEST_ASSERT_EQUAL(EMPTY_ARGUMENT,e);
+		TEST_ASSERT_EQUAL(ERR_NO_ARGUMENT,e);
 	}
 }
 
@@ -273,4 +275,130 @@ void test_extractAccessBanked_should_get_value_from_evaluate(void){
 	test = extractAccessBanked(string);
 	TEST_ASSERT_EQUAL(3,test);
 	
+}
+ 
+  void test_extractValue_should_able_to_throw_NO_ARGUMENT_for_both(void){
+	Text *text = textNew("123   ");
+	String *string = stringNew(text);
+	
+	char *stringMock = "123";
+	int test,e;
+	
+	evaluate_ExpectAndReturn(stringMock,123);
+	test = extractValue(string);
+	TEST_ASSERT_EQUAL(123,test);
+	
+	Try{
+		test = extractDestination(string);}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_NO_ARGUMENT,e);
+	}
+	
+	Try{
+		test = extractAccessBanked(string);}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_NO_ARGUMENT,e);
+	}
+}
+ 
+ void test_extractValue_should_able_to_throw_EMPTY_ARGUMENT(void){
+	Text *text = textNew("123,   , ");
+	String *string = stringNew(text);
+	
+	char *stringMock = "123";
+	int test,e;
+	
+	evaluate_ExpectAndReturn(stringMock,123);
+	test = extractValue(string);
+	TEST_ASSERT_EQUAL(123,test);
+	
+	Try{
+		test = extractDestination(string);}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_EMPTY_ARGUMENT,e);
+	}
+	
+	Try{
+		test = extractAccessBanked(string);}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_EMPTY_ARGUMENT,e);
+	}
+}
+ 
+ void test_extractValue_should_able_to_throw_NO_ARGUMENT(void){
+	Text *text = textNew("123,    ");
+	String *string = stringNew(text);
+	
+	char *stringMock = "123";
+	int test,e;
+	
+	evaluate_ExpectAndReturn(stringMock,123);
+	test = extractValue(string);
+	TEST_ASSERT_EQUAL(123,test);
+	
+	Try{
+		test = extractDestination(string);}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_EMPTY_ARGUMENT,e);
+	}
+	
+	Try{
+		test = extractAccessBanked(string);}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_NO_ARGUMENT,e);
+	}
+}
+
+void test_getInstruction_should_get_opCode_RLNCF(){
+	
+	instructionTable test;
+	
+	test = getInstruction("RLNCF");
+	TEST_ASSERT_EQUAL_HEX16(0x4400,test.opCode);
+	TEST_ASSERT_EQUAL(FDA_TYPE,test.type);	
+}
+
+void test_getInstruction_should_get_opCode_RETLW(){
+	
+	instructionTable test;
+	
+	test = getInstruction("RETLW");
+	TEST_ASSERT_EQUAL_HEX16(0x0C00,test.opCode);
+	TEST_ASSERT_EQUAL(K_TYPE,test.type);	
+}
+
+void test_interpret_should_able_to_get_correct_value(){
+	Text *text = textNew(" ADDWF  0x20, F, BANKED");
+	String *string = stringNew(text);
+	
+	FDA_ExpectAndReturn(string,0x320);
+	int test = interpret(string);
+	
+	TEST_ASSERT_EQUAL(0x2720,test);
+
+}
+
+void test_interpret_should_throw_an_error_for_unexist_instruction(){
+	Text *text = textNew(" SUBWFWFWF  0x20, F, BANKED");
+	String *string = stringNew(text);
+	int e;
+	
+	Try{
+		int test = interpret(string);}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_ILLEGAL_ARGUMENT,e);
+	}
+}
+
+void test_interpret_should_throw_an_error_for_invalid_input_instruction(){
+	Text *text = textNew(" SUBWF  0x20, HAHA, BANKED");
+	String *string = stringNew(text);
+	int e;
+	
+	FDA_ExpectAndThrow(string,ERR_ILLEGAL_ARGUMENT);
+	Try{
+		int test = interpret(string);}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_ILLEGAL_ARGUMENT,e);
+	}
 }
