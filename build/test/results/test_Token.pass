@@ -84,11 +84,17 @@
 - :test: test_tokenDel_should_not_cause_error
   :line: 365
   :message: ''
+- :test: test_getToken_sould_throw_error_mix_Number_Identifier
+  :line: 395
+  :message: ''
+- :test: test_getToken_sould_not_throw_error_mix_Identifier_Number
+  :line: 408
+  :message: ''
 :failures: []
 :ignores: []
 :counts:
-  :total: 27
-  :passed: 27
+  :total: 29
+  :passed: 29
   :failed: 0
   :ignored: 0
 :stdout: []

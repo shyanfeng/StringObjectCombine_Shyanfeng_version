@@ -391,3 +391,31 @@ void test_tokenDel_should_not_cause_error(){
 	tokenDel(token);
 
 }
+
+void test_getToken_sould_throw_error_mix_Number_Identifier(void){
+	int test,e;
+	Text *text = textNew("123ABC");
+	String *string = stringNew(text);
+	Token *token;
+	
+	Try{
+		token = getToken(string);}
+	Catch(e){
+		TEST_ASSERT_EQUAL(ERR_NUMBER_NOT_WELL_FORMED,e);
+	}
+}
+
+void test_getToken_sould_not_throw_error_mix_Identifier_Number(void){
+	int test;
+	Text *text = textNew("ABC123");
+	String *string = stringNew(text);
+	Token *token;
+	
+
+		token = getToken(string);
+
+	
+	TEST_ASSERT_EQUAL(IDENTIFIER_TOKEN,token->type);
+	TEST_ASSERT_EQUAL_STRING("ABC123",((Identifier *)token)->name->string);
+	TEST_ASSERT_EQUAL_String("",string);
+}

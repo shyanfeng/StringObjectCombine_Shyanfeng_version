@@ -156,8 +156,6 @@ Token *getToken(String *str) {
 		strReturn = stringRemoveWordContaining(str,alphaNumericSet);
 		Identifier *identifier = identifierNew(stringSubstringInText(strReturn,0,strReturn->length));
 		tokenReturn = (Token *)identifier;
-		free(strReturn);
-
 	}
 	
 	//Operator
@@ -187,13 +185,9 @@ Token *getToken(String *str) {
 			Operator *operator = operatorNewBySymbol(charReturn);
 			tokenReturn = (Token *)operator;
 		}
-		else{
-			free(strReturn);
-			Throw(ERR_NUMBER_NOT_WELL_FORMED);
-		}
 	}
 	else
-		Throw(ERR_NUMBER_NOT_WELL_FORMED);
+		Throw(ERR_NO_ARGUMENT);
 		
 	free(strReturn);
 	return tokenReturn;

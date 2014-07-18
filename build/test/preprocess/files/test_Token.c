@@ -775,3 +775,59 @@ void test_tokenDel_should_not_cause_error(){
 
 
 }
+
+
+
+void test_getToken_sould_throw_error_mix_Number_Identifier(void){
+
+ int test,e;
+
+ Text *text = textNew("123ABC");
+
+ String *string = stringNew(text);
+
+ Token *token;
+
+
+
+ { jmp_buf *PrevFrame, NewFrame; unsigned int MY_ID = (0); PrevFrame = CExceptionFrames[(0)].pFrame; CExceptionFrames[MY_ID].pFrame = (jmp_buf*)(&NewFrame); CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); if (_setjmp(NewFrame) == 0) { if (&PrevFrame){
+
+  token = getToken(string);}
+
+ else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
+
+  UnityAssertEqualNumber((_U_SINT)((ERR_NUMBER_NOT_WELL_FORMED)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)404, UNITY_DISPLAY_STYLE_INT);
+
+ }
+
+}
+
+
+
+void test_getToken_sould_not_throw_error_mix_Identifier_Number(void){
+
+ int test;
+
+ Text *text = textNew("ABC123");
+
+ String *string = stringNew(text);
+
+ Token *token;
+
+
+
+
+
+  token = getToken(string);
+
+
+
+
+
+ UnityAssertEqualNumber((_U_SINT)((IDENTIFIER_TOKEN)), (_U_SINT)((token->type)), (((void *)0)), (_U_UINT)418, UNITY_DISPLAY_STYLE_INT);
+
+ UnityAssertEqualString((const char*)("ABC123"), (const char*)(((Identifier *)token)->name->string), (((void *)0)), (_U_UINT)419);
+
+ assertStringEqual((""), (string), 420, ((void *)0));
+
+}

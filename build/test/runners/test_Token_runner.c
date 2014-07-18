@@ -61,6 +61,8 @@ extern void test_getToken_multiple_times_abc_BITWISE_NOT_OP_123(void);
 extern void test_getToken_multiple_times_abc_LOGICAL_AND_OP_123(void);
 extern void test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error(void);
 extern void test_tokenDel_should_not_cause_error(void);
+extern void test_getToken_sould_throw_error_mix_Number_Identifier(void);
+extern void test_getToken_sould_not_throw_error_mix_Identifier_Number(void);
 
 
 //=======Test Reset Option=====
@@ -103,6 +105,8 @@ int main(void)
   RUN_TEST(test_getToken_multiple_times_abc_LOGICAL_AND_OP_123, 307);
   RUN_TEST(test_getToken_multiple_times_abc_LOGICAL_AND_OP_12a3_should_throw_error, 333);
   RUN_TEST(test_tokenDel_should_not_cause_error, 365);
+  RUN_TEST(test_getToken_sould_throw_error_mix_Number_Identifier, 395);
+  RUN_TEST(test_getToken_sould_not_throw_error_mix_Identifier_Number, 408);
 
   return (UnityEnd());
 }
