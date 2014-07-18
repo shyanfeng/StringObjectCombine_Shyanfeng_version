@@ -83,17 +83,15 @@ instructionTable instructions[] = {
 
 };
 
-instructionTable getInstruction(char *instructionName){
-	int i;
-	
-	for(i=0;i < INSTRUCTION_TABLE_SIZE; i++){
-		if(strcmp(instructions[i].instructionName,instructionName) == 0){
-			return instructions[i];
-		}
-	}
-	Throw(ERR_ILLEGAL_ARGUMENT);
-}
 
+/**
+*	Top module to extract the whole string into final OpCode
+*
+* Input:
+*	String	instructions,with appropriate arguments
+* 
+* Return OpCode in int type
+*/
 unsigned int interpret(String *instruction){
 	stringTrimLeft(instruction);
 	String *instString = stringRemoveWordNotContaining(instruction," ");
@@ -121,17 +119,37 @@ unsigned int interpret(String *instruction){
 	else
 		Throw(ERR_ILLEGAL_ARGUMENT);
 }
-/*	
-	FBA_TYPE,
-	FA_TYPE,
-	FSFD_TYPE,
-	N_TYPE,
-	NS_TYPE,
-	S_TYPE,
-	K_TYPE,
-	FK_TYPE
-*/
 
+
+/**
+* To assist interpret to get the instructionInfo by name from the table
+*
+* Input:
+*	char	the instruction name
+* 
+* Return the instructions in instructionTable type
+*/
+instructionTable getInstruction(char *instructionName){
+	int i;
+	
+	for(i=0;i < INSTRUCTION_TABLE_SIZE; i++){
+		if(strcmp(instructions[i].instructionName,instructionName) == 0){
+			return instructions[i];
+		}
+	}
+	Throw(ERR_ILLEGAL_ARGUMENT);
+}
+
+
+/**
+* To extract the argument of address
+*
+* Input:
+*	String	the whole argument
+* 
+* Return the value of the address
+* Throw if value is invalid
+*/
 int extractValue(String *arguments){
 	
 	char *returnChar;
@@ -160,6 +178,16 @@ int extractValue(String *arguments){
 	return returnInt;
 } //pass to jason
 
+
+/**
+* To extract the argument of location to save
+*
+* Input:
+*	String	the whole argument
+* 
+* Return the value of the location
+* Throw if value is invalid
+*/
 int extractDestination(String *arguments){
 	
 	
@@ -211,6 +239,16 @@ int extractDestination(String *arguments){
 
 }//if f, return 1, w is 0
 
+
+/**
+* To extract the argument of access or banked
+*
+* Input:
+*	String	the whole argument
+* 
+* Return the value of access/banked
+* Throw if value is invalid
+*/
 int extractAccessBanked(String *arguments){
 	char location;
 	char *returnChar;
