@@ -141,28 +141,23 @@ Token *getToken(String *str) {
 	//Number
 	if(stringIsCharAtInSet(str,0,numberSet)){
 		strReturn = stringRemoveWordContaining(str,numberSet);
-		if(isSpace(stringCharAt(str,0)) || str->length==0){
-			Number *number = numberNew(stringToInteger(strReturn));
-			tokenReturn = (Token *)number;
-		}
-		else{
+		if(stringIsCharAtInSet(str,0,alphabetSet)){
 			free(strReturn);
 			Throw(ERR_NUMBER_NOT_WELL_FORMED);
+		}
+		else{
+			Number *number = numberNew(stringToInteger(strReturn));
+			tokenReturn = (Token *)number;
 		}
 	}
 	
 	//Identifier
 	else if(stringIsCharAtInSet(str,0,alphabetSet)){
-		strReturn = stringRemoveWordContaining(str,alphabetSet);
-		if(isSpace(stringCharAt(str,0)) || str->length==0){
-			Identifier *identifier = identifierNew(stringSubstringInText(strReturn,0,strReturn->length));
-			tokenReturn = (Token *)identifier;
-			free(strReturn);
-		}
-		else{
-			free(strReturn);
-			Throw(ERR_NUMBER_NOT_WELL_FORMED);
-		}
+		strReturn = stringRemoveWordContaining(str,alphaNumericSet);
+		Identifier *identifier = identifierNew(stringSubstringInText(strReturn,0,strReturn->length));
+		tokenReturn = (Token *)identifier;
+		free(strReturn);
+
 	}
 	
 	//Operator
