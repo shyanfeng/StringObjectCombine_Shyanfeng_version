@@ -2,12 +2,12 @@
 #ifndef _MOCK_EVALUATE_H
 #define _MOCK_EVALUATE_H
 
-#include "evaluate.h"
+#include "Evaluate.h"
 #include "CException.h"
 
-void mock_evaluate_Init(void);
-void mock_evaluate_Destroy(void);
-void mock_evaluate_Verify(void);
+void mock_Evaluate_Init(void);
+void mock_Evaluate_Destroy(void);
+void mock_Evaluate_Verify(void);
 
 
 

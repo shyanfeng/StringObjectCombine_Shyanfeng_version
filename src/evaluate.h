@@ -1,5 +1,6 @@
-#ifndef evaluate_H
-#define evaluate_H
-int evaluate(char *charbla); //jason de
+#ifndef Evaluate_H
+#define Evaluate_H
 
-#endif // evaluate_H
+int evaluate(char *charbla); //jason shuntingyard
+
+#endif // Evaluate_H

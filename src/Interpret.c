@@ -10,11 +10,15 @@
 #include "CharSet.h"
 #include "ErrorCode.h"
 #include "CustomTypeAssert.h"
-#include "mock_evaluate.h"
-#include "mock_operator.h"
+#include "mock_Evaluate.h"
+#include "mock_OpCodeDecoder.h"
 
 #define INSTRUCTION_TABLE_SIZE	(sizeof(instructions)/sizeof(instructionTable))
 
+
+/**
+*	This is the instructions table
+**/
 instructionTable instructions[] = {
 	{.instructionName = "ADDWF" , .opCode = 0x2400 , .type = FDA_TYPE},
 	{.instructionName = "ADDWFC" , .opCode = 0x2000 , .type = FDA_TYPE},
@@ -135,8 +139,11 @@ int extractValue(String *arguments){
 	String *string;
 	stringTrimLeft(arguments);
 	
-	if(stringCharAt(arguments,0) == ';')
-		Throw(ERR_EMPTY_ARGUMENT);
+	if(stringCharAt(arguments,0) == ',')
+		stringRemoveChar(arguments);
+		
+	if(stringCharAt(arguments,0) == ';' || stringLength(arguments) == 0)
+		Throw(ERR_NO_ARGUMENT);
 		
 	string = stringRemoveWordNotContaining(arguments,",;");
 	stringTrim(string);

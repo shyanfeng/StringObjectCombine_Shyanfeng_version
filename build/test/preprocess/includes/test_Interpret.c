@@ -8,6 +8,6 @@
 - StringObject.h
 - Text.h
 - Token.h
-- mock_evaluate.h
-- mock_operator.h
+- mock_Evaluate.h
+- mock_OpCodeDecoder.h
 - unity.h

@@ -8,8 +8,8 @@
 #include "CharSet.h"
 #include "ErrorCode.h"
 #include "CustomTypeAssert.h"
-#include "mock_evaluate.h"
-#include "mock_operator.h"
+#include "mock_Evaluate.h"
+#include "mock_OpCodeDecoder.h"
 
 void setUp(void){}
 void tearDown(void){}
@@ -37,7 +37,7 @@ void test_extractValue_should_throw_error_with_empty_argument(void){
 	Try{
 		test = extractValue(string);}
 	Catch(e){
-		TEST_ASSERT_EQUAL(ERR_EMPTY_ARGUMENT,e);
+		TEST_ASSERT_EQUAL(ERR_NO_ARGUMENT,e);
 	}
 }
 
@@ -50,7 +50,7 @@ void test_extractValue_should_throw_error_with_empty_argument_semicolon(void){
 	Try{
 		test = extractValue(string);}
 	Catch(e){
-		TEST_ASSERT_EQUAL(ERR_EMPTY_ARGUMENT,e);
+		TEST_ASSERT_EQUAL(ERR_NO_ARGUMENT,e);
 	}
 }
 
@@ -68,6 +68,24 @@ void test_extractValue_should_get_thrown_in_evaluate(void){
 	Catch(e){
 		TEST_ASSERT_EQUAL(ERR_ILLEGAL_ARGUMENT,e);
 	}
+}
+
+void test_extractValue_should_supports_FsFd_instruction(void){
+	Text *text = textNew(" 123  , 321");
+	String *string = stringNew(text);
+	
+	char *stringMock;
+	int test;
+	
+	stringMock = "123";
+	evaluate_ExpectAndReturn(stringMock,123);
+	test = extractValue(string);
+	TEST_ASSERT_EQUAL(123,test);
+	
+	stringMock = "321";
+	evaluate_ExpectAndReturn(stringMock,321);
+	test = extractValue(string);
+	TEST_ASSERT_EQUAL(321,test);
 }
 
 void test_extractDestination_should_return_correct_value_in_integer(void){

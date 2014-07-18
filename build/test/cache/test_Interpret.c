@@ -1,6 +1,6 @@
 #include "unity.h"
-#include "mock_operator.h"
-#include "mock_evaluate.h"
+#include "mock_OpCodeDecoder.h"
+#include "mock_Evaluate.h"
 #include "Token.h"
 #include "Text.h"
 #include "StringObject.h"
@@ -64,7 +64,7 @@ void test_extractValue_should_throw_error_with_empty_argument(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_EMPTY_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)40, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_NO_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)40, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -90,7 +90,7 @@ void test_extractValue_should_throw_error_with_empty_argument_semicolon(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_EMPTY_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)53, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_NO_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)53, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -130,6 +130,42 @@ void test_extractValue_should_get_thrown_in_evaluate(void){
 
 
 
+void test_extractValue_should_supports_FsFd_instruction(void){
+
+ Text *text = textNew(" 123  , 321");
+
+ String *string = stringNew(text);
+
+
+
+ char *stringMock;
+
+ int test;
+
+
+
+ stringMock = "123";
+
+ evaluate_CMockExpectAndReturn(81, stringMock, 123);
+
+ test = extractValue(string);
+
+ UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)83, UNITY_DISPLAY_STYLE_INT);
+
+
+
+ stringMock = "321";
+
+ evaluate_CMockExpectAndReturn(86, stringMock, 321);
+
+ test = extractValue(string);
+
+ UnityAssertEqualNumber((_U_SINT)((321)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)88, UNITY_DISPLAY_STYLE_INT);
+
+}
+
+
+
 void test_extractDestination_should_return_correct_value_in_integer(void){
 
  Text *text = textNew("12+34,F,BANKED");
@@ -144,17 +180,17 @@ void test_extractDestination_should_return_correct_value_in_integer(void){
 
 
 
- evaluate_CMockExpectAndReturn(80, stringMock, 46);
+ evaluate_CMockExpectAndReturn(98, stringMock, 46);
 
  test = extractValue(string);
 
- UnityAssertEqualNumber((_U_SINT)((46)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)82, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((46)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)100, UNITY_DISPLAY_STYLE_INT);
 
 
 
  test = extractDestination(string);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)85, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)103, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -178,7 +214,7 @@ void test_extractDestination_should_throw_error_with_empty_argument(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_EMPTY_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)97, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_EMPTY_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)115, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -204,7 +240,7 @@ void test_extractDestination_should_throw_error_with_empty_argument_semicolon(vo
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_NO_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)110, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_NO_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)128, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -226,21 +262,21 @@ void test_extractDestination_should_get_value_from_evaluate(void){
 
 
 
- evaluate_CMockExpectAndReturn(121, stringMock, 123);
+ evaluate_CMockExpectAndReturn(139, stringMock, 123);
 
  test = extractValue(string);
 
- UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)123, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)141, UNITY_DISPLAY_STYLE_INT);
 
 
 
  stringMock = "1";
 
- evaluate_CMockExpectAndReturn(126, stringMock, 1);
+ evaluate_CMockExpectAndReturn(144, stringMock, 1);
 
  test = extractDestination(string);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)128, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)146, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -262,17 +298,17 @@ void test_extractDestination_should_get_value_from_F(void){
 
 
 
- evaluate_CMockExpectAndReturn(139, stringMock, 123);
+ evaluate_CMockExpectAndReturn(157, stringMock, 123);
 
  test = extractValue(string);
 
- UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)141, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)159, UNITY_DISPLAY_STYLE_INT);
 
 
 
  test = extractDestination(string);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)144, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)162, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -294,17 +330,17 @@ void test_extractDestination_should_throw_with_invalid_argument(void){
 
 
 
- evaluate_CMockExpectAndReturn(155, stringMock, 123);
+ evaluate_CMockExpectAndReturn(173, stringMock, 123);
 
  test = extractValue(string);
 
- UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)157, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)175, UNITY_DISPLAY_STYLE_INT);
 
 
 
  stringMock = "FA";
 
- evaluate_CMockExpectAndThrow(160, stringMock, ERR_ILLEGAL_ARGUMENT);
+ evaluate_CMockExpectAndThrow(178, stringMock, ERR_ILLEGAL_ARGUMENT);
 
 
 
@@ -314,7 +350,7 @@ void test_extractDestination_should_throw_with_invalid_argument(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_ILLEGAL_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)165, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_ILLEGAL_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)183, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -338,27 +374,27 @@ void test_extractAccessBanked_should_return_correct_value_in_integer(void){
 
 
 
- evaluate_CMockExpectAndReturn(177, stringMock, 46);
+ evaluate_CMockExpectAndReturn(195, stringMock, 46);
 
  test = extractValue(string);
 
- UnityAssertEqualNumber((_U_SINT)((46)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)179, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((46)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)197, UNITY_DISPLAY_STYLE_INT);
 
 
 
  test = extractDestination(string);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)182, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)200, UNITY_DISPLAY_STYLE_INT);
 
 
 
  stringMock = "3";
 
- evaluate_CMockExpectAndReturn(185, stringMock, 3);
+ evaluate_CMockExpectAndReturn(203, stringMock, 3);
 
  test = extractAccessBanked(string);
 
- UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)187, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)205, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -378,11 +414,11 @@ void test_extractAccessBanked_should_throw_error_with_empty_argument(void){
 
 
 
- evaluate_CMockExpectAndReturn(197, stringMock, 123);
+ evaluate_CMockExpectAndReturn(215, stringMock, 123);
 
  test = extractValue(string);
 
- UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)199, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)217, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -390,7 +426,7 @@ void test_extractAccessBanked_should_throw_error_with_empty_argument(void){
 
  test = extractDestination(string);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)203, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)221, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -402,7 +438,7 @@ void test_extractAccessBanked_should_throw_error_with_empty_argument(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_EMPTY_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)209, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_EMPTY_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)227, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -424,11 +460,11 @@ void test_extractAccessBanked_should_throw_error_with_empty_argument_semicolon(v
 
 
 
- evaluate_CMockExpectAndReturn(220, stringMock, 123);
+ evaluate_CMockExpectAndReturn(238, stringMock, 123);
 
  test = extractValue(string);
 
- UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)222, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)240, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -436,7 +472,7 @@ void test_extractAccessBanked_should_throw_error_with_empty_argument_semicolon(v
 
  test = extractDestination(string);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)226, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)244, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -448,7 +484,7 @@ void test_extractAccessBanked_should_throw_error_with_empty_argument_semicolon(v
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_NO_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)232, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_NO_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)250, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -470,11 +506,11 @@ void test_extractAccessBaked_should_get_value_from_ACCESS(void){
 
 
 
- evaluate_CMockExpectAndReturn(243, stringMock, 3);
+ evaluate_CMockExpectAndReturn(261, stringMock, 3);
 
  test = extractValue(string);
 
- UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)245, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)263, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -482,7 +518,7 @@ void test_extractAccessBaked_should_get_value_from_ACCESS(void){
 
  test = extractDestination(string);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)249, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)267, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -490,7 +526,7 @@ void test_extractAccessBaked_should_get_value_from_ACCESS(void){
 
  test = extractAccessBanked(string);
 
- UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)253, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)271, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -512,31 +548,31 @@ void test_extractAccessBanked_should_get_value_from_evaluate(void){
 
 
 
- evaluate_CMockExpectAndReturn(264, stringMock, 123);
+ evaluate_CMockExpectAndReturn(282, stringMock, 123);
 
  test = extractValue(string);
 
- UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)266, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)284, UNITY_DISPLAY_STYLE_INT);
 
 
 
  stringMock = "1";
 
- evaluate_CMockExpectAndReturn(269, stringMock, 1);
+ evaluate_CMockExpectAndReturn(287, stringMock, 1);
 
  test = extractDestination(string);
 
- UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)271, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((1)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)289, UNITY_DISPLAY_STYLE_INT);
 
 
 
  stringMock = "1+2";
 
- evaluate_CMockExpectAndReturn(274, stringMock, 3);
+ evaluate_CMockExpectAndReturn(292, stringMock, 3);
 
  test = extractAccessBanked(string);
 
- UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)276, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((3)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)294, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -558,11 +594,11 @@ void test_extractAccessBanked_should_get_value_from_evaluate(void){
 
 
 
- evaluate_CMockExpectAndReturn(287, stringMock, 123);
+ evaluate_CMockExpectAndReturn(305, stringMock, 123);
 
  test = extractValue(string);
 
- UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)289, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)307, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -572,7 +608,7 @@ void test_extractAccessBanked_should_get_value_from_evaluate(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_NO_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)294, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_NO_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)312, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -584,7 +620,7 @@ void test_extractAccessBanked_should_get_value_from_evaluate(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_NO_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)300, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_NO_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)318, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -606,11 +642,11 @@ void test_extractAccessBanked_should_get_value_from_evaluate(void){
 
 
 
- evaluate_CMockExpectAndReturn(311, stringMock, 123);
+ evaluate_CMockExpectAndReturn(329, stringMock, 123);
 
  test = extractValue(string);
 
- UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)313, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)331, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -620,7 +656,7 @@ void test_extractAccessBanked_should_get_value_from_evaluate(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_EMPTY_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)318, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_EMPTY_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)336, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -632,7 +668,7 @@ void test_extractAccessBanked_should_get_value_from_evaluate(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_EMPTY_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)324, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_EMPTY_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)342, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -654,11 +690,11 @@ void test_extractAccessBanked_should_get_value_from_evaluate(void){
 
 
 
- evaluate_CMockExpectAndReturn(335, stringMock, 123);
+ evaluate_CMockExpectAndReturn(353, stringMock, 123);
 
  test = extractValue(string);
 
- UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)337, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((123)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)355, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -668,7 +704,7 @@ void test_extractAccessBanked_should_get_value_from_evaluate(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_EMPTY_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)342, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_EMPTY_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)360, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -680,7 +716,7 @@ void test_extractAccessBanked_should_get_value_from_evaluate(void){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_NO_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)348, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_NO_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)366, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -698,9 +734,9 @@ void test_getInstruction_should_get_opCode_RLNCF(){
 
  test = getInstruction("RLNCF");
 
- UnityAssertEqualNumber((_U_SINT)(_US16)((0x4400)), (_U_SINT)(_US16)((test.opCode)), (((void *)0)), (_U_UINT)357, UNITY_DISPLAY_STYLE_HEX16);
+ UnityAssertEqualNumber((_U_SINT)(_US16)((0x4400)), (_U_SINT)(_US16)((test.opCode)), (((void *)0)), (_U_UINT)375, UNITY_DISPLAY_STYLE_HEX16);
 
- UnityAssertEqualNumber((_U_SINT)((FDA_TYPE)), (_U_SINT)((test.type)), (((void *)0)), (_U_UINT)358, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((FDA_TYPE)), (_U_SINT)((test.type)), (((void *)0)), (_U_UINT)376, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -716,9 +752,9 @@ void test_getInstruction_should_get_opCode_RETLW(){
 
  test = getInstruction("RETLW");
 
- UnityAssertEqualNumber((_U_SINT)(_US16)((0x0C00)), (_U_SINT)(_US16)((test.opCode)), (((void *)0)), (_U_UINT)366, UNITY_DISPLAY_STYLE_HEX16);
+ UnityAssertEqualNumber((_U_SINT)(_US16)((0x0C00)), (_U_SINT)(_US16)((test.opCode)), (((void *)0)), (_U_UINT)384, UNITY_DISPLAY_STYLE_HEX16);
 
- UnityAssertEqualNumber((_U_SINT)((K_TYPE)), (_U_SINT)((test.type)), (((void *)0)), (_U_UINT)367, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((K_TYPE)), (_U_SINT)((test.type)), (((void *)0)), (_U_UINT)385, UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -732,13 +768,13 @@ void test_interpret_should_able_to_get_correct_value(){
 
 
 
- FDA_CMockExpectAndReturn(374, string, 0x320);
+ FDA_CMockExpectAndReturn(392, string, 0x320);
 
  int test = interpret(string);
 
 
 
- UnityAssertEqualNumber((_U_SINT)((0x2720)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)377, UNITY_DISPLAY_STYLE_INT);
+ UnityAssertEqualNumber((_U_SINT)((0x2720)), (_U_SINT)((test)), (((void *)0)), (_U_UINT)395, UNITY_DISPLAY_STYLE_INT);
 
 
 
@@ -762,7 +798,7 @@ void test_interpret_should_throw_an_error_for_unexist_instruction(){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_ILLEGAL_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)389, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_ILLEGAL_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)407, UNITY_DISPLAY_STYLE_INT);
 
  }
 
@@ -780,7 +816,7 @@ void test_interpret_should_throw_an_error_for_invalid_input_instruction(){
 
 
 
- FDA_CMockExpectAndThrow(398, string, ERR_ILLEGAL_ARGUMENT);
+ FDA_CMockExpectAndThrow(416, string, ERR_ILLEGAL_ARGUMENT);
 
  { jmp_buf *PrevFrame, NewFrame; unsigned int MY_ID = (0); PrevFrame = CExceptionFrames[(0)].pFrame; CExceptionFrames[MY_ID].pFrame = (jmp_buf*)(&NewFrame); CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); if (_setjmp(NewFrame) == 0) { if (&PrevFrame){
 
@@ -788,7 +824,7 @@ void test_interpret_should_throw_an_error_for_invalid_input_instruction(){
 
  else { } CExceptionFrames[MY_ID].Exception = (0x5A5A5A5A); } else { e = CExceptionFrames[MY_ID].Exception; e=e; } CExceptionFrames[MY_ID].pFrame = PrevFrame; } if (CExceptionFrames[(0)].Exception != (0x5A5A5A5A)){
 
-  UnityAssertEqualNumber((_U_SINT)((ERR_ILLEGAL_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)402, UNITY_DISPLAY_STYLE_INT);
+  UnityAssertEqualNumber((_U_SINT)((ERR_ILLEGAL_ARGUMENT)), (_U_SINT)((e)), (((void *)0)), (_U_UINT)420, UNITY_DISPLAY_STYLE_INT);
 
  }
 

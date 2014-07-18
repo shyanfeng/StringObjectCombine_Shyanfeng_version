@@ -1,5 +1,5 @@
-#ifndef operator_H
-#define operator_H
+#ifndef OpCodeDecoder_H
+#define OpCodeDecoder_H
 
 #include "StringObject.h"
 
@@ -13,4 +13,4 @@ int S(String *arguments);
 int K(String *arguments);
 int FK(String *arguments);
 
-#endif // operator_H
+#endif // OpCodeDecoder_H

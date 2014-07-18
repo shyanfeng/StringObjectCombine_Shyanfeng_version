@@ -4,7 +4,7 @@
 #include <setjmp.h>
 #include "unity.h"
 #include "cmock.h"
-#include "mock_evaluate.h"
+#include "mock_Evaluate.h"
 
 typedef struct _CMOCK_evaluate_CALL_INSTANCE
 {
@@ -16,7 +16,7 @@ typedef struct _CMOCK_evaluate_CALL_INSTANCE
 
 } CMOCK_evaluate_CALL_INSTANCE;
 
-static struct mock_evaluateInstance
+static struct mock_EvaluateInstance
 {
   int evaluate_IgnoreBool;
   int evaluate_FinalReturn;
@@ -29,7 +29,7 @@ extern jmp_buf AbortFrame;
 extern int GlobalExpectCount;
 extern int GlobalVerifyOrder;
 
-void mock_evaluate_Verify(void)
+void mock_Evaluate_Verify(void)
 {
   UNITY_LINE_TYPE cmock_line = TEST_LINE_NUM;
   if (Mock.evaluate_IgnoreBool)
@@ -39,12 +39,12 @@ void mock_evaluate_Verify(void)
     Mock.evaluate_CallInstance = CMOCK_GUTS_NONE;
 }
 
-void mock_evaluate_Init(void)
+void mock_Evaluate_Init(void)
 {
-  mock_evaluate_Destroy();
+  mock_Evaluate_Destroy();
 }
 
-void mock_evaluate_Destroy(void)
+void mock_Evaluate_Destroy(void)
 {
   CMock_Guts_MemFreeAll();
   memset(&Mock, 0, sizeof(Mock));
