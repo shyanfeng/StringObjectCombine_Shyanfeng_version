@@ -1,6 +1,13 @@
 #ifndef _EXECUTE_H_
 #define _EXECUTE_H_
 
+#define	WREG 	0xFE8
+
+int executeInstruction(int code);
+int executeCarryStatus();
+int executeStatus(int data);
+int executeDestination(int destination, int address, int access, int data);
+
 int executeBCF(unsigned int code);
 int executeBSF(unsigned int code);
 int executeBTFSC(unsigned int code);

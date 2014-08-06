@@ -1,5 +1,6 @@
 #include "unity.h"
 #include "ExecutionTable.h"
+#include "FileRegister.h"
 #include "Execute.h"
 
 void setUp(void){}

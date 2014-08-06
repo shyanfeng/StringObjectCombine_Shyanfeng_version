@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include "ExecutionTable.h"
+#include "FileRegister.h"
 #include "Execute.h"
 
-typedef int (*ExecutionTable)(unsigned int code);
-
 ExecutionTable executionTable[64] = {
-	[0x06] = executeSWAPF,
-	[0x0e] = executeXORWF,
+	[0x06] = executeXORWF,
+	[0x0e] = executeSWAPF,
 	[0x16] = executeSUBWFB,
 	[0x17] = executeSUBWF,
 	[0x19] = executeTSTFSZ,

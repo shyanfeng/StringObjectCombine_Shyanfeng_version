@@ -7,6 +7,8 @@
 #define isInSecondAccessRange (address >= 0xf80 && address <= 0xfff)
 #define isInBankedRange (address >= 0x80 && address <= 0xf79)
 #define isInRangeOfBSR (fileRegisters[BSR] >= 0x0 && fileRegisters[BSR] <= 0x15)
+#define isShiftedBSR ((fileRegisters[BSR] & 0x0f)<<8)
+#define isMaskedAddress (address & 0xff)
 
 unsigned char fileRegisters[4096];
 
@@ -41,24 +43,25 @@ int findActualFileRegister(int address, int access){
 		if(isInFirstAccessRange || isInSecondAccessRange){
 			return address;
 		}else{
-			address = address & 0xff;
+			address = isMaskedAddress;
 			if(isInFirstAccessRange || isInSecondAccessRange){
 				return address;
 			}else{
-				address = address + (0xf<<8);
+				address = address | (0xf<<8);
+				return address;
 			}
 		}
 	}else{
 		if(isInRangeOfBSR){
 			if(isInBankedRange){
-				actualAddress = ((fileRegisters[BSR] & 0x0f)<<8) + (address & 0xff);
+				actualAddress = isShiftedBSR + isMaskedAddress;
 				return actualAddress;
 			}else{
-				actualAddress = ((fileRegisters[BSR] & 0x0f)<<8) + (address & 0xff);
+				actualAddress = isShiftedBSR + isMaskedAddress;
 				return actualAddress;
 			}
 		}else{
-			actualAddress = ((fileRegisters[BSR] & 0x0f)<<8) + (address & 0xff);
+			actualAddress = isShiftedBSR + isMaskedAddress;
 			return actualAddress;
 		}
 	}
@@ -74,4 +77,19 @@ void clearAllFileRegisters(){
 		fileRegisters[i] = 0;
 	}
 	
+}
+
+int getProgramCounter(){
+
+	return	(fileRegisters[PCLATU]<<16) + 
+			(fileRegisters[PCLATH]<<8) + 
+			fileRegisters[PCL];
+}
+
+void setProgramCounter (int programCounter){
+
+	fileRegisters[PCLATU] = (programCounter & 0xff0000) >> 16;
+	fileRegisters[PCLATH] = (programCounter & 0xff00) >> 8;
+	fileRegisters[PCL]	  = (programCounter & 0xff);
+
 }
