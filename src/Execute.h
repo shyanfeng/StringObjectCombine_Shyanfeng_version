@@ -3,8 +3,8 @@
 
 #define	WREG 	0xFE8
 
-int getInfo(int code);
-int executeInstruction(int code);
+int getInfo(unsigned int code);
+int executeInstruction(unsigned int code);
 int executeCarryStatus();
 int executeStatus(int data);
 int executeDestination(int destination, int address, int access, int data);

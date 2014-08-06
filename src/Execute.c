@@ -16,7 +16,7 @@ int carry;
  *	This function is to get all the info from code
  *
  **/
-int getInfo(int code){
+int getInfo(unsigned int code){
 
 	address = code & 0xff;
 	access = ((code & 0x100)>>8);
@@ -30,7 +30,7 @@ int getInfo(int code){
  *	This function is to execute the instruction from executionTable
  *
  **/
-int executeInstruction(int code){
+int executeInstruction(unsigned int code){
 
 	executionTable[(code & 0xFC00)>>10](code);
 
