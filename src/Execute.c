@@ -3,6 +3,14 @@
 #include "ExecutionTable.h"
 #include "Execute.h"
 
+int address;
+int access;
+int bit;
+int data;
+int destination;
+int programCounter = 0;
+int carry;
+
 int executeInstruction(int code){
 
 	executionTable[(code & 0xFC00)>>10](code);
@@ -10,7 +18,6 @@ int executeInstruction(int code){
 }
 
 int executeCarryStatus(){
-	int carry;
 	
 	fileRegisters[STATUS] = fileRegisters[STATUS] & 0x01;
 	if(fileRegisters[STATUS] == 1){
@@ -54,10 +61,6 @@ int executeDestination(int destination, int address, int access, int data){
 }
 
 int executeBCF(unsigned int code){
-	int address;
-	int access;
-	int bit;
-	int data;
 	
 	address = code & 0xff;
 	access = ((code & 0x100)>>8);
@@ -72,10 +75,6 @@ int executeBCF(unsigned int code){
 }
 
 int executeBSF(unsigned int code){
-	int address;
-	int access;
-	int bit;
-	int data;
 	
 	address = code & 0xff;
 	access = ((code & 0x100)>>8);
@@ -90,11 +89,6 @@ int executeBSF(unsigned int code){
 }
 
 int executeBTFSC(unsigned int code){
-	int address;
-	int access;
-	int bit;
-	int data;
-	int programCounter = 0;
 	
 	address = code & 0xff;
 	access = ((code & 0x100)>>8);
@@ -116,11 +110,6 @@ int executeBTFSC(unsigned int code){
 }
 
 int executeBTFSS(unsigned int code){
-	int address;
-	int access;
-	int bit;
-	int data;
-	int programCounter = 0;
 	
 	address = code & 0xff;
 	access = ((code & 0x100)>>8);
@@ -142,10 +131,6 @@ int executeBTFSS(unsigned int code){
 }
 
 int executeBTG(unsigned int code){
-	int address;
-	int access;
-	int bit;
-	int data;
 	
 	address = code & 0xff;
 	access = ((code & 0x100)>>8);
@@ -160,12 +145,6 @@ int executeBTG(unsigned int code){
 }
 
 int executeSUBWF(unsigned int code){
-	int address;
-	int access;
-	int bit;
-	int data;
-	int destination;
-	int carry;
 	
 	address = code & 0xff;
 	access = ((code & 0x100)>>8);
@@ -182,12 +161,6 @@ int executeSUBWF(unsigned int code){
 }
 
 int executeSUBWFB(unsigned int code){
-	int address;
-	int access;
-	int bit;
-	int data;
-	int destination;
-	int carry;
 	
 	address = code & 0xff;
 	access = ((code & 0x100)>>8);
@@ -206,11 +179,6 @@ int executeSUBWFB(unsigned int code){
 }
 
 int executeSWAPF(unsigned int code){
-	int address;
-	int access;
-	int destination;
-	int bit;
-	int data;
 	
 	address = code & 0xff;
 	access = ((code & 0x100)>>8);
@@ -225,10 +193,6 @@ int executeSWAPF(unsigned int code){
 }
 
 int executeTSTFSZ(unsigned int code){
-	int address;
-	int access;
-	int data;
-	int programCounter = 0;
 	
 	address = code & 0xff;
 	access = ((code & 0x100)>>8);
@@ -248,11 +212,6 @@ int executeTSTFSZ(unsigned int code){
 }
 
 int executeXORWF(unsigned int code){
-	int address;
-	int access;
-	int bit;
-	int data;
-	int destination;
 	
 	address = code & 0xff;
 	access = ((code & 0x100)>>8);
