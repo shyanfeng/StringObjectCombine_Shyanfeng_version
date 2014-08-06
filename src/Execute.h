@@ -3,10 +3,12 @@
 
 #define	WREG 	0xFE8
 
+int getInfo(int code);
 int executeInstruction(int code);
 int executeCarryStatus();
 int executeStatus(int data);
 int executeDestination(int destination, int address, int access, int data);
+int executeProgramCounter();
 
 int executeBCF(unsigned int code);
 int executeBSF(unsigned int code);

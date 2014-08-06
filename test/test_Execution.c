@@ -127,11 +127,93 @@ void test_executeDestination_should_return_data_and_store_in_WREG(){
 	
 }
 
+void test_executeProgramCounter_should_return_program_counter(){
+	int data;
+	clearAllFileRegisters(fileRegisters);
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x2;
+	
+	data = executeProgramCounter();
+	
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x4,fileRegisters[PCL]);
+	
+}
+
+void test_executeProgramCounterSkipIfClear_should_return_program_counter_plus_4(){
+	int data;
+	clearAllFileRegisters(fileRegisters);
+	data = 0;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x2;
+	
+	data = executeProgramCounterSkipIfClear(data);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x6,fileRegisters[PCL]);
+	
+}
+
+void test_executeProgramCounterSkipIfClear_should_return_program_counter_plus_2(){
+	int data;
+	clearAllFileRegisters(fileRegisters);
+	data = 0x1;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x2;
+	
+	data = executeProgramCounterSkipIfClear(data);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x4,fileRegisters[PCL]);
+	
+}
+
+void test_executeProgramCounterSkipIfSet_should_return_program_counter_plus_2(){
+	int data;
+	clearAllFileRegisters(fileRegisters);
+	data = 0x0;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x2;
+	
+	data = executeProgramCounterSkipIfSet(data);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x4,fileRegisters[PCL]);
+	
+}
+
+void test_executeProgramCounterSkipIfSet_should_return_program_counter_plus_4(){
+	int data;
+	clearAllFileRegisters(fileRegisters);
+	data = 0x1;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x2;
+	
+	data = executeProgramCounterSkipIfSet(data);
+	
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x6,fileRegisters[PCL]);
+	
+}
+
 void test_executeBCF_0xf1_access_should_clear_bit7_and_return_0x71(){
 	int code;
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[0x46] = 0xf1;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x2;
 	
 	code = 0x9E46;
 	data = executeInstruction(code);
@@ -139,6 +221,9 @@ void test_executeBCF_0xf1_access_should_clear_bit7_and_return_0x71(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x71, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x4,fileRegisters[PCL]);
 	
 }
 
@@ -147,6 +232,9 @@ void test_executeBCF_0x64_access_should_clear_bit5_and_return_0x44(){
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[0x67] = 0x64;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x4;
 	
 	code = 0x9A67;
 	data = executeInstruction(code);
@@ -154,6 +242,9 @@ void test_executeBCF_0x64_access_should_clear_bit5_and_return_0x44(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x44, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x6,fileRegisters[PCL]);
 	
 }
 
@@ -162,6 +253,9 @@ void test_executeBCF_0x72_access_should_clear_bit1_and_return_0x70(){
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[0x34] = 0x72;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x6;
 	
 	code = 0x9234;
 	data = executeInstruction(code);
@@ -169,6 +263,9 @@ void test_executeBCF_0x72_access_should_clear_bit1_and_return_0x70(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x70, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x8,fileRegisters[PCL]);
 	
 }
 
@@ -178,6 +275,9 @@ void test_executeBCF_0x4f_banked_should_clear_bit3_and_return_0x47(){
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[BSR] = 0x0;
 	fileRegisters[0xe1] = 0x4f;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x8;
 	
 	code = 0x97e1;
 	data = executeInstruction(code);
@@ -185,6 +285,9 @@ void test_executeBCF_0x4f_banked_should_clear_bit3_and_return_0x47(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x47, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x0a,fileRegisters[PCL]);
 	
 }
 
@@ -194,6 +297,9 @@ void test_executeBCF_0xc3_banked_should_clear_bit6_and_return_0x83(){
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[BSR] = 0x0;
 	fileRegisters[0xb6] = 0xc3;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x0a;
 	
 	code = 0x9db6;
 	data = executeInstruction(code);
@@ -201,6 +307,9 @@ void test_executeBCF_0xc3_banked_should_clear_bit6_and_return_0x83(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x83, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x0c,fileRegisters[PCL]);
 	
 }
 
@@ -209,6 +318,9 @@ void test_executeBSF_0x71_access_should_set_bit7_and_return_0xf1(){
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[0x46] = 0x71;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x0c;
 	
 	code = 0x8E46;
 	data = executeInstruction(code);
@@ -216,6 +328,9 @@ void test_executeBSF_0x71_access_should_set_bit7_and_return_0xf1(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0xf1, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x0e,fileRegisters[PCL]);
 	
 }
 
@@ -224,6 +339,9 @@ void test_executeBSF_0xa7_access_over_range_should_set_bit4_and_return_0xb7(){
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[0xfc4] = 0xa7;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x0e;
 	
 	code = 0x88c4;
 	data = executeInstruction(code);
@@ -231,6 +349,9 @@ void test_executeBSF_0xa7_access_over_range_should_set_bit4_and_return_0xb7(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0xb7, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x10,fileRegisters[PCL]);
 	
 }
 
@@ -239,6 +360,9 @@ void test_executeBSF_0x56_access_over_range_should_set_bit3_and_return_0x5e(){
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[0xfd1] = 0x56;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x10;
 	
 	code = 0x86d1;
 	data = executeInstruction(code);
@@ -246,6 +370,9 @@ void test_executeBSF_0x56_access_over_range_should_set_bit3_and_return_0x5e(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x5e, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x12,fileRegisters[PCL]);
 	
 }
 
@@ -255,6 +382,9 @@ void test_executeBSF_0xd7_banked_should_set_bit3_and_return_0xdf(){
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[BSR] = 0x4;
 	fileRegisters[0x412] = 0xd7;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x12;
 	
 	code = 0x8712;
 	data = executeInstruction(code);
@@ -262,6 +392,9 @@ void test_executeBSF_0xd7_banked_should_set_bit3_and_return_0xdf(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0xdf, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x14,fileRegisters[PCL]);
 	
 }
 
@@ -271,6 +404,9 @@ void test_executeBSF_0xb2_banked_over_range_should_set_bit0_and_return_0xb3(){
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[BSR] = 0x72;
 	fileRegisters[0x263] = 0xb2;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x14;
 	
 	code = 0x8163;
 	data = executeInstruction(code);
@@ -278,6 +414,9 @@ void test_executeBSF_0xb2_banked_over_range_should_set_bit0_and_return_0xb3(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0xb3, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x16,fileRegisters[PCL]);
 	
 }
 
@@ -286,6 +425,9 @@ void test_executeBTG_0x4e_access_should_set_bit5_and_return_0x6e(){
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[0x7a] = 0x4e;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x14;
 	
 	code = 0x7a7a;
 	data = executeInstruction(code);
@@ -293,6 +435,9 @@ void test_executeBTG_0x4e_access_should_set_bit5_and_return_0x6e(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x6e, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x16,fileRegisters[PCL]);
 	
 }
 
@@ -301,6 +446,9 @@ void test_executeBTG_0xe9_access_should_set_bit3_and_return_0xe1(){
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[0x2a] = 0xe9;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x14;
 	
 	code = 0x762a;
 	data = executeInstruction(code);
@@ -308,6 +456,9 @@ void test_executeBTG_0xe9_access_should_set_bit3_and_return_0xe1(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0xe1, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x16,fileRegisters[PCL]);
 	
 }
 
@@ -316,6 +467,9 @@ void test_executeBTG_0x39_access_over_range_should_set_bit3_and_return_0x31(){
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[0xfe2] = 0x39;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x14;
 	
 	code = 0x76e2;
 	data = executeInstruction(code);
@@ -323,6 +477,9 @@ void test_executeBTG_0x39_access_over_range_should_set_bit3_and_return_0x31(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x31, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x16,fileRegisters[PCL]);
 	
 }
 
@@ -331,6 +488,9 @@ void test_executeBTG_0xf7_access_over_range_should_set_bit6_and_return_0xd7(){
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[0xf99] = 0xf7;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x14;
 	
 	code = 0x7c99;
 	data = executeInstruction(code);
@@ -338,6 +498,9 @@ void test_executeBTG_0xf7_access_over_range_should_set_bit6_and_return_0xd7(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0xb7, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x16,fileRegisters[PCL]);
 	
 }
 
@@ -347,6 +510,9 @@ void test_executeBTG_0xb6_banked_should_set_bit7_and_return_0x36(){
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[BSR] = 0x6;
 	fileRegisters[0x6a3] = 0xb6;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x14;
 	
 	code = 0x7fa3;
 	data = executeInstruction(code);
@@ -354,6 +520,9 @@ void test_executeBTG_0xb6_banked_should_set_bit7_and_return_0x36(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x36, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x16,fileRegisters[PCL]);
 	
 }
 
@@ -363,6 +532,9 @@ void test_executeBTG_0x8e_banked_over_range_should_set_bit3_and_return_0x86(){
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[BSR] = 0xf2;
 	fileRegisters[0x27a] = 0x8e;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x14;
 	
 	code = 0x777a;
 	data = executeInstruction(code);
@@ -370,6 +542,9 @@ void test_executeBTG_0x8e_banked_over_range_should_set_bit3_and_return_0x86(){
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x86, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x16,fileRegisters[PCL]);
 	
 }
 
@@ -849,6 +1024,9 @@ void test_executeSWAPF_0x53_access_should_swap_and_return_0x35_and_store_in_file
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[0x55] = 0x53;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0xba;
 	
 	code = 0x3a55;
 	data = executeInstruction(code);
@@ -856,6 +1034,9 @@ void test_executeSWAPF_0x53_access_should_swap_and_return_0x35_and_store_in_file
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x35, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0xbc,fileRegisters[PCL]);
 	
 }
 
@@ -864,6 +1045,9 @@ void test_executeSWAPF_0xfa_access_should_swap_and_return_0xaf_and_store_in_file
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[0x78] = 0xfa;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0xba;
 	
 	code = 0x3a78;
 	data = executeInstruction(code);
@@ -871,6 +1055,9 @@ void test_executeSWAPF_0xfa_access_should_swap_and_return_0xaf_and_store_in_file
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0xaf, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0xbc,fileRegisters[PCL]);
 	
 }
 
@@ -879,6 +1066,9 @@ void test_executeSWAPF_0x23_access_should_swap_and_return_0xaf_and_store_in_WREG
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[0x54] = 0x23;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0xba;
 	
 	code = 0x3954;
 	data = executeInstruction(code);
@@ -886,6 +1076,9 @@ void test_executeSWAPF_0x23_access_should_swap_and_return_0xaf_and_store_in_WREG
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x32, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0xbc,fileRegisters[PCL]);
 	
 }
 
@@ -895,6 +1088,9 @@ void test_executeSWAPF_0xbc_banked_should_swap_and_return_0xcb_and_store_in_WREG
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[BSR] = 0x2;
 	fileRegisters[0x25a] = 0xbc;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0xba;
 	
 	code = 0x395a;
 	data = executeInstruction(code);
@@ -902,6 +1098,9 @@ void test_executeSWAPF_0xbc_banked_should_swap_and_return_0xcb_and_store_in_WREG
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0xcb, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0xbc,fileRegisters[PCL]);
 	
 }
 
@@ -911,6 +1110,9 @@ void test_executeSWAPF_0x2e_banked_should_swap_and_return_0xe2_and_store_in_WREG
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[BSR] = 0x6;
 	fileRegisters[0x642] = 0x2e;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0xba;
 	
 	code = 0x3942;
 	data = executeInstruction(code);
@@ -918,6 +1120,9 @@ void test_executeSWAPF_0x2e_banked_should_swap_and_return_0xe2_and_store_in_WREG
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0xe2, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0xbc,fileRegisters[PCL]);
 	
 }
 
@@ -927,6 +1132,9 @@ void test_executeSWAPF_0x56_banked_should_swap_and_return_0xe2_and_store_in_file
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[BSR] = 0x7;
 	fileRegisters[0x721] = 0x56;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0xba;
 	
 	code = 0x3921;
 	data = executeInstruction(code);
@@ -934,6 +1142,9 @@ void test_executeSWAPF_0x56_banked_should_swap_and_return_0xe2_and_store_in_file
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x65, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0xbc,fileRegisters[PCL]);
 	
 }
 
@@ -943,6 +1154,9 @@ void test_executeXORWF_0xab_access_should_xor_and_return_0x10_and_store_in_file_
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[WREG] = 0xb4;
 	fileRegisters[0xff1] = 0xa4;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x4a;
 	
 	code = 0x1af1;
 	data = executeInstruction(code);
@@ -950,6 +1164,9 @@ void test_executeXORWF_0xab_access_should_xor_and_return_0x10_and_store_in_file_
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x10, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x4c,fileRegisters[PCL]);
 	
 }
 
@@ -959,6 +1176,9 @@ void test_executeXORWF_0x14_access_should_xor_and_return_0x57_and_store_in_WREG(
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[WREG] = 0x43;
 	fileRegisters[0x3e] = 0x14;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x4a;
 	
 	code = 0x183e;
 	data = executeInstruction(code);
@@ -966,6 +1186,9 @@ void test_executeXORWF_0x14_access_should_xor_and_return_0x57_and_store_in_WREG(
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x57, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x4c,fileRegisters[PCL]);
 	
 }
 
@@ -976,6 +1199,9 @@ void test_executeXORWF_0xab_banked_should_xor_and_return_0x23_and_store_in_file_
 	fileRegisters[BSR] = 0x4;
 	fileRegisters[WREG] = 0x61;
 	fileRegisters[0x425] = 0x42;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x4a;
 	
 	code = 0x1b25;
 	data = executeInstruction(code);
@@ -983,6 +1209,9 @@ void test_executeXORWF_0xab_banked_should_xor_and_return_0x23_and_store_in_file_
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x23, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x4c,fileRegisters[PCL]);
 	
 }
 
@@ -993,6 +1222,9 @@ void test_executeXORWF_0xc2_banked_should_xor_and_return_0xb8_and_store_in_WREG(
 	fileRegisters[BSR] = 0x4;
 	fileRegisters[WREG] = 0x5a;
 	fileRegisters[0x4e1] = 0xc2;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x4a;
 	
 	code = 0x19e1;
 	data = executeInstruction(code);
@@ -1000,6 +1232,9 @@ void test_executeXORWF_0xc2_banked_should_xor_and_return_0xb8_and_store_in_WREG(
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x98, data);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x4c,fileRegisters[PCL]);
 	
 }
 
@@ -1010,6 +1245,9 @@ void test_executeSUBWFB_0x19_access_should_sub_with_borrow_and_return_0x0c_and_s
 	fileRegisters[WREG] = 0x0d;			//	0000 1101
 	fileRegisters[0x23] = 0x19;			//	0001 1001
 	fileRegisters[STATUS] = 0x1;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x72;
 	
 	code = 0x5a23;
 	data = executeInstruction(code);
@@ -1019,6 +1257,9 @@ void test_executeSUBWFB_0x19_access_should_sub_with_borrow_and_return_0x0c_and_s
 	TEST_ASSERT_EQUAL(0x0c, data);
 	TEST_ASSERT_EQUAL(0x0d, fileRegisters[WREG]);
 	TEST_ASSERT_EQUAL(0x0, fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x74,fileRegisters[PCL]);
 	
 }
 
@@ -1029,6 +1270,9 @@ void test_executeSUBWFB_0x19_access_should_sub_with_borrow_and_return_0x0d_and_s
 	fileRegisters[WREG] = 0x16;			//	0001 0110
 	fileRegisters[0x51] = 0x24;			//	0010 0100
 	fileRegisters[STATUS] = 0x0;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x72;
 	
 	code = 0x5851;
 	data = executeInstruction(code);
@@ -1038,6 +1282,9 @@ void test_executeSUBWFB_0x19_access_should_sub_with_borrow_and_return_0x0d_and_s
 	TEST_ASSERT_EQUAL(0x0d, data);
 	TEST_ASSERT_EQUAL(0x24, fileRegisters[0x51]);
 	TEST_ASSERT_EQUAL(0x1, fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x74,fileRegisters[PCL]);
 	
 }
 
@@ -1049,6 +1296,9 @@ void test_executeSUBWFB_0x1a_banked_should_sub_with_borrow_and_return_0x0_and_st
 	fileRegisters[WREG] = 0x1a;			//	0001 1100
 	fileRegisters[0x267] = 0x1b;		//	0001 1101
 	fileRegisters[STATUS] = 0x0;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x72;
 	
 	code = 0x5967;
 	data = executeInstruction(code);
@@ -1058,6 +1308,9 @@ void test_executeSUBWFB_0x1a_banked_should_sub_with_borrow_and_return_0x0_and_st
 	TEST_ASSERT_EQUAL(0x0, data);
 	TEST_ASSERT_EQUAL(0x1b, fileRegisters[0x267]);
 	TEST_ASSERT_EQUAL(0x4, fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x74,fileRegisters[PCL]);
 	
 }
 
@@ -1069,6 +1322,9 @@ void test_executeSUBWFB_0x03_banked_should_sub_with_borrow_and_return_0x0_and_st
 	fileRegisters[WREG] = 0x0e;			//	0000 1110
 	fileRegisters[0x931] = 0x03;		//	0000 0011
 	fileRegisters[STATUS] = 0x1;
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x72;
 	
 	code = 0x5b31;
 	data = executeInstruction(code);
@@ -1078,6 +1334,9 @@ void test_executeSUBWFB_0x03_banked_should_sub_with_borrow_and_return_0x0_and_st
 	TEST_ASSERT_EQUAL(0xf5, data);
 	TEST_ASSERT_EQUAL(0x0e, fileRegisters[WREG]);
 	TEST_ASSERT_EQUAL(0x10, fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x74,fileRegisters[PCL]);
 	
 }
 
@@ -1087,6 +1346,9 @@ void test_executeSUBWF_0x03_access_should_sub_and_return_0x01_and_store_in_file_
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[WREG] = 0x02;			//	0000 0010
 	fileRegisters[0x51] = 0x03;			//	0000 0011
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x4c;
 	
 	code = 0x5e51;
 	data = executeInstruction(code);
@@ -1096,6 +1358,9 @@ void test_executeSUBWF_0x03_access_should_sub_and_return_0x01_and_store_in_file_
 	TEST_ASSERT_EQUAL(0x01, data);
 	TEST_ASSERT_EQUAL(0x02, fileRegisters[WREG]);
 	TEST_ASSERT_EQUAL(0x1, fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x4e,fileRegisters[PCL]);
 	
 }
 
@@ -1105,6 +1370,9 @@ void test_executeSUBWF_0x12_access_should_sub_and_return_0x0e_and_store_in_WREG(
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[WREG] = 0x4;			//	0000 0100
 	fileRegisters[0x41] = 0x12;			//	0001 0010
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x4c;
 	
 	code = 0x5c41;
 	data = executeInstruction(code);
@@ -1114,6 +1382,9 @@ void test_executeSUBWF_0x12_access_should_sub_and_return_0x0e_and_store_in_WREG(
 	TEST_ASSERT_EQUAL(0x0e, data);
 	TEST_ASSERT_EQUAL(0x12, fileRegisters[0x41]);
 	TEST_ASSERT_EQUAL(0x0, fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x4e,fileRegisters[PCL]);
 	
 }
 
@@ -1124,6 +1395,9 @@ void test_executeSUBWF_0x02_banked_should_sub_and_return_0x0e_and_store_in_file_
 	fileRegisters[BSR] = 0x2;	
 	fileRegisters[WREG] = 0x02;			//	0000 0010
 	fileRegisters[0x263] = 0x02;			//	0001 0010
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x4c;
 	
 	code = 0x5f63;
 	data = executeInstruction(code);
@@ -1133,6 +1407,9 @@ void test_executeSUBWF_0x02_banked_should_sub_and_return_0x0e_and_store_in_file_
 	TEST_ASSERT_EQUAL(0x0, data);
 	TEST_ASSERT_EQUAL(0x02, fileRegisters[WREG]);
 	TEST_ASSERT_EQUAL(0x4, fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x4e,fileRegisters[PCL]);
 	
 }
 
@@ -1143,6 +1420,9 @@ void test_executeSUBWF_0x02_banked_should_sub_and_return_0x0e_and_store_in_WREG(
 	fileRegisters[BSR] = 0xf;	
 	fileRegisters[WREG] = 0x02;			//	0000 0010
 	fileRegisters[0xf31] = 0x01;			//	0001 0010
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x4c;
 	
 	code = 0x5d31;
 	data = executeInstruction(code);
@@ -1152,5 +1432,8 @@ void test_executeSUBWF_0x02_banked_should_sub_and_return_0x0e_and_store_in_WREG(
 	TEST_ASSERT_EQUAL(0xff, data);
 	TEST_ASSERT_EQUAL(0x01, fileRegisters[0xf31]);
 	TEST_ASSERT_EQUAL(0x10, fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x4e,fileRegisters[PCL]);
 	
 }
