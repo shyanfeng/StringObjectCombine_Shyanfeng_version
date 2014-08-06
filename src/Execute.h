@@ -9,6 +9,8 @@ int executeCarryStatus();
 int executeStatus(int data);
 int executeDestination(int destination, int address, int access, int data);
 int executeProgramCounter();
+int executeProgramCounterSkipIfClear(int data);
+int executeProgramCounterSkipIfSet(int data);
 
 int executeBCF(unsigned int code);
 int executeBSF(unsigned int code);
