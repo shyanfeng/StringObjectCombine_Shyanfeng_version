@@ -12,6 +12,14 @@
 #include "CustomTypeAssert.h"
 #include "mock_Evaluate.h"
 #include "mock_OpCodeDecoder.h"
+#include "NS.h"
+#include "S.h"
+#include "FA.h"
+#include "FBA.h"
+#include "FDA.h"
+#include "FsFd.h"
+#include "K.h"
+//#include "N.h"
 
 #define INSTRUCTION_TABLE_SIZE	(sizeof(instructions)/sizeof(instructionTable))
 

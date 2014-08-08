@@ -7,9 +7,24 @@ int address;
 int access;
 int bit;
 int data;
-int destination;
+int destinationBit;
 int programCounter = 0;
 int carry;
+
+/**
+ *
+ *
+ *	Retrieve a contiguious bits of 'bitSize' starting from offset.
+ *	Example :
+ *		data 	= 1000	1101
+ *		offset 	= 4
+ *		bitSize	= 6
+ *		result	= 0x17
+ *
+ */
+/*void setBitsAtOffset(unit32 *dataPtr, unit32 dataToWrite, int offset, int bitSize){
+
+}*/
 
 /**
  *
@@ -21,7 +36,7 @@ int getInfo(unsigned int code){
 	address = code & 0xff;
 	access = ((code & 0x100)>>8);
 	bit = ((code & 0xE00)>>9);
-	destination = ((code & 0x200)>>9);
+	destinationBit = ((code & 0x200)>>9);
 	
 }
 
@@ -53,12 +68,67 @@ int executeCarryStatus(){
 	return carry;
 }
 
+void setNegativeFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] |= 0x10;
+}
+
+void clearNegativeFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] &= 0xef;
+}
+
+void setOverFlowFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] |= 0x08;
+}
+
+void clearOverFlowFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] &= 0xf7;
+}
+
+void setZeroFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] |= 0x04;
+}
+
+void clearZeroFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] &= 0xfb;
+}
+
+void setDigitalCarryFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] |= 0x02;
+}
+
+void clearDigitalCarryFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] &= 0xfd;
+}
+
+void setCarryFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] |= 0x01;
+}
+
+void clearCarryFlag(){
+	// - - - N OV Z DC C
+	fileRegisters[STATUS] &= 0xfe;
+}
+
 /**
  *
- *	This function is to get the fileRegisters[STATUS]
+ *	Check the fileRegisters[STATUS] according to the data. If the data is 0
+ *	then the fileRegisters[STATUS] is 0x04. If the data is less than 0 then
+ *	the fileRegisters[STATUS] is 0x10. If the data bit0 is 1 then
+ *	fileRegisters[STATUS] is 0x01. 
+ *
+ *	Input :
  *
  **/
-int executeStatus(int data){
+int checkStatus(int data){
 	// - - - N OV Z DC C
 	
 	if(data == 0x0){
@@ -76,12 +146,20 @@ int executeStatus(int data){
 
 /**
  *
- *	This function is to get the destination to store and store into it
+ *	Store to destination according to destination bit. If the destinationBit
+ *	is 0 (WREG) then the data is stored into the WREG. If is 1 (fileRegister)
+ *	then data is stored into the specific fileRegister
+ *
+ *	Input :
+ *		destinationBit	is the d bit (WREG or fileRegister)
+ *		address is the address of fileRegister
+ *		access is the a bit(access or banked)
+ *		data is the data to write
  *
  **/
-int executeDestination(int destination, int address, int access, int data){
+int storeDestination(int destinationBit, int address, int access, int data){
 	
-	if(destination == 0){
+	if(destinationBit == 0){
 		fileRegisters[WREG] = data;
 		data = fileRegisters[WREG];
 	}else{
@@ -245,19 +323,52 @@ int executeBTG(unsigned int code){
  *
  **/
 int executeSUBWF(unsigned int code){
-	
+	int newData;
 	getInfo(code);
 	
 	data = getFileRegData(address, access);
-	data = data - fileRegisters[WREG];
+	newData = (int )data - fileRegisters[WREG];
 	
-	fileRegisters[STATUS] = executeStatus(data);
+	// Negative
+	if(newData < 0){
+		setNegativeFlag();
+	}else{
+		clearNegativeFlag();
+	}
+
+	// Over Flow
+	if((newData>>8) != (newData & 0x80 != data & 0x80)){
+		setOverFlowFlag();
+	}else{
+		clearOverFlowFlag();
+	}
 	
-	data = executeDestination(destination, address, access, data);
+	// Zero
+	if(newData == 0){
+		setZeroFlag();
+	}else{
+		clearZeroFlag();
+	}
+	
+	// Digital Carry
+	if((newData & 0x08) != (data & 0x08)){
+		setDigitalCarryFlag();
+	}else{
+		clearDigitalCarryFlag();
+	}
+	
+	// Carry
+	if((newData>>8)){
+		setCarryFlag();
+	}else{
+		clearCarryFlag();
+	}
+	
+	newData = storeDestination(destinationBit, address, access, newData);
 	
 	programCounter = executeProgramCounter();
 
-	return data;
+	return newData;
 }
 
 /**
@@ -266,21 +377,54 @@ int executeSUBWF(unsigned int code){
  *
  **/
 int executeSUBWFB(unsigned int code){
-	
+	int newData;
 	getInfo(code);
 
 	carry = executeCarryStatus();
 	
 	data = getFileRegData(address, access);
-	data = data - fileRegisters[WREG] - carry;
+	newData = (int )data - fileRegisters[WREG] - carry;
 	
-	fileRegisters[STATUS] = executeStatus(data);
+	// Negative
+	if(newData < 0){
+		setNegativeFlag();
+	}else{
+		clearNegativeFlag();
+	}
+
+	// Over Flow
+	if((newData>>8) != (newData & 0x80 != data & 0x80)){
+		setOverFlowFlag();
+	}else{
+		clearOverFlowFlag();
+	}
 	
-	data = executeDestination(destination, address, access, data);
+	// Zero
+	if(newData == 0){
+		setZeroFlag();
+	}else{
+		clearZeroFlag();
+	}
+	
+	// Digital Carry
+	if((newData & 0x08) != (data & 0x08)){
+		setDigitalCarryFlag();
+	}else{
+		clearDigitalCarryFlag();
+	}
+	
+	// Carry
+	if((newData>>8)){
+		setCarryFlag();
+	}else{
+		clearCarryFlag();
+	}
+	
+	newData = storeDestination(destinationBit, address, access, newData);
 	
 	programCounter = executeProgramCounter();
 
-	return data;
+	return newData;
 }
 
 /**
@@ -295,7 +439,7 @@ int executeSWAPF(unsigned int code){
 	data = getFileRegData(address, access);
 	data = (((data & 0x0f)<<4) | ((data & 0xf0)>>4));
 	
-	data = executeDestination(destination, address, access, data);
+	data = storeDestination(destinationBit, address, access, data);
 	
 	programCounter = executeProgramCounter();
 
@@ -330,7 +474,7 @@ int executeXORWF(unsigned int code){
 	data = getFileRegData(address, access);
 	data = data ^ fileRegisters[WREG];
 	
-	data = executeDestination(destination, address, access, data);
+	data = storeDestination(destinationBit, address, access, data);
 	
 	programCounter = executeProgramCounter();
 
