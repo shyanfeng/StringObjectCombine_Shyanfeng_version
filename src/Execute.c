@@ -324,20 +324,25 @@ int executeBTG(unsigned int code){
  **/
 int executeSUBWF(unsigned int code){
 	int newData;
+	int overFlowCheck;
+	int digitalCarryCheck;
 	getInfo(code);
 	
 	data = getFileRegData(address, access);
-	newData = (int )data - fileRegisters[WREG];
+	newData = (int )data + ((-fileRegisters[WREG]) & 0xff);
+	
+	overFlowCheck = ((((int )data & 0x7f) + ((-fileRegisters[WREG]) & 0xff))>>7);
+	digitalCarryCheck = ((((int )data & 0x7f) + ((-fileRegisters[WREG]) & 0xff))>>3);
 	
 	// Negative
-	if(newData < 0){
+	if(((newData & 0x80)>>7) == 1){
 		setNegativeFlag();
 	}else{
 		clearNegativeFlag();
 	}
 
 	// Over Flow
-	if((newData>>8) != (newData & 0x80 != data & 0x80)){
+	if((newData>>8) != overFlowCheck){
 		setOverFlowFlag();
 	}else{
 		clearOverFlowFlag();

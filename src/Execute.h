@@ -6,6 +6,16 @@
 int getInfo(unsigned int code);
 int executeInstruction(unsigned int code);
 int executeCarryStatus();
+void setNegativeFlag();
+void clearNegativeFlag();
+void setOverFlowFlag();
+void clearOverFlowFlag();
+void setZeroFlag();
+void clearZeroFlag();
+void setDigitalCarryFlag();
+void clearDigitalCarryFlag();
+void setCarryFlag();
+void clearCarryFlag();
 int checkStatus(int data);
 int storeDestination(int destination, int address, int access, int data);
 int executeProgramCounter();
