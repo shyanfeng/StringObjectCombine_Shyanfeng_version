@@ -2,6 +2,7 @@
 #include "FileRegister.h"
 #include "ExecutionTable.h"
 #include "Execute.h"
+#include "Types.h"
 
 int address;
 int access;
@@ -10,6 +11,33 @@ int data;
 int destinationBit;
 int programCounter = 0;
 int carry;
+
+uint32 maskTable[32] = { 	0x0, 
+							0x1, 0x3, 0x7, 0xf, 
+							0x1f, 0x3f, 0x7f, 0xff,
+							0x1ff, 0x3ff, 0x7ff, 0xfff, 
+							0x1fff, 0x3fff, 0x7fff, 0xffff, 
+							0x1ffff, 0x3ffff, 0x7ffff, 0xfffff, 
+							0x1fffff, 0x3fffff, 0x7fffff, 0xffffff, 
+							0x1ffffff, 0x3ffffff, 0x7ffffff, 0xfffffff, 
+							0x1fffffff, 0x3fffffff, 0x7fffffff
+						};
+
+uint32 getBitsAtOffset(uint32 data, int offset, int bitSize){
+	
+	if(offset >= 0 && bitSize > 0){
+		if(offset >31)
+			offset = 31;
+		if(bitSize > 31)
+			bitSize = 31;
+		
+		data = (data >> offset) & maskTable[bitSize];
+		
+		return data;
+	}
+	else
+		return 0;
+}
 
 /**
  *
@@ -22,21 +50,18 @@ int carry;
  *		result	= 0x17
  *
  */
-/*void setBitsAtOffset(unit32 *dataPtr, unit32 dataToWrite, int offset, int bitSize){
+void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSize){
+	
+	*dataPtr = *dataPtr &(~(maskTable[bitSize]<<offset));
+	*dataPtr = *dataPtr|(dataToWrite<<offset);
+}
 
-}*/
+int getInfoFromOffset(unsigned int code){
 
-/**
- *
- *	This function is to get all the info from code
- *
- **/
-int getInfo(unsigned int code){
-
-	address = code & 0xff;
-	access = ((code & 0x100)>>8);
-	bit = ((code & 0xE00)>>9);
-	destinationBit = ((code & 0x200)>>9);
+	address = getBitsAtOffset(code, 0, 8);
+	access = getBitsAtOffset(code, 8, 1);
+	bit = getBitsAtOffset(code, 9, 3);
+	destinationBit = getBitsAtOffset(code, 9, 1);
 	
 }
 
@@ -120,28 +145,46 @@ void clearCarryFlag(){
 
 /**
  *
- *	Check the fileRegisters[STATUS] according to the data. If the data is 0
- *	then the fileRegisters[STATUS] is 0x04. If the data is less than 0 then
- *	the fileRegisters[STATUS] is 0x10. If the data bit0 is 1 then
- *	fileRegisters[STATUS] is 0x01. 
+ *	Get the fileRegisters[STATUS] according to the newData. The setNegativeFlag() and
+ *	clearNegativeFlag() are used to detect the negative bit if bit 7 is 1 or 0. The 
+ *	setZeroFlag() and clearZeroFlag() are used to detect the zero bit if the newData 
+ *	is 0 or not 0. The setCarryFlag() and clearCarryFlag() are used to detect the carry
+ *	bit if the bit 8 is 1 or 0.
  *
  *	Input :
+ *		newData is the data of after operation
  *
  **/
-int checkStatus(int data){
-	// - - - N OV Z DC C
+void getStatusForNegative(int newData){
 	
-	if(data == 0x0){
-		fileRegisters[STATUS] = 0x04;	// Zero
-	}else if(data < 0x0){
-		fileRegisters[STATUS] = 0x10;	// Negative
-	}else if((data & 0x01) == 1){
-		fileRegisters[STATUS] = 0x01;	// Carry
+	// Negative
+	if(((newData & 0x80)>>7) == 1){
+		setNegativeFlag();
 	}else{
-		fileRegisters[STATUS] = 0x0;	// OV and DC
+		clearNegativeFlag();
 	}
-	
-	return fileRegisters[STATUS];
+
+}
+
+void getStatusForZero(int newData){
+
+	// Zero
+	if((newData & 0xff)== 0){
+		setZeroFlag();
+	}else{
+		clearZeroFlag();
+	}
+
+}
+
+void getStatusForCarry(int newData){
+
+	// Carry
+	if((newData>>8) == 1){
+		setCarryFlag();
+	}else{
+		clearCarryFlag();
+	}
 }
 
 /**
@@ -233,7 +276,7 @@ int executeProgramCounterSkipIfSet(int data){
  **/
 int executeBCF(unsigned int code){
 	
-	getInfo(code);
+	getInfoFromOffset(code);
 	
 	data = getFileRegData(address, access);
 	data = data & (~(1<<bit));
@@ -252,7 +295,7 @@ int executeBCF(unsigned int code){
  **/
 int executeBSF(unsigned int code){
 	
-	getInfo(code);
+	getInfoFromOffset(code);
 	
 	data = getFileRegData(address, access);
 	data = data | (1<<bit);
@@ -271,7 +314,7 @@ int executeBSF(unsigned int code){
  **/
 int executeBTFSC(unsigned int code){
 	
-	getInfo(code);
+	getInfoFromOffset(code);
 	
 	data = getFileRegData(address, access);
 	data = ((data & (1<<bit))>>bit);
@@ -288,7 +331,7 @@ int executeBTFSC(unsigned int code){
  **/
 int executeBTFSS(unsigned int code){
 	
-	getInfo(code);
+	getInfoFromOffset(code);
 	
 	data = getFileRegData(address, access);
 	data = ((data & (1<<bit))>>bit);
@@ -305,7 +348,7 @@ int executeBTFSS(unsigned int code){
  **/
 int executeBTG(unsigned int code){
 	
-	getInfo(code);
+	getInfoFromOffset(code);
 	
 	data = getFileRegData(address, access);
 	data = data ^ (1<<bit);
@@ -326,20 +369,17 @@ int executeSUBWF(unsigned int code){
 	int newData;
 	int overFlowCheck;
 	int digitalCarryCheck;
-	getInfo(code);
+	getInfoFromOffset(code);
 	
 	data = getFileRegData(address, access);
 	newData = (int )data + ((-fileRegisters[WREG]) & 0xff);
 	
-	overFlowCheck = ((((int )data & 0x7f) + ((-fileRegisters[WREG]) & 0xff))>>7);
-	digitalCarryCheck = ((((int )data & 0x7f) + ((-fileRegisters[WREG]) & 0xff))>>3);
+	overFlowCheck = ((((int )data & 0x7f) + ((-fileRegisters[WREG]) & 0x7f))>>7);
+	digitalCarryCheck = ((((int )data & 0x0f) + ((-fileRegisters[WREG]) & 0x0f))>>4);
 	
-	// Negative
-	if(((newData & 0x80)>>7) == 1){
-		setNegativeFlag();
-	}else{
-		clearNegativeFlag();
-	}
+	getStatusForNegative(newData);
+	getStatusForZero(newData);
+	getStatusForCarry(newData);
 
 	// Over Flow
 	if((newData>>8) != overFlowCheck){
@@ -348,25 +388,11 @@ int executeSUBWF(unsigned int code){
 		clearOverFlowFlag();
 	}
 	
-	// Zero
-	if(newData == 0){
-		setZeroFlag();
-	}else{
-		clearZeroFlag();
-	}
-	
 	// Digital Carry
-	if((newData & 0x08) != (data & 0x08)){
+	if(digitalCarryCheck == 1){
 		setDigitalCarryFlag();
 	}else{
 		clearDigitalCarryFlag();
-	}
-	
-	// Carry
-	if((newData>>8)){
-		setCarryFlag();
-	}else{
-		clearCarryFlag();
 	}
 	
 	newData = storeDestination(destinationBit, address, access, newData);
@@ -383,46 +409,34 @@ int executeSUBWF(unsigned int code){
  **/
 int executeSUBWFB(unsigned int code){
 	int newData;
-	getInfo(code);
+	int overFlowCheck;
+	int digitalCarryCheck;
+	getInfoFromOffset(code);
 
 	carry = executeCarryStatus();
 	
 	data = getFileRegData(address, access);
-	newData = (int )data - fileRegisters[WREG] - carry;
+	newData = (int )data - ((fileRegisters[WREG]) & 0xff) - carry;
 	
-	// Negative
-	if(newData < 0){
-		setNegativeFlag();
-	}else{
-		clearNegativeFlag();
-	}
+	overFlowCheck = ((((int )data & 0x7f) + ((-fileRegisters[WREG]) & 0x7f) - carry)>>7);
+	digitalCarryCheck = ((((int )data & 0x0f) + ((-fileRegisters[WREG]) & 0x0f) - carry)>>4);
+	
+	getStatusForNegative(newData);
+	getStatusForZero(newData);
+	getStatusForCarry(newData);
 
 	// Over Flow
-	if((newData>>8) != (newData & 0x80 != data & 0x80)){
+	if((newData>>8) != overFlowCheck){
 		setOverFlowFlag();
 	}else{
 		clearOverFlowFlag();
 	}
 	
-	// Zero
-	if(newData == 0){
-		setZeroFlag();
-	}else{
-		clearZeroFlag();
-	}
-	
 	// Digital Carry
-	if((newData & 0x08) != (data & 0x08)){
+	if(digitalCarryCheck == 1){
 		setDigitalCarryFlag();
 	}else{
 		clearDigitalCarryFlag();
-	}
-	
-	// Carry
-	if((newData>>8)){
-		setCarryFlag();
-	}else{
-		clearCarryFlag();
 	}
 	
 	newData = storeDestination(destinationBit, address, access, newData);
@@ -439,7 +453,7 @@ int executeSUBWFB(unsigned int code){
  **/
 int executeSWAPF(unsigned int code){
 	
-	getInfo(code);
+	getInfoFromOffset(code);
 	
 	data = getFileRegData(address, access);
 	data = (((data & 0x0f)<<4) | ((data & 0xf0)>>4));
@@ -458,7 +472,7 @@ int executeSWAPF(unsigned int code){
  **/
 int executeTSTFSZ(unsigned int code){
 	
-	getInfo(code);
+	getInfoFromOffset(code);
 	
 	data = getFileRegData(address, access);
 	
@@ -473,16 +487,21 @@ int executeTSTFSZ(unsigned int code){
  *
  **/
 int executeXORWF(unsigned int code){
-	
-	getInfo(code);
+	int newData;
+	int overFlowCheck;
+	int digitalCarryCheck;
+	getInfoFromOffset(code);
 	
 	data = getFileRegData(address, access);
-	data = data ^ fileRegisters[WREG];
+	newData = (int )data ^ (fileRegisters[WREG] & 0xff);
 	
-	data = storeDestination(destinationBit, address, access, data);
+	getStatusForNegative(newData);
+	getStatusForZero(newData);
+	
+	newData = storeDestination(destinationBit, address, access, newData);
 	
 	programCounter = executeProgramCounter();
 
-	return data;
+	return newData;
 }
 

@@ -150,67 +150,6 @@ void test_clearCarryFlag_fileRegisters_STATUS_0x05_should_return_0x04(){
 	
 }
 
-/*void test_checkStatus_zero_0x0_should_return_fileRegisters_STATUS_0x04(){
-	int code;
-	int data;
-	clearAllFileRegisters(fileRegisters);
-	data = 0x0;
-
-	fileRegisters[STATUS] = checkStatus(data);
-	
-	TEST_ASSERT_EQUAL(0x4, fileRegisters[STATUS]);
-	
-}
-
-void test_checkStatus_negative_should_return_fileRegisters_STATUS_0x10(){
-	int code;
-	int data;
-	clearAllFileRegisters(fileRegisters);
-	fileRegisters[STATUS] = 0x0;
-	data = -0x1;
-
-	fileRegisters[STATUS] = checkStatus(data);
-	
-	TEST_ASSERT_EQUAL(0x10, fileRegisters[STATUS]);
-	
-}
-
-void test_checkStatus_carry_should_return_fileRegisters_STATUS_0x1(){
-	int code;
-	int data;
-	clearAllFileRegisters(fileRegisters);
-	data = -0x1;
-
-	fileRegisters[STATUS] = checkStatus(data);
-	
-	TEST_ASSERT_EQUAL(0x10, fileRegisters[STATUS]);
-	
-}
-
-void test_checkStatus_ov_should_return_fileRegisters_STATUS_0x0(){
-	int code;
-	int data;
-	clearAllFileRegisters(fileRegisters);
-	data = 0x12;
-
-	fileRegisters[STATUS] = checkStatus(data);
-	
-	TEST_ASSERT_EQUAL(0x0, fileRegisters[STATUS]);
-	
-}
-
-void test_checkStatus_dc_should_return_fileRegisters_STATUS_0x0(){
-	int code;
-	int data;
-	clearAllFileRegisters(fileRegisters);
-	data = 0x46;
-
-	fileRegisters[STATUS] = checkStatus(data);
-	
-	TEST_ASSERT_EQUAL(0x0, fileRegisters[STATUS]);
-	
-}*/
-
 void test_storeDestination_should_return_data_and_store_in_file_register(){
 	int data;
 	int address;
@@ -1284,6 +1223,8 @@ void test_executeXORWF_0xab_access_should_xor_and_return_0x10_and_store_in_file_
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x10, data);
+	TEST_ASSERT_EQUAL(0xb4, fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL(0x00, fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x4c,fileRegisters[PCL]);
@@ -1306,6 +1247,8 @@ void test_executeXORWF_0x14_access_should_xor_and_return_0x57_and_store_in_WREG(
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x57, data);
+	TEST_ASSERT_EQUAL(0x14, fileRegisters[0x3e]);
+	TEST_ASSERT_EQUAL(0x00, fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x4c,fileRegisters[PCL]);
@@ -1329,6 +1272,8 @@ void test_executeXORWF_0xab_banked_should_xor_and_return_0x23_and_store_in_file_
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x23, data);
+	TEST_ASSERT_EQUAL(0x61, fileRegisters[WREG]);
+	TEST_ASSERT_EQUAL(0x00, fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x4c,fileRegisters[PCL]);
@@ -1352,6 +1297,8 @@ void test_executeXORWF_0xc2_banked_should_xor_and_return_0xb8_and_store_in_WREG(
 	// printf("%x\n", data);
 	
 	TEST_ASSERT_EQUAL(0x98, data);
+	TEST_ASSERT_EQUAL(0xc2, fileRegisters[0x4e1]);
+	TEST_ASSERT_EQUAL(0x10, fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x4c,fileRegisters[PCL]);
@@ -1376,14 +1323,14 @@ void test_executeXORWF_0xc2_banked_should_xor_and_return_0xb8_and_store_in_WREG(
 	
 	TEST_ASSERT_EQUAL(0x0c, data);
 	TEST_ASSERT_EQUAL(0x0d, fileRegisters[WREG]);
-	TEST_ASSERT_EQUAL(0x0, fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL(0x08, fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x74,fileRegisters[PCL]);
 	
-}
+}*/
 
-void test_executeSUBWFB_0x19_access_should_sub_with_borrow_and_return_0x0d_and_store_in_WREG(){
+/*void test_executeSUBWFB_0x19_access_should_sub_with_borrow_and_return_0x0d_and_store_in_WREG(){
 	int code;
 	int data;
 	clearAllFileRegisters(fileRegisters);
@@ -1477,7 +1424,7 @@ void test_executeSUBWF_0x03_access_should_sub_and_return_0x01_and_store_in_file_
 	
 	TEST_ASSERT_EQUAL(0x01, data);
 	TEST_ASSERT_EQUAL(0x02, fileRegisters[WREG]);
-	TEST_ASSERT_EQUAL(0x09, fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL(0x03, fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x4e,fileRegisters[PCL]);
@@ -1501,20 +1448,20 @@ void test_executeSUBWF_0x12_access_should_sub_and_return_0x0e_and_store_in_WREG(
 	
 	TEST_ASSERT_EQUAL(0x0e, data);
 	TEST_ASSERT_EQUAL(0x12, fileRegisters[0x41]);
-	TEST_ASSERT_EQUAL(0x0b, fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL(0x01, fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x4e,fileRegisters[PCL]);
 	
 }
 
-void test_executeSUBWF_0x02_banked_should_sub_and_return_0x0e_and_store_in_file_register(){
+void test_executeSUBWF_0x02_banked_should_sub_and_return_0x0_and_store_in_file_register(){
 	int code;
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[BSR] = 0x2;	
 	fileRegisters[WREG] = 0x02;			//	0000 0010
-	fileRegisters[0x263] = 0x02;			//	0001 0010
+	fileRegisters[0x263] = 0x02;		//	0000 0010
 	fileRegisters[PCLATU] = 0x00;
 	fileRegisters[PCLATH] = 0x00;
 	fileRegisters[PCL] = 0x4c;
@@ -1526,20 +1473,20 @@ void test_executeSUBWF_0x02_banked_should_sub_and_return_0x0e_and_store_in_file_
 	
 	TEST_ASSERT_EQUAL(0x0, data);
 	TEST_ASSERT_EQUAL(0x02, fileRegisters[WREG]);
-	TEST_ASSERT_EQUAL(0x09, fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL(0x07, fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x4e,fileRegisters[PCL]);
 	
 }
 
-void test_executeSUBWF_0x02_banked_should_sub_and_return_0x0e_and_store_in_WREG(){
+void test_executeSUBWF_0x02_banked_should_sub_and_return_0xff_and_store_in_WREG(){
 	int code;
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[BSR] = 0xf;	
 	fileRegisters[WREG] = 0x02;			//	0000 0010
-	fileRegisters[0xf31] = 0x01;			//	0001 0010
+	fileRegisters[0xf31] = 0x01;		//	0001 0010
 	fileRegisters[PCLATU] = 0x00;
 	fileRegisters[PCLATH] = 0x00;
 	fileRegisters[PCL] = 0x4c;
@@ -1551,7 +1498,7 @@ void test_executeSUBWF_0x02_banked_should_sub_and_return_0x0e_and_store_in_WREG(
 	
 	TEST_ASSERT_EQUAL(0xff, data);
 	TEST_ASSERT_EQUAL(0x01, fileRegisters[0xf31]);
-	TEST_ASSERT_EQUAL(0x1a, fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL(0x10, fileRegisters[STATUS]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
 	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
 	TEST_ASSERT_EQUAL_HEX16(0x4e,fileRegisters[PCL]);
