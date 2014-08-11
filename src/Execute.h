@@ -10,7 +10,7 @@ int executeInstruction(unsigned int code);
 uint32 getBitsAtOffset(uint32 data, int offset, int bitSize);
 void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSize);
 
-int executeCarryStatus();
+int notCarryFlagForSUBWFB();
 void setNegativeFlag();
 void clearNegativeFlag();
 void setOverFlowFlag();
@@ -21,11 +21,10 @@ void setDigitalCarryFlag();
 void clearDigitalCarryFlag();
 void setCarryFlag();
 void clearCarryFlag();
-int checkStatus(int data);
 int storeDestination(int destination, int address, int access, int data);
-int executeProgramCounter();
-int executeProgramCounterSkipIfClear(int data);
-int executeProgramCounterSkipIfSet(int data);
+void updateProgramCounter();
+void updateProgramCounterSkipIfClear(int data);
+void updateProgramCounterSkipIfSet(int data);
 
 int executeBCF(unsigned int code);
 int executeBSF(unsigned int code);
