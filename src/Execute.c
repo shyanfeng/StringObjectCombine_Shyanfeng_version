@@ -91,7 +91,7 @@ int executeInstruction(unsigned int code){
  **/
 int notCarryFlagForSUBWFB(){
 	
-	fileRegisters[STATUS] = fileRegisters[STATUS] & 0x01;
+	fileRegisters[STATUS] = getBitsAtOffset(fileRegisters[STATUS], 0, 1);
 	if(fileRegisters[STATUS] == 1){
 		carry = 0;
 	}else if(fileRegisters[STATUS] == 0){
@@ -213,7 +213,7 @@ void clearCarryFlag(){
 void getStatusForNegative(int newData){
 	
 	// Negative
-	if(((newData & 0x80)>>7) == 1){
+	if(getBitsAtOffset(newData, 7, 1) == 1){
 		setNegativeFlag();
 	}else{
 		clearNegativeFlag();
@@ -233,7 +233,7 @@ void getStatusForNegative(int newData){
 void getStatusForZero(int newData){
 
 	// Zero
-	if((newData & 0xff)== 0){
+	if(getBitsAtOffset(newData, 0, 8) == 0){
 		setZeroFlag();
 	}else{
 		clearZeroFlag();
@@ -253,7 +253,7 @@ void getStatusForZero(int newData){
 void getStatusForCarry(int newData){
 
 	// Carry
-	if((newData>>8) == 1){
+	if(getBitsAtOffset(newData, 8, 1) == 1){
 		setCarryFlag();
 	}else{
 		clearCarryFlag();
