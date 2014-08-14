@@ -1,8 +1,6 @@
 #ifndef _EXECUTE_H_
 #define _EXECUTE_H_
 
-#define	WREG 	0xFE8
-
 #include "Types.h"
 
 int getInfo(unsigned int code);

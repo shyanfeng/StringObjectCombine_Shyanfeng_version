@@ -23,6 +23,17 @@ uint32 maskTable[32] = { 	0x0,
 							0x1fffffff, 0x3fffffff, 0x7fffffff
 						};
 
+/**
+ *
+ *
+ *	Retrieve a contiguous bits of 'bitSize' starting from offset.
+ *	Example :
+ *		data 	= 1000	1101
+ *		offset 	= 0
+ *		bitSize	= 8
+ *		result	= 0x8d
+ *
+ */
 uint32 getBitsAtOffset(uint32 data, int offset, int bitSize){
 	
 	if(offset >= 0 && bitSize > 0){
@@ -39,23 +50,30 @@ uint32 getBitsAtOffset(uint32 data, int offset, int bitSize){
 		return 0;
 }
 
-/**
- *
- *
- *	Retrieve a contiguious bits of 'bitSize' starting from offset.
- *	Example :
- *		data 	= 1000	1101
- *		offset 	= 4
- *		bitSize	= 6
- *		result	= 0x17
- *
- */
 void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSize){
 	
 	*dataPtr = *dataPtr &(~(maskTable[bitSize]<<offset));
-	*dataPtr = *dataPtr|(dataToWrite<<offset);
+	*dataPtr = *dataPtr|((dataToWrite & maskTable[bitSize]) << offset);
 }
 
+/**
+ *
+ *	Based on the getInfoFromOffset to get the bits for address, access, bit
+ *	and destinationBit
+ *	Example:
+ *		code 		= 1100 0011 1010 0101
+ *
+ *		we want to get the first 8 bit for address
+ *		so we use getBitsAtOffset(code, 0, 8)
+ *		the 0 is the bit start
+ *		the 8 is the bit size
+ *
+ *		so address	= 1010 0101
+ *
+ *	Input :
+		code is the opcode for instruction word
+ *
+ **/
 int getInfoFromOffset(unsigned int code){
 	
 	address = getBitsAtOffset(code, 0, 8);
@@ -266,13 +284,13 @@ void getStatusForCarry(int newData){
  *	is 0 (WREG) then the data is stored into the WREG. If is 1 (fileRegister)
  *	then data is stored into the specific fileRegister
  *
- *	Input :
+ *	Input	:
  *		destinationBit	is the d bit (WREG or fileRegister)
  *		address is the address of fileRegister
  *		access is the a bit(access or banked)
  *		data is the data to write
  *
- *	Return :
+ *	Return 	:
  *		data
  *
  **/
