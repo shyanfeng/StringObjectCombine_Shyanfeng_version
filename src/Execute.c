@@ -375,6 +375,9 @@ void updateProgramCounterSkipIfSet(int data){
  *	Operation : 
  *		0-> f<b>
  *
+ *	Status Affected	:
+ *		None
+ *
  *	Input :
  *		code is the opcode for instruction word
  *	
@@ -402,6 +405,9 @@ int executeBCF(unsigned int code){
  *
  *	Operation : 
  *		1-> f<b>
+ *
+ *	Status Affected	:
+ *		None
  *
  *	Input :
  *		code is the opcode for instruction word
@@ -431,6 +437,9 @@ int executeBSF(unsigned int code){
  *	Operation : 
  *		skip if f<b> = 0
  *
+ *	Status Affected	:
+ *		None
+ *
  *	Input :
  *		code is the opcode for instruction word
  *	
@@ -457,6 +466,9 @@ int executeBTFSC(unsigned int code){
  *	Operation : 
  *		skip if f<b> = 1
  *
+ *	Status Affected	:
+ *		None
+ *
  *	Input :
  *		code is the opcode for instruction word
  *	
@@ -482,6 +494,9 @@ int executeBTFSS(unsigned int code){
  *
  *	Operation : 
  *		~f<b> ->f<b>
+ *
+ *	Status Affected	:
+ *		None
  *
  *	Input :
  *		code is the opcode for instruction word
@@ -622,6 +637,9 @@ int executeSUBWFB(unsigned int code){
  *		f<3:0> ->dest<7:4>
  *		f<7:4> ->dest<3:0>
  *
+ *	Status Affected	:
+ *		None
+ *
  *	Input :
  *		code is the opcode for instruction word
  *	
@@ -649,6 +667,9 @@ int executeSWAPF(unsigned int code){
  *
  *	Operation : 
  *		skip if f = 0
+ *
+ *	Status Affected	:
+ *		None
  *
  *	Input :
  *		code is the opcode for instruction word
