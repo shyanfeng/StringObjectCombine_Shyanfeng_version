@@ -3,7 +3,7 @@
 
 #include "Types.h"
 
-int getInfo(unsigned int code);
+int getInfoFromOffset(unsigned int code);
 int executeInstruction(unsigned int code);
 uint32 getBitsAtOffset(uint32 data, int offset, int bitSize);
 void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSize);
