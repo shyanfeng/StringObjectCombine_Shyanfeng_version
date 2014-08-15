@@ -228,7 +228,7 @@ void clearCarryFlag(){
  *		newData is the data after the operation
  *
  **/
-void getStatusForNegative(int newData){
+void checkNegativeStatus(int newData){
 	
 	// Negative
 	if(getBitsAtOffset(newData, 7, 1) == 1){
@@ -248,7 +248,7 @@ void getStatusForNegative(int newData){
  *		newData is the data after the operation
  *
  **/
-void getStatusForZero(int newData){
+void checkZeroStatus(int newData){
 
 	// Zero
 	if(getBitsAtOffset(newData, 0, 8) == 0){
@@ -268,7 +268,7 @@ void getStatusForZero(int newData){
  *		newData is the data after the operation
  *
  **/
-void getStatusForCarry(int newData){
+void checkCarryStatus(int newData){
 
 	// Carry
 	if(getBitsAtOffset(newData, 8, 1) == 1){
@@ -548,9 +548,9 @@ int executeSUBWF(unsigned int code){
 	overFlowCheck = ((((int )data & 0x7f) + ((~(fileRegisters[WREG]) + 1) & 0x7f))>>7);
 	digitalCarryCheck = ((((int )data & 0x0f) + ((~(fileRegisters[WREG]) + 1) & 0x0f))>>4);
 	
-	getStatusForNegative(newData);
-	getStatusForZero(newData);
-	getStatusForCarry(newData);
+	checkNegativeStatus(newData);
+	checkZeroStatus(newData);
+	checkCarryStatus(newData);
 
 	// Over Flow
 	if((newData>>8) != overFlowCheck){
@@ -604,9 +604,9 @@ int executeSUBWFB(unsigned int code){
 	overFlowCheck = ((((int )data & 0x7f) + ((~(fileRegisters[WREG]) + 1) & 0x7f) + (-carry))>>7);
 	digitalCarryCheck = ((((int )data & 0x0f) + ((~(fileRegisters[WREG]) + 1) & 0x0f) + (-carry))>>4);
 	
-	getStatusForNegative(newData);
-	getStatusForZero(newData);
-	getStatusForCarry(newData);
+	checkNegativeStatus(newData);
+	checkZeroStatus(newData);
+	checkCarryStatus(newData);
 
 	// Over Flow
 	if((newData>>8) != overFlowCheck){
@@ -715,8 +715,8 @@ int executeXORWF(unsigned int code){
 	data = getFileRegData(address, access);
 	newData = (int )data ^ (fileRegisters[WREG] & 0xff);
 	
-	getStatusForNegative(newData);
-	getStatusForZero(newData);
+	checkNegativeStatus(newData);
+	checkZeroStatus(newData);
 	
 	newData = storeDestination(destinationBit, address, access, newData);
 	
