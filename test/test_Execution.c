@@ -1455,6 +1455,30 @@ void test_executeSUBWF_0x12_access_should_sub_and_return_0x0e_and_store_in_WREG(
 	
 }
 
+void test_executeSUBWF_0x00_access_should_sub_and_return_0x0_and_store_in_WREG(){
+	int code;
+	int data;
+	clearAllFileRegisters(fileRegisters);
+	fileRegisters[WREG] = 0x00;			//	0000 0000
+	fileRegisters[0x41] = 0x00;			//	0000 0010
+	fileRegisters[PCLATU] = 0x00;
+	fileRegisters[PCLATH] = 0x00;
+	fileRegisters[PCL] = 0x6a;
+	
+	code = 0x5c41;
+	data = executeInstruction(code);
+	
+	// printf("%x\n", data);
+	
+	TEST_ASSERT_EQUAL(0x00, data);
+	TEST_ASSERT_EQUAL(0x00, fileRegisters[0x41]);
+	TEST_ASSERT_EQUAL(0x04, fileRegisters[STATUS]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATU]);
+	TEST_ASSERT_EQUAL_HEX16(0x00,fileRegisters[PCLATH]);
+	TEST_ASSERT_EQUAL_HEX16(0x6c,fileRegisters[PCL]);
+	
+}
+
 void test_executeSUBWF_0x02_banked_should_sub_and_return_0x0_and_store_in_file_register(){
 	int code;
 	int data;
@@ -1486,7 +1510,7 @@ void test_executeSUBWF_0x02_banked_should_sub_and_return_0xff_and_store_in_WREG(
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[BSR] = 0xf;	
 	fileRegisters[WREG] = 0x02;			//	0000 0010
-	fileRegisters[0xf31] = 0x01;		//	0001 0010
+	fileRegisters[0xf31] = 0x01;		//	0000 0001
 	fileRegisters[PCLATU] = 0x00;
 	fileRegisters[PCLATH] = 0x00;
 	fileRegisters[PCL] = 0x4c;

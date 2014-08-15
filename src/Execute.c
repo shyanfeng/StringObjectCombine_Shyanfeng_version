@@ -76,10 +76,10 @@ void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSiz
  **/
 int getInfoFromOffset(unsigned int code){
 	
-	address = getBitsAtOffset(code, 0, 8);
-	access = getBitsAtOffset(code, 8, 1);
-	bit = getBitsAtOffset(code, 9, 3);
-	destinationBit = getBitsAtOffset(code, 9, 1);
+	address = getBitsAtOffset(code, 0, 8);			//0xff
+	access = getBitsAtOffset(code, 8, 1);			//0x100
+	bit = getBitsAtOffset(code, 9, 3);				//0xe0
+	destinationBit = getBitsAtOffset(code, 9, 1);	//0x200
 	
 }
 
