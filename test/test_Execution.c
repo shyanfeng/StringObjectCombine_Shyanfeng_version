@@ -6,25 +6,25 @@
 void setUp(void){}
 void tearDown(void){}
 
-void test_notCarryFlagForSUBWFB_fileRegisters_STATUS_0x01_should_return_0x0(){
+void test_withdrawPreviousCarryForSUBWFB_fileRegisters_STATUS_0x01_should_return_0x0(){
 	int code;
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[STATUS] = 0x01;
 
-	data = notCarryFlagForSUBWFB();
+	data = withdrawPreviousCarryForSUBWFB();
 	
 	TEST_ASSERT_EQUAL(0x0, data);
 	
 }
 
-void test_notCarryFlagForSUBWFB_fileRegisters_STATUS_0x0_should_return_0x1(){
+void test_withdrawPreviousCarryForSUBWFB_fileRegisters_STATUS_0x0_should_return_0x1(){
 	int code;
 	int data;
 	clearAllFileRegisters(fileRegisters);
 	fileRegisters[STATUS] = 0x0;
 
-	data = notCarryFlagForSUBWFB();
+	data = withdrawPreviousCarryForSUBWFB();
 	
 	TEST_ASSERT_EQUAL(0x1, data);
 	

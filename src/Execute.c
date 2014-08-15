@@ -107,7 +107,7 @@ int executeInstruction(unsigned int code){
  *		carry
  *
  **/
-int notCarryFlagForSUBWFB(){
+int withdrawPreviousCarryForSUBWFB(){
 	
 	fileRegisters[STATUS] = getBitsAtOffset(fileRegisters[STATUS], 0, 1);
 	if(fileRegisters[STATUS] == 1){
@@ -275,6 +275,30 @@ void checkCarryStatus(int newData){
 		setCarryFlag();
 	}else{
 		clearCarryFlag();
+	}
+}
+
+void checkOverFlow(int updataData, int overFlow){
+	if((updataData >> 8) == 1){
+		if(overFlow == 1){
+			clearOverFlowFlag();
+		}else{
+			setOverFlowFlag();
+		}
+	}else{
+		if(overFlow == 1){
+			setOverFlowFlag();
+		}else{
+			clearOverFlowFlag();
+		}
+	}
+}
+
+void checkDigitalCarryStatus(int digitalCarry){
+	if(digitalCarry == 1){
+		setDigitalCarryFlag();
+	}else{
+		clearDigitalCarryFlag();
 	}
 }
 
@@ -551,20 +575,8 @@ int executeSUBWF(unsigned int code){
 	checkNegativeStatus(newData);
 	checkZeroStatus(newData);
 	checkCarryStatus(newData);
-
-	// Over Flow
-	if((newData>>8) != overFlowCheck){
-		setOverFlowFlag();
-	}else{
-		clearOverFlowFlag();
-	}
-	
-	// Digital Carry
-	if(digitalCarryCheck == 1){
-		setDigitalCarryFlag();
-	}else{
-		clearDigitalCarryFlag();
-	}
+	checkOverFlow(newData, overFlowCheck);
+	checkDigitalCarryStatus(digitalCarryCheck);
 	
 	newData = storeDestination(destinationBit, address, access, newData);
 	
@@ -596,7 +608,7 @@ int executeSUBWFB(unsigned int code){
 	int digitalCarryCheck;
 	getInfoFromOffset(code);
 
-	carry = notCarryFlagForSUBWFB();
+	carry = withdrawPreviousCarryForSUBWFB();
 	
 	data = getFileRegData(address, access);
 	newData = (int )data + ((~(fileRegisters[WREG]) + 1) & 0xff) + (-carry);
@@ -607,20 +619,8 @@ int executeSUBWFB(unsigned int code){
 	checkNegativeStatus(newData);
 	checkZeroStatus(newData);
 	checkCarryStatus(newData);
-
-	// Over Flow
-	if((newData>>8) != overFlowCheck){
-		setOverFlowFlag();
-	}else{
-		clearOverFlowFlag();
-	}
-	
-	// Digital Carry
-	if(digitalCarryCheck == 1){
-		setDigitalCarryFlag();
-	}else{
-		clearDigitalCarryFlag();
-	}
+	checkOverFlow(newData, overFlowCheck);
+	checkDigitalCarryStatus(digitalCarryCheck);
 	
 	newData = storeDestination(destinationBit, address, access, newData);
 	

@@ -8,7 +8,7 @@ int executeInstruction(unsigned int code);
 uint32 getBitsAtOffset(uint32 data, int offset, int bitSize);
 void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSize);
 
-int notCarryFlagForSUBWFB();
+int withdrawPreviousCarryForSUBWFB();
 void setNegativeFlag();
 void clearNegativeFlag();
 void setOverFlowFlag();
@@ -22,6 +22,8 @@ void clearCarryFlag();
 void checkNegativeStatus(int newData);
 void checkZeroStatus(int newData);
 void checkCarryStatus(int newData);
+void checkOverFlow(int updataData, int overFlow);
+void checkDigitalCarryStatus(int digitalCarry);
 int storeDestination(int destination, int address, int access, int data);
 void updateProgramCounter();
 void updateProgramCounterSkipIfClear(int data);
