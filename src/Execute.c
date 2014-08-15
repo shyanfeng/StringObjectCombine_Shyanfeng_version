@@ -602,7 +602,7 @@ int executeSUBWFB(unsigned int code){
 	newData = (int )data + ((~(fileRegisters[WREG]) + 1) & 0xff) + (-carry);
 	
 	overFlowCheck = ((((int )data & 0x7f) + ((~(fileRegisters[WREG]) + 1) & 0x7f) + (-carry))>>7);
-	digitalCarryCheck = ((((int )data & 0x0f) + ((~(fileRegisters[WREG]) + 1) & 0x0f) + (-carry & 0x0f))>>4);
+	digitalCarryCheck = ((((int )data & 0x0f) + ((~(fileRegisters[WREG]) + 1) & 0x0f) + (-carry))>>4);
 	
 	getStatusForNegative(newData);
 	getStatusForZero(newData);
