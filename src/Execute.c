@@ -12,14 +12,14 @@ int destinationBit;
 int programCounter;
 int carry;
 
-uint32 maskTable[32] = { 	0x0, 
-							0x1, 0x3, 0x7, 0xf, 
+uint32 maskTable[32] = { 	0x0,
+							0x1, 0x3, 0x7, 0xf,
 							0x1f, 0x3f, 0x7f, 0xff,
-							0x1ff, 0x3ff, 0x7ff, 0xfff, 
-							0x1fff, 0x3fff, 0x7fff, 0xffff, 
-							0x1ffff, 0x3ffff, 0x7ffff, 0xfffff, 
-							0x1fffff, 0x3fffff, 0x7fffff, 0xffffff, 
-							0x1ffffff, 0x3ffffff, 0x7ffffff, 0xfffffff, 
+							0x1ff, 0x3ff, 0x7ff, 0xfff,
+							0x1fff, 0x3fff, 0x7fff, 0xffff,
+							0x1ffff, 0x3ffff, 0x7ffff, 0xfffff,
+							0x1fffff, 0x3fffff, 0x7fffff, 0xffffff,
+							0x1ffffff, 0x3ffffff, 0x7ffffff, 0xfffffff,
 							0x1fffffff, 0x3fffffff, 0x7fffffff
 						};
 
@@ -35,15 +35,15 @@ uint32 maskTable[32] = { 	0x0,
  *
  */
 uint32 getBitsAtOffset(uint32 data, int offset, int bitSize){
-	
+
 	if(offset >= 0 && bitSize > 0){
 		if(offset >31)
 			offset = 31;
 		if(bitSize > 31)
 			bitSize = 31;
-		
+
 		data = (data >> offset) & maskTable[bitSize];
-		
+
 		return data;
 	}
 	else
@@ -51,7 +51,7 @@ uint32 getBitsAtOffset(uint32 data, int offset, int bitSize){
 }
 
 void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSize){
-	
+
 	*dataPtr = *dataPtr &(~(maskTable[bitSize]<<offset));
 	*dataPtr = *dataPtr|((dataToWrite & maskTable[bitSize]) << offset);
 }
@@ -75,12 +75,12 @@ void setBitsAtOffset(uint32 *dataPtr, uint32 dataToWrite, int offset, int bitSiz
  *
  **/
 int getInfoFromOffset(unsigned int code){
-	
+
 	address = getBitsAtOffset(code, 0, 8);			//0xff
 	access = getBitsAtOffset(code, 8, 1);			//0x100
 	bit = getBitsAtOffset(code, 9, 3);				//0xe0
 	destinationBit = getBitsAtOffset(code, 9, 1);	//0x200
-	
+
 }
 
 /**
@@ -108,14 +108,14 @@ int executeInstruction(unsigned int code){
  *
  **/
 int withdrawPreviousCarryForSUBWFB(){
-	
+
 	fileRegisters[STATUS] = getBitsAtOffset(fileRegisters[STATUS], 0, 1);
 	if(fileRegisters[STATUS] == 1){
 		carry = 0;
 	}else if(fileRegisters[STATUS] == 0){
 		carry = 1;
 	}
-	
+
 	return carry;
 }
 
@@ -221,7 +221,7 @@ void clearCarryFlag(){
 
 /**
  *
- *	Get the fileRegisters[STATUS] for negative according to newData. If the newData is 0 then 
+ *	Get the fileRegisters[STATUS] for negative according to newData. If the newData is 0 then
  *	should go to setNegativeFlag() else should go to clearNegativeFlag().
  *
  *	Input :
@@ -229,7 +229,7 @@ void clearCarryFlag(){
  *
  **/
 void checkNegativeStatus(int newData){
-	
+
 	// Negative
 	if(getBitsAtOffset(newData, 7, 1) == 1){
 		setNegativeFlag();
@@ -241,7 +241,7 @@ void checkNegativeStatus(int newData){
 
 /**
  *
- *	Get the fileRegisters[STATUS] for zero according to newData. If the newData is 0 then 
+ *	Get the fileRegisters[STATUS] for zero according to newData. If the newData is 0 then
  *	should go to setZeroFlag() else should go to clearZeroFlag().
  *
  *	Input :
@@ -261,7 +261,7 @@ void checkZeroStatus(int newData){
 
 /**
  *
- *	Get the fileRegisters[STATUS] for carry according to newData. If the newData bit 8 is 1 then 
+ *	Get the fileRegisters[STATUS] for carry according to newData. If the newData bit 8 is 1 then
  *	should go to setCarryFlag() else should go to clearCarryFlag().
  *
  *	Input :
@@ -319,7 +319,7 @@ void checkDigitalCarryStatus(int digitalCarry){
  *
  **/
 int storeDestination(int destinationBit, int address, int access, int data){
-	
+
 	if(destinationBit == 0){
 		fileRegisters[WREG] = data;
 		data = fileRegisters[WREG];
@@ -328,9 +328,9 @@ int storeDestination(int destinationBit, int address, int access, int data){
 		data = fileRegisters[address];
 		data = setFileRegData(address, access, data);
 	}
-	
+
 	return data;
-	
+
 }
 
 /**
@@ -343,7 +343,7 @@ void updateProgramCounter(){
 	programCounter = getProgramCounter();
 	programCounter += 2;
 	setProgramCounter(programCounter);
-	
+
 }
 
 /**
@@ -358,20 +358,20 @@ void updateProgramCounter(){
 void updateProgramCounterSkipIfClear(int data){
 
 	programCounter = getProgramCounter();
-	
+
 	if(data == 0){
 		programCounter += 4;
 	}else{
 		programCounter += 2;
 	}
-	
+
 	setProgramCounter(programCounter);
-	
+
 }
 
 /**
  *
- *	Update the program counter + 2 from previous program counter if data is 0 
+ *	Update the program counter + 2 from previous program counter if data is 0
  *	otherwise update program counter + 4
  *
  *	Input :
@@ -381,22 +381,22 @@ void updateProgramCounterSkipIfClear(int data){
 void updateProgramCounterSkipIfSet(int data){
 
 	programCounter = getProgramCounter();
-	
+
 	if(data == 0){
 		programCounter += 2;
 	}else{
 		programCounter += 4;
 	}
-	
+
 	setProgramCounter(programCounter);
-	
+
 }
 
 /**
  *
  *	Bit Clear f
  *
- *	Operation : 
+ *	Operation :
  *		0-> f<b>
  *
  *	Status Affected	:
@@ -404,30 +404,30 @@ void updateProgramCounterSkipIfSet(int data){
  *
  *	Input :
  *		code is the opcode for instruction word
- *	
+ *
  *	Return :
  *		data
  *
  **/
 int executeBCF(unsigned int code){
-	
+
 	getInfoFromOffset(code);
-	
+
 	data = getFileRegData(address, access);
 	data = data & (~(1<<bit));
 	data = setFileRegData(address, access, data);
-	
+
 	updateProgramCounter();
 
 	return data;
-	
+
 }
 
 /**
  *
  *	Bit Set f
  *
- *	Operation : 
+ *	Operation :
  *		1-> f<b>
  *
  *	Status Affected	:
@@ -435,30 +435,30 @@ int executeBCF(unsigned int code){
  *
  *	Input :
  *		code is the opcode for instruction word
- *	
+ *
  *	Return :
  *		data
  *
  **/
 int executeBSF(unsigned int code){
-	
+
 	getInfoFromOffset(code);
-	
+
 	data = getFileRegData(address, access);
 	data = data | (1<<bit);
 	data = setFileRegData(address, access, data);
-	
+
 	updateProgramCounter();
 
 	return data;
-	
+
 }
 
 /**
  *
  *	Bit Test f, skip if clear
  *
- *	Operation : 
+ *	Operation :
  *		skip if f<b> = 0
  *
  *	Status Affected	:
@@ -466,20 +466,20 @@ int executeBSF(unsigned int code){
  *
  *	Input :
  *		code is the opcode for instruction word
- *	
+ *
  *	Return :
  *		data
  *
  **/
 int executeBTFSC(unsigned int code){
-	
+
 	getInfoFromOffset(code);
-	
+
 	data = getFileRegData(address, access);
 	data = ((data & (1<<bit))>>bit);
 
 	updateProgramCounterSkipIfClear(data);
-	
+
 	return programCounter;
 }
 
@@ -487,7 +487,7 @@ int executeBTFSC(unsigned int code){
  *
  *	Bit Test f, skip if set
  *
- *	Operation : 
+ *	Operation :
  *		skip if f<b> = 1
  *
  *	Status Affected	:
@@ -495,18 +495,18 @@ int executeBTFSC(unsigned int code){
  *
  *	Input :
  *		code is the opcode for instruction word
- *	
+ *
  *	Return :
  *		data
  *
  **/
 int executeBTFSS(unsigned int code){
-	
+
 	getInfoFromOffset(code);
-	
+
 	data = getFileRegData(address, access);
 	data = ((data & (1<<bit))>>bit);
-	
+
 	updateProgramCounterSkipIfSet(data);
 
 	return programCounter;
@@ -516,7 +516,7 @@ int executeBTFSS(unsigned int code){
  *
  *	Bit Toggle f
  *
- *	Operation : 
+ *	Operation :
  *		~f<b> ->f<b>
  *
  *	Status Affected	:
@@ -524,30 +524,30 @@ int executeBTFSS(unsigned int code){
  *
  *	Input :
  *		code is the opcode for instruction word
- *	
+ *
  *	Return :
  *		data
  *
  **/
 int executeBTG(unsigned int code){
-	
+
 	getInfoFromOffset(code);
-	
+
 	data = getFileRegData(address, access);
 	data = data ^ (1<<bit);
 	data = setFileRegData(address, access, data);
-	
+
 	updateProgramCounter();
 
 	return data;
-	
+
 }
 
 /**
  *
  *	Subtract WREG from f
  *
- *	Operation : 
+ *	Operation :
  *		f - W ->dest
  *
  *	Status Affected	:
@@ -555,7 +555,7 @@ int executeBTG(unsigned int code){
  *
  *	Input :
  *		code is the opcode for instruction word
- *	
+ *
  *	Return :
  *		newData
  *
@@ -565,21 +565,21 @@ int executeSUBWF(unsigned int code){
 	int overFlowCheck;
 	int digitalCarryCheck;
 	getInfoFromOffset(code);
-	
+
 	data = getFileRegData(address, access);
 	newData = (int )data + ((~(fileRegisters[WREG]) + 1) & 0xff);
-	
+
 	overFlowCheck = ((((int )data & 0x7f) + ((~(fileRegisters[WREG]) + 1) & 0x7f))>>7);
 	digitalCarryCheck = ((((int )data & 0x0f) + ((~(fileRegisters[WREG]) + 1) & 0x0f))>>4);
-	
+
 	checkNegativeStatus(newData);
 	checkZeroStatus(newData);
 	checkCarryStatus(newData);
 	checkOverFlow(newData, overFlowCheck);
 	checkDigitalCarryStatus(digitalCarryCheck);
-	
+
 	newData = storeDestination(destinationBit, address, access, newData);
-	
+
 	updateProgramCounter();
 
 	return newData;
@@ -589,7 +589,7 @@ int executeSUBWF(unsigned int code){
  *
  *	Subtract WREG from f with borrow
  *
- *	Operation : 
+ *	Operation :
  *		f - W - C ->dest
  *
  *	Status Affected	:
@@ -597,7 +597,7 @@ int executeSUBWF(unsigned int code){
  *
  *	Input :
  *		code is the opcode for instruction word
- *	
+ *
  *	Return :
  *		newData
  *
@@ -609,21 +609,21 @@ int executeSUBWFB(unsigned int code){
 	getInfoFromOffset(code);
 
 	carry = withdrawPreviousCarryForSUBWFB();
-	
+
 	data = getFileRegData(address, access);
 	newData = (int )data + ((~(fileRegisters[WREG]) + 1) & 0xff) + (-carry);
-	
+
 	overFlowCheck = ((((int )data & 0x7f) + ((~(fileRegisters[WREG]) + 1) & 0x7f) + (-carry))>>7);
 	digitalCarryCheck = ((((int )data & 0x0f) + ((~(fileRegisters[WREG]) + 1) & 0x0f) + (-carry))>>4);
-	
+
 	checkNegativeStatus(newData);
 	checkZeroStatus(newData);
 	checkCarryStatus(newData);
 	checkOverFlow(newData, overFlowCheck);
 	checkDigitalCarryStatus(digitalCarryCheck);
-	
+
 	newData = storeDestination(destinationBit, address, access, newData);
-	
+
 	updateProgramCounter();
 
 	return newData;
@@ -633,7 +633,7 @@ int executeSUBWFB(unsigned int code){
  *
  *	Swap f
  *
- *	Operation : 
+ *	Operation :
  *		f<3:0> ->dest<7:4>
  *		f<7:4> ->dest<3:0>
  *
@@ -642,20 +642,20 @@ int executeSUBWFB(unsigned int code){
  *
  *	Input :
  *		code is the opcode for instruction word
- *	
+ *
  *	Return :
  *		newData
  *
  **/
 int executeSWAPF(unsigned int code){
-	
+
 	getInfoFromOffset(code);
-	
+
 	data = getFileRegData(address, access);
 	data = (((data & 0x0f)<<4) | ((data & 0xf0)>>4));
-	
+
 	data = storeDestination(destinationBit, address, access, data);
-	
+
 	updateProgramCounter();
 
 	return data;
@@ -665,7 +665,7 @@ int executeSWAPF(unsigned int code){
  *
  *	Test f, skip if 0
  *
- *	Operation : 
+ *	Operation :
  *		skip if f = 0
  *
  *	Status Affected	:
@@ -673,17 +673,17 @@ int executeSWAPF(unsigned int code){
  *
  *	Input :
  *		code is the opcode for instruction word
- *	
+ *
  *	Return :
  *		newData
  *
  **/
 int executeTSTFSZ(unsigned int code){
-	
+
 	getInfoFromOffset(code);
-	
+
 	data = getFileRegData(address, access);
-	
+
 	updateProgramCounterSkipIfClear(data);
 
 	return programCounter;
@@ -693,7 +693,7 @@ int executeTSTFSZ(unsigned int code){
  *
  *	Exclusive OR W with f
  *
- *	Operation : 
+ *	Operation :
  *		W OR f ->dest
  *
  *	Status Affected	:
@@ -701,7 +701,7 @@ int executeTSTFSZ(unsigned int code){
  *
  *	Input :
  *		code is the opcode for instruction word
- *	
+ *
  *	Return :
  *		newData
  *
@@ -711,15 +711,15 @@ int executeXORWF(unsigned int code){
 	int overFlowCheck;
 	int digitalCarryCheck;
 	getInfoFromOffset(code);
-	
+
 	data = getFileRegData(address, access);
 	newData = (int )data ^ (fileRegisters[WREG] & 0xff);
-	
+
 	checkNegativeStatus(newData);
 	checkZeroStatus(newData);
-	
+
 	newData = storeDestination(destinationBit, address, access, newData);
-	
+
 	updateProgramCounter();
 
 	return newData;
